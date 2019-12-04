@@ -1,2 +1,2 @@
-# astrid-local-control-plane
+# ASTRID Local Control Plane
 
