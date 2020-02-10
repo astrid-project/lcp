@@ -1,0 +1,11 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"workbench.colorTheme": "Panda Syntax",
+		"cSpell.language": "en-GB"
+	}
+}
