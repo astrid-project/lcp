@@ -1,25 +1,25 @@
 from marshmallow import fields, Schema
 
 
-class CmdRequestSchema(Schema):
-    prog = fields.String()
-    args = fields.List(fields.String())
-
-
 class CodeRequestSchema(Schema):
-    cmds = fields.List(fields.Nested(CmdRequestSchema()))
+    name = fields.String(required=True)
+    source = fields.String(required=True)
 
 
-class CmdResponseScheme(Schema):
-    when = fields.DateTime()
-    cmd = fields.String()
-    args: fields.List(fields.String())
-    stdout: fields.String()
-    stderr: fields.String()
-    return_code: fields.Integer(data_key='return-code')
+class ResultResponseSchema(Schema):
+    warning = fields.String()
+
+
+class InjectedResponseSchema(ResultResponseSchema):
+    name = fields.String(required=True)
+    injected = fields.Boolean(required=True)
+
+
+class ErrorResponseSchema(ResultResponseSchema):
+    error = fields.Boolean(required=True)
+    description = fields.String(required=True)
 
 
 class CodeResponseSchema(Schema):
-    when = fields.DateTime()
-    cmds = fields.List(fields.Nested(CmdResponseScheme()))
-    return_code = fields.Integer(data_key='return-code')
+    when = fields.DateTime(required=True)
+    results = fields.List(fields.Nested(ResultResponseSchema()), required=True)

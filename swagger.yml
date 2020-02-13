@@ -1,0 +1,355 @@
+swagger: '2.0'
+basePath: /
+paths:
+  /code/:
+    post:
+      responses:
+        '200':
+          description: Code injection executed
+          schema:
+            $ref: '#/definitions/code-response'
+        '400':
+          description: Bad request
+          schema:
+            $ref: '#/definitions/bad-request'
+        '401':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/unauthorized'
+      description: Inject code at run-time in the local environment
+      operationId: post_code
+      parameters:
+        - name: payload
+          required: true
+          in: body
+          schema:
+            $ref: '#/definitions/code-request'
+      tags:
+        - code
+        - injected
+  /config/:
+    post:
+      responses:
+        '200':
+          description: Configuration changes executed
+          schema:
+            $ref: '#/definitions/config-response'
+        '400':
+          description: Bad request
+          schema:
+            $ref: '#/definitions/bad-request'
+        '401':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/unauthorized'
+      description: Apply configuration changes to the local environment
+      operationId: post_config
+      parameters:
+        - name: payload
+          required: true
+          in: body
+          schema:
+            $ref: '#/definitions/config-request'
+      tags:
+        - config
+        - settings
+info:
+  title: ASTRID LCP
+  version: 0.0.1
+  description: Configuration and code injection at run-time in the local environment
+produces:
+  - application/json
+consumes:
+  - application/json
+tags:
+  - name: code
+    description: Code injection at run-time
+  - name: config
+    description: Configuration at run-time
+definitions:
+  code-request:
+    type: array
+    items:
+      $ref: '#/definitions/code-item-request'
+  code-item-request:
+    type: object
+    properties:
+      name:
+        type: string
+        description: Code name
+        example: firewall
+      source:
+        type: string
+        description: Code source to inject
+  code-response:
+      type: object
+      required:
+        - when
+        - results
+      properties:
+        when:
+          type: string
+          format: datetime
+          description: Datetime of the configuration changes
+          example: 2020/02/13-15:27:06
+        results:
+          type: array
+          items:
+            allOf:
+              - $ref: '#/definitions/code-injected-response'
+              - $ref: '#/definitions/code-error-response'
+  code-result-response:
+    type: object
+    properties:
+      warning:
+        type: string
+        description: Warning message
+        example: "Useless properties: id"
+  code-injected-response:
+    allOf:
+      - $ref: '#/definitions/code-result-response'
+      - type: object
+        required:
+          - name
+          - injected
+        properties:
+          name:
+            type: string
+            description: Code name
+            example: firewall
+          injected:
+            type: boolean
+            description: Indicate if the code was injected
+            example: filebeat.yml
+  code-error-response:
+    allOf:
+      - $ref: '#/definitions/code-result-response'
+      - type: object
+        required:
+          - error
+          - description
+        properties:
+            error:
+              type: boolean
+              enum:
+                - True
+              description: Indicate the presence of an error
+            description:
+              type: string
+              description: Human readable message that describes the error
+              example: Missing name
+  config-request:
+    type: array
+    items:
+      $ref: '#/definitions/config-item-request'
+  config-item-request:
+    type: object
+    properties:
+      actions:
+        type: array
+        description: List of actions
+        items:
+          $ref: '#/definitions/config-action-request'
+      parameters:
+        type: array
+        description: List of parameters
+        items:
+          $ref: '#/definitions/config-parameter-request'
+      resources:
+        type: array
+        description: List of resources
+        items:
+          $ref: '#/definitions/config-resource-request'
+  config-action-request:
+    type: object
+    required:
+      - cmd
+    properties:
+      cmd:
+        type: string
+        description: Command
+        example: ls
+      args:
+        type: array
+        description: Command arguments
+        items:
+          type: string
+          description: Single command argument
+          example: -al
+  config-parameter-request:
+    type: object
+    required:
+      - destination
+      - name
+      - sep
+      - value
+    properties:
+      destination:
+        type: string
+        description: Destination filename
+        example: filebeat.yml
+      name:
+        type: string
+        description: Parameter name
+        example: property
+      sep:
+        type: string
+        description: Separator between name and value
+        example: =
+      value:
+        type: string
+        description: Parameter new value
+        example: 10s
+  config-resource-request:
+    type: object
+    required:
+      - destination
+      - content
+    properties:
+      destination:
+        type: string
+        description: Destination filename
+        example: filebeat.yml
+      content:
+        type: string
+        description: Resource content
+  config-response:
+      type: object
+      required:
+        - when
+        - results
+      properties:
+        when:
+          type: string
+          format: datetime
+          description: Datetime of the configuration changes
+          example: 2020/02/13-15:27:06
+        results:
+          type: array
+          items:
+            allOf:
+              - $ref: '#/definitions/config-action-response'
+              - $ref: '#/definitions/config-parameter-response'
+              - $ref: '#/definitions/config-resource-response'
+              - $ref: '#/definitions/config-error-response'
+  config-result-response:
+    type: object
+    required:
+        - type
+    properties:
+      type:
+          type: string
+          description: Configuration type
+      warning:
+        type: string
+        description: Warning message
+        example: "Useless properties: id"
+  config-action-response:
+    allOf:
+      - $ref: '#/definitions/config-result-response'
+      - type: object
+        required:
+          - executed
+          - return-code
+        properties:
+          type:
+            enum:
+              - action
+          executed:
+            type: string
+            description: Command executed
+            example: ls -al
+          stdout:
+            type: string
+            description: Standard output of the execution
+          stderr:
+            type: string
+            description: Standard error output of the execution
+          return-code:
+            type: integer
+            description: "Exit code of the execution (0: no error)"
+            example: 0
+  config-parameter-response:
+    allOf:
+      - $ref: '#/definitions/config-result-response'
+      - type: object
+        required:
+          - destination
+          - name
+          - value
+        properties:
+          type:
+            enum:
+              - parameter
+          destination:
+            type: string
+            description: Destination filename
+            example: filebeat.yml
+          name:
+            type: string
+            description: Parameter name
+            example: period
+          value:
+            type: string
+            description: Parameter new value
+            example: 10s
+  config-resource-response:
+    allOf:
+      - $ref: '#/definitions/config-result-response'
+      - type: object
+        required:
+          - destination
+        properties:
+          type:
+            enum:
+              - resource
+            description: Configuration type
+          destination:
+            type: string
+            description: Destination filename
+            example: filebeat.yml
+  config-error-response:
+    allOf:
+      - $ref: '#/definitions/config-result-response'
+      - type: object
+        required:
+          - error
+          - description
+        properties:
+          error:
+            type: boolean
+            enum:
+              - True
+            description: Indicate the presence of an error
+          description:
+            type: string
+            description: Human readable message that describes the error
+            example: Request type unknown
+  unauthorized:
+    type: object
+    required:
+      - title
+      - description
+    properties:
+      title:
+        type: string
+        description: Title error
+        example: 401 Unauthorized
+      description:
+        type: string
+        description: Human readable message that describes the error
+        example: Invalid Username/Password
+  bad-request:
+    type: object
+    required:
+      - title
+      - description
+    properties:
+      title:
+        type: string
+        description: Title error
+        example: 400 Bad Request
+      description:
+        type: string
+        description: Human readable message that describes the error
+        example: Could not decode the request body, either because it was not valid JSON or because it was not encoded as UTF-8.

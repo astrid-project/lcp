@@ -1,3 +1,5 @@
+# cspell:ignore strftime
+
 from .base import BaseResource
 from configparser import ConfigParser
 from requests.auth import HTTPBasicAuth
@@ -25,12 +27,10 @@ class StatusResource(BaseResource):
             'agents': [],
             'started': datetime.now().strftime("%Y/%m/%d-%H:%M:%S")
         }
-        username = config_parser.get('auth', 'username')
-        password = config_parser.get('auth', 'password')
 
         for method in ['post', 'put']:
             res = getattr(requests, method)(f'http://{args.cb_endpoint}/config/exec-env',
-                                auth=HTTPBasicAuth(username, password), json={'id': id, 'started': self.data['started']})
+                                auth=HTTPBasicAuth(args.cb_username, args.cb_password), json={'id': id, 'started': self.data['started']})
             if res.status_code in [requests.codes.ok, requests.codes.created]:
                 break
         print(f'with id = {id} from {self.data["started"]}')
