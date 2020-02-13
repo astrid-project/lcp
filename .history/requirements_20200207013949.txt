@@ -1,4 +1,0 @@
-falcon
-waitress
-falcon-marshmallow
-falcon-keycloak

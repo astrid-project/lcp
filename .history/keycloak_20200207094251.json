@@ -1,7 +1,0 @@
-{
-    "realm": "1",
-    "realm-public-key": "2",
-    "server-url": "localhost:2010",
-    "auth-server-url": "localhost:2011",
-    "ssl-required": false
-}

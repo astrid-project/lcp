@@ -1,8 +1,0 @@
-{
-    "realm": "ASTRID",
-    "auth-server-url": "http://localhost:8180/auth/",
-    "ssl-required": "external",
-    "resource": "astrid-local-control-plane",
-    "public-client": true,
-    "confidential-port": 0
-  }

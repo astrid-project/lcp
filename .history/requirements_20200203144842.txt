@@ -1,4 +1,0 @@
-falcon
-falcon-auth
-waitress
-falcon-marshmallow

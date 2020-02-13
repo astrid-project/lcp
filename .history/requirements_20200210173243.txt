@@ -1,4 +1,0 @@
-falcon
-falcon-auth[backend-jwt]
-falcon-marshmallow
-waitress
