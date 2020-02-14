@@ -5,55 +5,53 @@ In each local agent, the control plane is responsible for programmability, i.e.,
 ---
 
 - [ASTRID Local Control Plane](#astrid-local-control-plane)
-- [Installation](#installation)
-- [Usage](#usage)
-  - [Display help](#display-help)
-  - [Production environment](#production-environment)
-  - [Debug enabled in Development environment](#debug-enabled-in-development-environment)
-- [Extra](#extra)
+  - [Guide](#guide)
+  - [Installation](#installation)
+  - [Usage](#usage)
+    - [Display help](#display-help)
+    - [Execute](#execute)
+  - [Extra](#extra)
 
 ---
 
-# Installation
+## Guide
+
+See the [Swagger Schema](swagger.yml) and the relative [documentation](https://app.swaggerhub.com/apis-docs/alexcarrega/astrid-lcp/0.0.1) for more details about the REST endpoints and relative formats and requirements of request and response.
+
+## Installation
 
 1. Prerequisite
 
-- python3
-- pip3
+   - python3
+   - pip3
 
 2. Clone the repository.
 
-```bash
-git clone https://gitlab.com/astrid-repositories/wp2/astrid-local-control-plane.git
-cd astrid-local-control-plane
-```
+   ```bash
+   git clone https://gitlab.com/astrid-repositories/wp2/astrid-local-control-plane.git
+   cd astrid-local-control-plane
+   ```
 
 3. Install the dependencies.
 
-```bash
-pip3 install -r requirements.txt
-```
+   ```bash
+   pip3 install -r requirements.txt
+   ```
 
-# Usage
+## Usage
 
-## Display help
+### Display help
 
 ```bash
 python3 main.py -h
 ```
 
-## Production environment
+### Execute
 
 ```bash
-python3 main.py -n production
+python3 main.py
 ```
 
-## Debug enabled in Development environment
-
-```bash
-python3 main.py --debug -n development
-```
-
-# Extra
+## Extra
 
 See the **Issues** for *features* in development.

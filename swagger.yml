@@ -1,23 +1,10 @@
 swagger: '2.0'
 basePath: /
 paths:
-  /code/:
+  /code:
     post:
-      responses:
-        '200':
-          description: Code injection executed
-          schema:
-            $ref: '#/definitions/code-response'
-        '400':
-          description: Bad request
-          schema:
-            $ref: '#/definitions/bad-request'
-        '401':
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/unauthorized'
-      description: Inject code at run-time in the local environment
-      operationId: post_code
+      summary: Code injection
+      description: Inject code at run-time in the local environment.
       parameters:
         - name: payload
           required: true
@@ -27,23 +14,23 @@ paths:
       tags:
         - code
         - injected
-  /config/:
-    post:
       responses:
-        '200':
-          description: Configuration changes executed
+        200:
+          description: Code injection executed
           schema:
-            $ref: '#/definitions/config-response'
-        '400':
+            $ref: '#/definitions/code-response'
+        400:
           description: Bad request
           schema:
             $ref: '#/definitions/bad-request'
-        '401':
+        401:
           description: Unauthorized
           schema:
             $ref: '#/definitions/unauthorized'
+  /config:
+    post:
+      summary: Configuration update
       description: Apply configuration changes to the local environment
-      operationId: post_config
       parameters:
         - name: payload
           required: true
@@ -53,6 +40,19 @@ paths:
       tags:
         - config
         - settings
+      responses:
+        200:
+          description: Configuration changes executed
+          schema:
+            $ref: '#/definitions/config-response'
+        400:
+          description: Bad request
+          schema:
+            $ref: '#/definitions/bad-request'
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/unauthorized'
 info:
   title: ASTRID LCP
   version: 0.0.1
