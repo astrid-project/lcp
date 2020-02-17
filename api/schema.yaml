@@ -1,0 +1,269 @@
+consumes:
+- application/json
+definitions:
+  BadRequestSchema:
+    properties:
+      description:
+        description: Human readable message that describes the error.
+        example: Could not decode the request body, either because it was not valid
+          JSON or because it was not encoded as UTF-8.
+        type: string
+      title:
+        description: Title error
+        enum:
+        - 400 Bad Request
+        example: 400 Bad Request
+        type: string
+    required:
+    - description
+    - title
+    type: object
+  CodeRequestSchema:
+    properties:
+      name:
+        description: Code name.
+        example: firewall
+        type: string
+      source:
+        description: Code source
+        type: string
+    required:
+    - name
+    - source
+    type: object
+  CodeResponseSchema:
+    properties:
+      results:
+        items:
+          $ref: '#/definitions/CodeResultResponse'
+        type: array
+      when:
+        description: Datetime of the configuration changes.
+        example: 2020/02/13-15:27:06
+        format: date-time
+        type: string
+    required:
+    - results
+    - when
+    type: object
+  CodeResultResponse:
+    properties:
+      warning:
+        description: Warning message.
+        example: 'Useless properties: id'
+        type: string
+    type: object
+  ConfigActionRequest:
+    properties:
+      args:
+        description: Command arguments.
+        items:
+          description: Single command argument.
+          example: -al
+          type: string
+        type: array
+      cmd:
+        description: Command.
+        type: string
+    required:
+    - cmd
+    type: object
+  ConfigParameterRequest:
+    properties:
+      destination:
+        description: Destination filename.
+        example: filebeat.yml
+        type: string
+      name:
+        description: Parameter name.
+        example: period
+        type: string
+      sep:
+        description: Separator between name and value.
+        example: '='
+        type: string
+      value:
+        description: Parameter new value.
+        example: 10s
+        type: string
+    required:
+    - destination
+    - name
+    - sep
+    - value
+    type: object
+  ConfigRequestSchema:
+    properties:
+      actions:
+        description: List of actions.
+        items:
+          $ref: '#/definitions/ConfigActionRequest'
+        type: array
+      parameters:
+        description: List of parameters.
+        items:
+          $ref: '#/definitions/ConfigParameterRequest'
+        type: array
+      resources:
+        description: List of resources.
+        items:
+          $ref: '#/definitions/ConfigResourceRequest'
+        type: array
+    type: object
+  ConfigResourceRequest:
+    properties:
+      content:
+        description: Resource content.
+        type: string
+      destination:
+        description: Destination filename
+        example: filebeat.yml
+        type: string
+    required:
+    - content
+    - destination
+    type: object
+  ConfigResponseSchema:
+    properties:
+      results:
+        items:
+          $ref: '#/definitions/ConfigResultResponse'
+        type: array
+      when:
+        description: Datetime of the configuration changes
+        example: 2020/02/13-15:27:06
+        format: date-time
+        type: string
+    required:
+    - results
+    - when
+    type: object
+  ConfigResultResponse:
+    properties:
+      type:
+        description: Configuration type.
+        type: string
+      warning:
+        description: Warning message
+        example: 'Useless property: id'
+        type: string
+    required:
+    - type
+    type: object
+  StatusResponseSchema:
+    properties:
+      agent:
+        items:
+          description: ID of the agent instances installed in this execution environment.
+          example: agent-filebeat-1
+          type: string
+        type: array
+      id:
+        description: ID of the execution environment.
+        example: fa7ca1b7-80b5-4a47-8cc6-2cb1ca0ed778
+        type: string
+      started:
+        description: Timestamp when the LCP is started in this execution environment
+        example: 2019_02_14-15:23:30
+        format: date-time
+        type: string
+    required:
+    - id
+    type: object
+  UnauthorizedSchema:
+    properties:
+      description:
+        description: Human readable message that describes the error.
+        enum:
+        - Invalid Username/Password.
+        example: Invalid Username/Password.
+        type: string
+      title:
+        description: Title error
+        enum:
+        - 401 Unauthorized
+        example: 401 Unauthorized
+        type: string
+    required:
+    - description
+    - title
+    type: object
+info:
+  title: ASTRID Local Control Plane
+  version: 0.0.1
+paths:
+  /status:
+    get:
+      description: Get info about the status of the LCP in the execution environment.
+      responses:
+        '200':
+          description: Status data of the LCP.
+          schema:
+            $ref: '#/definitions/StatusResponseSchema'
+        '401':
+          description: Unauthorized.
+          schema:
+            $ref: '#/definitions/UnauthorizedSchema'
+      summary: Configuration update
+      tags:
+      - status
+  /code:
+    post:
+      description: Inject code at run-time in the local environment.
+      parameters:
+      - in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/CodeRequestSchema'
+      responses:
+        '200':
+          description: Code injection executed.
+          schema:
+            $ref: '#/definitions/CodeResponseSchema'
+        '400':
+          description: Bad Request.
+          schema:
+            $ref: '#/definitions/BadRequestSchema'
+        '401':
+          description: Unauthorized.
+          schema:
+            $ref: '#/definitions/UnauthorizedSchema'
+      summary: Code injection
+      tags:
+      - code
+  /config:
+    post:
+      description: Apply configuration changes to the local environment.
+      parameters:
+      - in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/ConfigRequestSchema'
+      responses:
+        '200':
+          description: Configuration changes executed.
+          schema:
+            $ref: '#/definitions/ConfigResponseSchema'
+        '400':
+          description: Bad request.
+          schema:
+            $ref: '#/definitions/BadRequestSchema'
+        '401':
+          description: Unauthorized.
+          schema:
+            $ref: '#/definitions/UnauthorizedSchema'
+      summary: Configuration update
+      tags:
+      - config
+produces:
+- application/json
+swagger: '2.0'
+tags:
+- description: Status data of the LCP.
+  name: status
+- description: Code injection at run-time.
+  name: code
+- description: Configuration at run-time.
+  name: config

@@ -1,4 +1,7 @@
+apispec
 falcon
+falcon-apispec
 falcon-auth
 falcon-marshmallow
+swagger-ui-py
 waitress

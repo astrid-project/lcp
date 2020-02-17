@@ -4,17 +4,17 @@ from .base import BaseResource
 from configparser import ConfigParser
 from requests.auth import HTTPBasicAuth
 from datetime import datetime
-from schema import StatusRequest, StatusResponse
+from schema import StatusResponseSchema
 import falcon
 import requests
 import uuid
 
 
 class StatusResource(BaseResource):
-    request_schema = StatusRequest()
-    response_schema = StatusResponse()
+    request_schema = None
+    response_schema = StatusResponseSchema()
 
-    route = ['/status']
+    routes = '/status',
 
     def __init__(self, config_parser, args):
         id = config_parser.has_option('local-control-plane', 'id') and config_parser.get(
@@ -36,4 +36,18 @@ class StatusResource(BaseResource):
         print(f'with id = {id} from {self.data["started"]}')
 
     def on_get(self, req, resp):
+        """
+        Get info about the status of the LCP in the execution environment.
+        ---
+        summary: Configuration update
+        description: Get info about the status of the LCP in the execution environment.
+        tags: [status]
+        responses:
+            200:
+                description: Status data of the LCP.
+                schema: StatusResponseSchema
+            401:
+                description: Unauthorized.
+                schema: UnauthorizedSchema
+        """
         req.context['result'] = self.data

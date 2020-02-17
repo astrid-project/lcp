@@ -1,10 +1,17 @@
+from apispec import APISpec
+from apispec.ext.marshmallow import MarshmallowPlugin
 from configparser import ConfigParser
 from falcon_auth import FalconAuthMiddleware, BasicAuthBackend
+from falcon_apispec import FalconPlugin
 from falcon_marshmallow import Marshmallow
-from route import Code, Config, Status
-from utils import wrap
+from resource import *
+from schema import *
+from swagger_ui import falcon_api_doc
+from utils import *
 import argparse
+import hashlib
 import falcon
+import json
 import waitress
 
 
@@ -67,15 +74,51 @@ if args.version is not None:
     print(args.version)
 else:
     def auth(username, password):
-        return {'username': username} if username == args.auth_username and password == args.auth_password else False
+        if username == args.auth_username and hashlib.sha224(password.encode('utf-8')).hexdigest() == args.auth_password:
+            return {'username': username}
+        else:
+            False
 
     api = falcon.API(middleware=[
-        FalconAuthMiddleware(BasicAuthBackend(auth)),
+        FalconAuthMiddleware(BasicAuthBackend(auth), exempt_routes=['/api/doc', '/api/doc/swagger.json']),
         Marshmallow()
     ])
 
-    for RouteResource in Status, Code, Config:
-        for route in wrap(RouteResource.route):
-            api.add_route(route, RouteResource(config_parser, args))
+    api_spec = APISpec(
+        title=title,
+        version=version,
+        openapi_version='2.0',
+        produces=['application/json'],
+        consumes=['application/json'],
+        tags=[{'name': 'status', 'description': 'Status data of the LCP.'},
+              {'name': 'code', 'description': 'Code injection at run-time.'},
+              {'name': 'config', 'description': 'Configuration at run-time.'}],
+        plugins=[
+            FalconPlugin(api),
+            MarshmallowPlugin(),
+        ],
+    )
+
+    for schema in BadRequestSchema, UnauthorizedSchema:
+        api_spec.components.schema(schema.__name__, schema=schema)
+
+    for Resource in StatusResource, CodeResource, ConfigResource:
+        if Resource.request_schema:
+            api_spec.components.schema(Resource.request_schema.__class__.__name__, schema=Resource.request_schema)
+        if Resource.response_schema:
+            api_spec.components.schema(Resource.response_schema.__class__.__name__, schema=Resource.response_schema)
+
+        for route in wrap(Resource.routes):
+            resource = Resource(config_parser, args)
+            api.add_route(route, resource)
+            api_spec.path(resource=resource)
+
+    with open('./api/schema.yaml', 'w') as file:
+        file.write(api_spec.to_yaml())
+
+    with open('./api/schema.json', 'w') as file:
+        file.write(json.dumps(api_spec.to_dict(), indent=2))
+
+    falcon_api_doc(api, config_path='./api/schema.json', url_prefix='/api/doc', title='API doc')
 
     waitress.serve(api, host='0.0.0.0', port=args.port)

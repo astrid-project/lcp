@@ -3,19 +3,41 @@
 from .base import BaseResource
 from datetime import datetime
 from utils import exclude_keys_from_dict, get_none, wrap
-from schema import ConfigRequest, ConfigResponse
+from schema import ConfigRequestSchema, ConfigResponseSchema
 import falcon
 import re
 import subprocess
 
 
 class ConfigResource(BaseResource):
-    request_schema = ConfigRequest()
-    response_schema = ConfigResponse()
+    request_schema = ConfigRequestSchema()
+    response_schema = ConfigResponseSchema()
 
-    route = ['/config']
+    routes = '/config',
 
     def on_post(self, req, resp):
+        """
+        Apply configuration changes to the local environment.
+        ---
+        summary: Configuration update
+        description: Apply configuration changes to the local environment.
+        tags: [config]
+        parameters:
+            - name: payload
+              required: true
+              in: body
+              schema: ConfigRequestSchema
+        responses:
+            200:
+                description: Configuration changes executed.
+                schema: ConfigResponseSchema
+            400:
+                description: Bad request.
+                schema: BadRequestSchema
+            401:
+                description: Unauthorized.
+                schema: UnauthorizedSchema
+        """
         json = req.context.get('json', None)
         if json is not None:
             res = {

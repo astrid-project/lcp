@@ -1,0 +1,389 @@
+{
+  "produces": [
+    "application/json"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "tags": [
+    {
+      "name": "status",
+      "description": "Status data of the LCP."
+    },
+    {
+      "name": "code",
+      "description": "Code injection at run-time."
+    },
+    {
+      "name": "config",
+      "description": "Configuration at run-time."
+    }
+  ],
+  "paths": {
+    "/status": {
+      "get": {
+        "summary": "Configuration update",
+        "description": "Get info about the status of the LCP in the execution environment.",
+        "tags": [
+          "status"
+        ],
+        "responses": {
+          "200": {
+            "description": "Status data of the LCP.",
+            "schema": {
+              "$ref": "#/definitions/StatusResponseSchema"
+            }
+          },
+          "401": {
+            "description": "Unauthorized.",
+            "schema": {
+              "$ref": "#/definitions/UnauthorizedSchema"
+            }
+          }
+        }
+      }
+    },
+    "/code": {
+      "post": {
+        "summary": "Code injection",
+        "description": "Inject code at run-time in the local environment.",
+        "parameters": [
+          {
+            "in": "body",
+            "required": true,
+            "name": "payload",
+            "schema": {
+              "$ref": "#/definitions/CodeRequestSchema"
+            }
+          }
+        ],
+        "tags": [
+          "code"
+        ],
+        "responses": {
+          "200": {
+            "description": "Code injection executed.",
+            "schema": {
+              "$ref": "#/definitions/CodeResponseSchema"
+            }
+          },
+          "400": {
+            "description": "Bad Request.",
+            "schema": {
+              "$ref": "#/definitions/BadRequestSchema"
+            }
+          },
+          "401": {
+            "description": "Unauthorized.",
+            "schema": {
+              "$ref": "#/definitions/UnauthorizedSchema"
+            }
+          }
+        }
+      }
+    },
+    "/config": {
+      "post": {
+        "summary": "Configuration update",
+        "description": "Apply configuration changes to the local environment.",
+        "tags": [
+          "config"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "required": true,
+            "name": "payload",
+            "schema": {
+              "$ref": "#/definitions/ConfigRequestSchema"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Configuration changes executed.",
+            "schema": {
+              "$ref": "#/definitions/ConfigResponseSchema"
+            }
+          },
+          "400": {
+            "description": "Bad request.",
+            "schema": {
+              "$ref": "#/definitions/BadRequestSchema"
+            }
+          },
+          "401": {
+            "description": "Unauthorized.",
+            "schema": {
+              "$ref": "#/definitions/UnauthorizedSchema"
+            }
+          }
+        }
+      }
+    }
+  },
+  "info": {
+    "title": "ASTRID Local Control Plane",
+    "version": "0.0.1"
+  },
+  "swagger": "2.0",
+  "definitions": {
+    "BadRequestSchema": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "enum": [
+            "400 Bad Request"
+          ],
+          "description": "Title error",
+          "example": "400 Bad Request"
+        },
+        "description": {
+          "type": "string",
+          "description": "Human readable message that describes the error.",
+          "example": "Could not decode the request body, either because it was not valid JSON or because it was not encoded as UTF-8."
+        }
+      },
+      "required": [
+        "description",
+        "title"
+      ]
+    },
+    "UnauthorizedSchema": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "enum": [
+            "401 Unauthorized"
+          ],
+          "description": "Title error",
+          "example": "401 Unauthorized"
+        },
+        "description": {
+          "type": "string",
+          "enum": [
+            "Invalid Username/Password."
+          ],
+          "description": "Human readable message that describes the error.",
+          "example": "Invalid Username/Password."
+        }
+      },
+      "required": [
+        "description",
+        "title"
+      ]
+    },
+    "StatusResponseSchema": {
+      "type": "object",
+      "properties": {
+        "agent": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "description": "ID of the agent instances installed in this execution environment.",
+            "example": "agent-filebeat-1"
+          }
+        },
+        "started": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when the LCP is started in this execution environment",
+          "example": "2019_02_14-15:23:30"
+        },
+        "id": {
+          "type": "string",
+          "description": "ID of the execution environment.",
+          "example": "fa7ca1b7-80b5-4a47-8cc6-2cb1ca0ed778"
+        }
+      },
+      "required": [
+        "id"
+      ]
+    },
+    "CodeRequestSchema": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Code name.",
+          "example": "firewall"
+        },
+        "source": {
+          "type": "string",
+          "description": "Code source"
+        }
+      },
+      "required": [
+        "name",
+        "source"
+      ]
+    },
+    "CodeResultResponse": {
+      "type": "object",
+      "properties": {
+        "warning": {
+          "type": "string",
+          "description": "Warning message.",
+          "example": "Useless properties: id"
+        }
+      }
+    },
+    "CodeResponseSchema": {
+      "type": "object",
+      "properties": {
+        "when": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Datetime of the configuration changes.",
+          "example": "2020/02/13-15:27:06"
+        },
+        "results": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/CodeResultResponse"
+          }
+        }
+      },
+      "required": [
+        "results",
+        "when"
+      ]
+    },
+    "ConfigResourceRequest": {
+      "type": "object",
+      "properties": {
+        "destination": {
+          "type": "string",
+          "description": "Destination filename",
+          "example": "filebeat.yml"
+        },
+        "content": {
+          "type": "string",
+          "description": "Resource content."
+        }
+      },
+      "required": [
+        "content",
+        "destination"
+      ]
+    },
+    "ConfigParameterRequest": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Parameter name.",
+          "example": "period"
+        },
+        "value": {
+          "type": "string",
+          "description": "Parameter new value.",
+          "example": "10s"
+        },
+        "destination": {
+          "type": "string",
+          "description": "Destination filename.",
+          "example": "filebeat.yml"
+        },
+        "sep": {
+          "type": "string",
+          "description": "Separator between name and value.",
+          "example": "="
+        }
+      },
+      "required": [
+        "destination",
+        "name",
+        "sep",
+        "value"
+      ]
+    },
+    "ConfigActionRequest": {
+      "type": "object",
+      "properties": {
+        "cmd": {
+          "type": "string",
+          "description": "Command."
+        },
+        "args": {
+          "type": "array",
+          "description": "Command arguments.",
+          "items": {
+            "type": "string",
+            "description": "Single command argument.",
+            "example": "-al"
+          }
+        }
+      },
+      "required": [
+        "cmd"
+      ]
+    },
+    "ConfigRequestSchema": {
+      "type": "object",
+      "properties": {
+        "resources": {
+          "type": "array",
+          "description": "List of resources.",
+          "items": {
+            "$ref": "#/definitions/ConfigResourceRequest"
+          }
+        },
+        "parameters": {
+          "type": "array",
+          "description": "List of parameters.",
+          "items": {
+            "$ref": "#/definitions/ConfigParameterRequest"
+          }
+        },
+        "actions": {
+          "type": "array",
+          "description": "List of actions.",
+          "items": {
+            "$ref": "#/definitions/ConfigActionRequest"
+          }
+        }
+      }
+    },
+    "ConfigResultResponse": {
+      "type": "object",
+      "properties": {
+        "warning": {
+          "type": "string",
+          "description": "Warning message",
+          "example": "Useless property: id"
+        },
+        "type": {
+          "type": "string",
+          "description": "Configuration type."
+        }
+      },
+      "required": [
+        "type"
+      ]
+    },
+    "ConfigResponseSchema": {
+      "type": "object",
+      "properties": {
+        "when": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Datetime of the configuration changes",
+          "example": "2020/02/13-15:27:06"
+        },
+        "results": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ConfigResultResponse"
+          }
+        }
+      },
+      "required": [
+        "results",
+        "when"
+      ]
+    }
+  }
+}

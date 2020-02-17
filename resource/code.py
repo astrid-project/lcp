@@ -3,19 +3,41 @@
 from .base import BaseResource
 from datetime import datetime
 from utils import exclude_keys_from_dict, get_none, wrap
-from schema import CodeRequest, CodeResponse
+from schema import CodeRequestSchema, CodeResponseSchema
 import falcon
 import re
 import subprocess
 
 
 class CodeResource(BaseResource):
-    request_schema = CodeRequest()
-    response_schema = CodeResponse()
+    request_schema = CodeRequestSchema()
+    response_schema = CodeResponseSchema()
 
-    route = ['/code']
+    routes = '/code',
 
     def on_post(self, req, resp):
+        """
+        Inject code at run-time in the local environment.
+        ---
+        summary: Code injection
+        description: Inject code at run-time in the local environment.
+        parameters:
+            - name: payload
+              required: true
+              in: body
+              schema: CodeRequestSchema
+        tags: [code]
+        responses:
+            200:
+                description: Code injection executed.
+                schema: CodeResponseSchema
+            400:
+                description: Bad Request.
+                schema: BadRequestSchema
+            401:
+                description: Unauthorized.
+                schema: UnauthorizedSchema
+        """
         json = req.context.get('json', None)
         if json is not None:
             res = {
