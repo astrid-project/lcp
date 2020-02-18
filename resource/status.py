@@ -2,12 +2,14 @@
 
 from .base import BaseResource
 from configparser import ConfigParser
-from requests.auth import HTTPBasicAuth
 from datetime import datetime
+from mode import Mode
+from requests.auth import HTTPBasicAuth
 from schema import StatusResponseSchema
+import atexit
 import falcon
 import requests
-import uuid
+import threading
 
 
 class StatusResource(BaseResource):
@@ -17,23 +19,55 @@ class StatusResource(BaseResource):
     routes = '/status',
 
     def __init__(self, config_parser, args):
-        id = config_parser.has_option('local-control-plane', 'id') and config_parser.get(
-            'local-control-plane', 'id') or str(uuid.uuid4())
-        config_parser.set('local-control-plane', 'id', id)
-        with open('config.ini', 'w') as f:
-            config_parser.write(f)
+        atexit.register(self.exit_handler)
+        self.num_attempts = 0
+        self.args = args
         self.data = {
-            'id': id,
-            'agents': [],
-            'started': datetime.now().strftime("%Y/%m/%d-%H:%M:%S")
-        }
+                'id': args.id,
+                'mode': args.mode,
+                'agents': [],
+                'started': datetime.now().strftime("%Y/%m/%d-%H:%M:%S")
+            }
+        if args.mode == Mode.master:
+            pass
+        elif args.mode == Mode.slave:
+            if args.id is None:
+                self.data['error'] = True
+                self.data['description'] = 'ID not provided'
+            else:
+                self.cb_connection()
 
-        for method in ['post', 'put']:
-            res = getattr(requests, method)(f'http://{args.cb_endpoint}/config/exec-env',
-                                auth=HTTPBasicAuth(args.cb_username, args.cb_password), json={'id': id, 'started': self.data['started']})
-            if res.status_code in [requests.codes.ok, requests.codes.created]:
-                break
-        print(f'with id = {id} from {self.data["started"]}')
+    def exit_handler(self):
+        print('Update the register in the context-broker')
+        self.num_attempts = 0
+        self.data['started'] = False
+        self.cb_connection()
+
+    def cb_connection(self):
+        self.num_attempts += 1
+        print(f'Connecting #{self.num_attempts} to context-broker ({self.args.cb_endpoint}) with timeout: {self.args.cb_timeout}')
+        try:
+            res = requests.put(f'http://{self.args.cb_endpoint}/config/exec-env',
+                                auth=HTTPBasicAuth(self.args.cb_username, self.args.cb_password),
+                                timeout=self.args.cb_timeout,
+                                json={'id': self.args.id, 'started': self.data['started']})
+        except requests.exceptions.ConnectionError:
+            print(f'Error: connection to context-broker ({self.args.cb_endpoint}) failed')
+            self.data['connected-to-cb'] = False
+        else:
+            try:
+                res_data = res.json()
+                if res_data[0]['status'] in ['updated', 'noop']:
+                    print(f'Connected to context-broker ({self.args.cb_endpoint})')
+                    self.data['connected-to-cb'] = True
+                else:
+                    print(f'Error: registration to context-broker ({self.args.cb_endpoint}) not possible')
+                    self.data['connected-to-cb'] = False
+            except:
+                print(f'Error: response from to context-broker ({self.args.cb_endpoint}) unknown')
+                self.data['connected-to-cb'] = False
+        if not self.data['connected-to-cb']:
+            threading.Timer(self.args.cb_retry_every_seconds, self.cb_open_connection).start()
 
     def on_get(self, req, resp):
         """

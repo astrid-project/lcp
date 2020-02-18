@@ -1,3 +1,7 @@
+import requests
+from requests.adapters import HTTPAdapter
+
+
 def exclude_keys_from_dict(dict_base, *keys):
     return {k: v for k, v in dict_base.items() if k not in keys}
 

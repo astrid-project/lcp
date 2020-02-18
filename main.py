@@ -4,6 +4,7 @@ from configparser import ConfigParser
 from falcon_auth import FalconAuthMiddleware, BasicAuthBackend
 from falcon_apispec import FalconPlugin
 from falcon_marshmallow import Marshmallow
+from mode import Mode
 from resource import *
 from schema import *
 from swagger_ui import falcon_api_doc
@@ -23,6 +24,11 @@ description = config_parser.get('info', 'description')
 version = config_parser.get('info', 'version')
 
 lcp_port = config_parser.get('local-control-plane', 'port')
+if config_parser.has_option('local-control-plane', 'id'):
+    lcp_id = config_parser.get('local-control-plane', 'id')
+else:
+    lcp_id = None
+lcp_mode = config_parser.get('local-control-plane', 'mode')
 
 auth_username = config_parser.get('auth', 'username')
 auth_password = config_parser.get('auth', 'password')
@@ -31,7 +37,7 @@ cb_endpoint = config_parser.get('context-broker', 'endpoint')
 cb_timeout = config_parser.get('context-broker', 'timeout')
 cb_username = config_parser.get('context-broker', 'username')
 cb_password = config_parser.get('context-broker', 'password')
-
+cb_retry_every_seconds = config_parser.get('context-broker', 'retry-every-seconds')
 
 print(f'{title} v{version}')
 
@@ -41,6 +47,8 @@ parser = argparse.ArgumentParser(
 
 parser.add_argument('--port', '-p', type=int,
                     help='TCP Port of the REST Server', default=lcp_port)
+parser.add_argument('--id', '-i', type=str, help='ID', default=lcp_id)
+parser.add_argument('--mode', '-m', type=str, help='Master mode', choices=['master', 'mode'], default=lcp_mode)
 
 parser.add_argument('--auth-username', '-u', type=str,
                     help='Authorized username', default=auth_username)
@@ -49,16 +57,17 @@ parser.add_argument('--auth-password', '-a', type=str,
 
 parser.add_argument('--cb-endpoint', '-c', type=str,
                     help='Context Broker APIs hostname/IP:port', default=cb_endpoint)
-parser.add_argument('--cb-timeout', '-b', type=str,
+parser.add_argument('--cb-timeout', '-b', type=float,
                     help='Context Broker APIs hostname/IP:port', default=cb_timeout)
 parser.add_argument('--cb-username', '-r', type=str,
                     help='Authorized username for Context Broker APIs', default=cb_username)
 parser.add_argument('--cb-password', '-s', type=str,
                     help='Authorized password for Context Broker APIs', default=cb_password)
+parser.add_argument('--cb-retry-every-seconds', '-t', type=int,
+                    help='Retry connection to Context Broker APIs every seconds', default=cb_retry_every_seconds)
 
 parser.add_argument('--write-config', '-w', help='Write options to config.ini',
                     action='store_true')
-
 parser.add_argument('--version', '-v', help='Show version',
                     action='store_const', const=version)
 
