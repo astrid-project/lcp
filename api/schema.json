@@ -44,6 +44,36 @@
       }
     },
     "/code": {
+      "get": {
+        "summary": "Code injection history",
+        "description": "Get the history of injected code.",
+        "tags": [
+          "code"
+        ],
+        "responses": {
+          "200": {
+            "description": "History of the injected code.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/CodeResponseSchema"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request.",
+            "schema": {
+              "$ref": "#/definitions/BadRequestSchema"
+            }
+          },
+          "401": {
+            "description": "Unauthorized.",
+            "schema": {
+              "$ref": "#/definitions/UnauthorizedSchema"
+            }
+          }
+        }
+      },
       "post": {
         "summary": "Code injection",
         "description": "Inject code at run-time in the local environment.",
@@ -83,6 +113,36 @@
       }
     },
     "/config": {
+      "get": {
+        "summary": "Configuration update history",
+        "description": "Get the history of configuration updates.",
+        "tags": [
+          "config"
+        ],
+        "responses": {
+          "200": {
+            "description": "History of the configuration updates.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/ConfigResponseSchema"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request.",
+            "schema": {
+              "$ref": "#/definitions/BadRequestSchema"
+            }
+          },
+          "401": {
+            "description": "Unauthorized.",
+            "schema": {
+              "$ref": "#/definitions/UnauthorizedSchema"
+            }
+          }
+        }
+      },
       "post": {
         "summary": "Configuration update",
         "description": "Apply configuration changes to the local environment.",
@@ -131,6 +191,11 @@
     "BadRequestSchema": {
       "type": "object",
       "properties": {
+        "description": {
+          "type": "string",
+          "description": "Human readable message that describes the error.",
+          "example": "Could not decode the request body, either because it was not valid JSON or because it was not encoded as UTF-8."
+        },
         "title": {
           "type": "string",
           "enum": [
@@ -138,11 +203,6 @@
           ],
           "description": "Title error",
           "example": "400 Bad Request"
-        },
-        "description": {
-          "type": "string",
-          "description": "Human readable message that describes the error.",
-          "example": "Could not decode the request body, either because it was not valid JSON or because it was not encoded as UTF-8."
         }
       },
       "required": [
@@ -153,14 +213,6 @@
     "UnauthorizedSchema": {
       "type": "object",
       "properties": {
-        "title": {
-          "type": "string",
-          "enum": [
-            "401 Unauthorized"
-          ],
-          "description": "Title error",
-          "example": "401 Unauthorized"
-        },
         "description": {
           "type": "string",
           "enum": [
@@ -168,6 +220,14 @@
           ],
           "description": "Human readable message that describes the error.",
           "example": "Invalid Username/Password."
+        },
+        "title": {
+          "type": "string",
+          "enum": [
+            "401 Unauthorized"
+          ],
+          "description": "Title error",
+          "example": "401 Unauthorized"
         }
       },
       "required": [
@@ -178,6 +238,11 @@
     "StatusResponseSchema": {
       "type": "object",
       "properties": {
+        "id": {
+          "type": "string",
+          "description": "ID of the execution environment.",
+          "example": "fa7ca1b7-80b5-4a47-8cc6-2cb1ca0ed778"
+        },
         "agent": {
           "type": "array",
           "items": {
@@ -191,11 +256,6 @@
           "format": "date-time",
           "description": "Timestamp when the LCP is started in this execution environment",
           "example": "2019_02_14-15:23:30"
-        },
-        "id": {
-          "type": "string",
-          "description": "ID of the execution environment.",
-          "example": "fa7ca1b7-80b5-4a47-8cc6-2cb1ca0ed778"
         }
       },
       "required": [
@@ -285,15 +345,15 @@
           "description": "Separator between name and value.",
           "example": "="
         },
-        "value": {
-          "type": "string",
-          "description": "Parameter new value.",
-          "example": "10s"
-        },
         "name": {
           "type": "string",
           "description": "Parameter name.",
           "example": "period"
+        },
+        "value": {
+          "type": "string",
+          "description": "Parameter new value.",
+          "example": "10s"
         }
       },
       "required": [

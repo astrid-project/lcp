@@ -208,6 +208,26 @@ paths:
       tags:
       - status
   /code:
+    get:
+      description: Get the history of injected code.
+      responses:
+        '200':
+          description: History of the injected code.
+          schema:
+            items:
+              $ref: '#/definitions/CodeResponseSchema'
+            type: array
+        '400':
+          description: Bad Request.
+          schema:
+            $ref: '#/definitions/BadRequestSchema'
+        '401':
+          description: Unauthorized.
+          schema:
+            $ref: '#/definitions/UnauthorizedSchema'
+      summary: Code injection history
+      tags:
+      - code
     post:
       description: Inject code at run-time in the local environment.
       parameters:
@@ -233,6 +253,26 @@ paths:
       tags:
       - code
   /config:
+    get:
+      description: Get the history of configuration updates.
+      responses:
+        '200':
+          description: History of the configuration updates.
+          schema:
+            items:
+              $ref: '#/definitions/ConfigResponseSchema'
+            type: array
+        '400':
+          description: Bad Request.
+          schema:
+            $ref: '#/definitions/BadRequestSchema'
+        '401':
+          description: Unauthorized.
+          schema:
+            $ref: '#/definitions/UnauthorizedSchema'
+      summary: Configuration update history
+      tags:
+      - config
     post:
       description: Apply configuration changes to the local environment.
       parameters:

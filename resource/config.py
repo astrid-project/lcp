@@ -14,6 +14,29 @@ class ConfigResource(BaseResource):
     response_schema = ConfigResponseSchema()
 
     routes = '/config',
+    history_filename = 'data/config.history'
+
+    def on_get(self, req, resp):
+        """
+        Get the history of configuration updates.
+        ---
+        summary: Configuration update history
+        description: Get the history of configuration updates.
+        tags: [config]
+        responses:
+            200:
+                description: History of the configuration updates.
+                schema:
+                    type: array
+                    items: ConfigResponseSchema
+            400:
+                description: Bad Request.
+                schema: BadRequestSchema
+            401:
+                description: Unauthorized.
+                schema: UnauthorizedSchema
+        """
+        req.context['result'] = self.history
 
     def on_post(self, req, resp):
         """
@@ -103,5 +126,6 @@ class ConfigResource(BaseResource):
                                 output = dict(type=cfg, error=True, description='Request type unknown')
                             res['results'].append(output)
             req.context['result'] = res
+            self.history.append(res)
         else:
-            raise falcon.HTTPBadRequest(title="Request error", description="Empty request")
+            raise falcon.HTTPBadRequest(title='Request error', description='Could not decode the request body, either because it was not valid JSON or because it was not encoded as UTF-8.')

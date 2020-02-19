@@ -1,0 +1,91 @@
+[
+  {
+    "when": "2020/02/19-14:06:33",
+    "results": [
+      {
+        "type": "action",
+        "executed": "pwd",
+        "stdout": "/c/Users/aless/Dropbox (Personal)/work/projects/astrid/gitlab_repositories/wp2/astrid-local-control-plane\n",
+        "stderr": "",
+        "return-code": 0
+      },
+      {
+        "type": "resource",
+        "destination": "prova.txt"
+      },
+      {
+        "type": "parameter",
+        "destination": "prova.txt",
+        "name": "period",
+        "value": "10s"
+      }
+    ]
+  },
+  {
+    "when": "2020/02/19-14:07:13",
+    "results": [
+      {
+        "type": "action",
+        "executed": "pwd",
+        "stdout": "/c/Users/aless/Dropbox (Personal)/work/projects/astrid/gitlab_repositories/wp2/astrid-local-control-plane\n",
+        "stderr": "",
+        "return-code": 0
+      },
+      {
+        "type": "resource",
+        "destination": "prova.txt"
+      },
+      {
+        "type": "parameter",
+        "destination": "prova.txt",
+        "name": "period",
+        "value": "10s"
+      }
+    ]
+  },
+  {
+    "when": "2020/02/19-14:07:53",
+    "results": [
+      {
+        "type": "name",
+        "error": true,
+        "description": "Request type unknown"
+      },
+      {
+        "type": "content",
+        "error": true,
+        "description": "Request type unknown"
+      }
+    ]
+  },
+  {
+    "when": "2020/02/19-14:08:32",
+    "results": [
+      {
+        "type": "name",
+        "error": true,
+        "description": "Request type unknown"
+      },
+      {
+        "type": "source",
+        "error": true,
+        "description": "Request type unknown"
+      }
+    ]
+  },
+  {
+    "when": "2020/02/19-14:09:10",
+    "results": [
+      {
+        "type": "name",
+        "error": true,
+        "description": "Request type unknown"
+      },
+      {
+        "type": "source",
+        "error": true,
+        "description": "Request type unknown"
+      }
+    ]
+  }
+]

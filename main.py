@@ -50,10 +50,8 @@ parser.add_argument('--port', '-p', type=int,
 parser.add_argument('--id', '-i', type=str, help='ID', default=lcp_id)
 parser.add_argument('--mode', '-m', type=str, help='Master mode', choices=['master', 'mode'], default=lcp_mode)
 
-parser.add_argument('--auth-username', '-u', type=str,
-                    help='Authorized username', default=auth_username)
-parser.add_argument('--auth-password', '-a', type=str,
-                    help='Authorized password', default=auth_password)
+parser.add_argument('--auth-username', '-u', type=str, help='Authorized username', default=auth_username)
+parser.add_argument('--auth-password', '-a', type=str, help='Authorized password', default=auth_password)
 
 parser.add_argument('--cb-endpoint', '-c', type=str,
                     help='Context Broker APIs hostname/IP:port', default=cb_endpoint)
@@ -118,7 +116,7 @@ else:
             api_spec.components.schema(Resource.response_schema.__class__.__name__, schema=Resource.response_schema)
 
         for route in wrap(Resource.routes):
-            resource = Resource(config_parser, args)
+            resource = Resource(args)
             api.add_route(route, resource)
             api_spec.path(resource=resource)
 

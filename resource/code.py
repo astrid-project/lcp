@@ -4,7 +4,9 @@ from .base import BaseResource
 from datetime import datetime
 from utils import exclude_keys_from_dict, get_none, wrap
 from schema import CodeRequestSchema, CodeResponseSchema
+import atexit
 import falcon
+import json
 import re
 import subprocess
 
@@ -14,6 +16,30 @@ class CodeResource(BaseResource):
     response_schema = CodeResponseSchema()
 
     routes = '/code',
+    history_filename = 'data/code.history'
+
+
+    def on_get(self, req, resp):
+        """
+        Get the history of injected code.
+        ---
+        summary: Code injection history
+        description: Get the history of injected code.
+        tags: [code]
+        responses:
+            200:
+                description: History of the injected code.
+                schema:
+                    type: array
+                    items: CodeResponseSchema
+            400:
+                description: Bad Request.
+                schema: BadRequestSchema
+            401:
+                description: Unauthorized.
+                schema: UnauthorizedSchema
+        """
+        req.context['result'] = self.history
 
     def on_post(self, req, resp):
         """
@@ -55,6 +81,8 @@ class CodeResource(BaseResource):
                 useless_properties = exclude_keys_from_dict(code, 'name', 'source')
                 if len(useless_properties) > 0:
                     output['warning'] = f'Useless properties: {", ".join(useless_properties.keys())}'
-            res['results'].append(output)
+                res['results'].append(output)
+            req.context['result'] = res
+            self.history.append(res)
         else:
-            raise falcon.HTTPBadRequest(title="Request error", description="Empty request")
+            raise falcon.HTTPBadRequest(title='Request error', description='Could not decode the request body, either because it was not valid JSON or because it was not encoded as UTF-8.')

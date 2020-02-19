@@ -2,8 +2,10 @@
     "cSpell.words": [
         "ASTRID",
         "apispec",
+        "atexit",
         "datetime",
         "filebeat",
+        "openapi",
         "reloader",
         "resp",
         "use"
