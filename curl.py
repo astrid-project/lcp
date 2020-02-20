@@ -39,7 +39,9 @@ args = parser.parse_args()
 
 try:
     res = getattr(requests, method)(f'http://{args.ip}:{args.port}/{args.path}',
-                       auth=HTTPBasicAuth(args.username, args.password), timeout=args.timeout, json=args.data)
+                       auth=HTTPBasicAuth(args.username, args.password), timeout=args.timeout, json=json.loads(args.data))
+except ValueError:
+    print(f'Error: not JSON valid data.')
 except:
     print(f'Error: connection to {args.ip}:{args.port} not possible.')
 else:
