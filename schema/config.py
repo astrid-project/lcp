@@ -33,9 +33,9 @@ class ConfigRequestSchema(Schema):
     """
     Request for config endpoint.
     """
-    actions = fields.List(fields.Nested(ConfigActionRequestSchema()), description='List of actions.')
-    parameters = fields.List(fields.Nested(ConfigParameterRequestSchema()), description='List of parameters.')
-    resources = fields.List(fields.Nested(ConfigResourceRequestSchema()), description='List of resources.')
+    actions = fields.Nested(ConfigActionRequestSchema, many=True, description='List of actions.')
+    parameters = fields.Nested(ConfigParameterRequestSchema, many=True, description='List of parameters.')
+    resources = fields.Nested(ConfigResourceRequestSchema, many=True, description='List of resources.')
 
 
 class ConfigResultResponseSchema(Schema):
@@ -87,4 +87,4 @@ class ConfigResponseSchema(Schema):
     TODO one of results of above schemes
     """
     when = fields.DateTime(required=True, description='Datetime of the configuration changes', example='2020/02/13-15:27:06')
-    results = fields.List(fields.Nested(ConfigResultResponseSchema()), required=True)
+    results = fields.Nested(ConfigResultResponseSchema, many=True, required=True)

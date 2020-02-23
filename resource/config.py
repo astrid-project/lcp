@@ -76,9 +76,13 @@ class ConfigResource(BaseResource):
                                 if cmd is None:
                                     output = dict(type=type, error=True, description='Missing cmd')
                                 else:
-                                    run = cmd + ' '.join(data.get('args', ''))
-                                    process = subprocess.run(run, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True)
-                                    output = dict(type=type, executed=run, stdout=process.stdout, stderr=process.stderr, **{'return-code': process.returncode})
+                                    run = cmd + ' ' + ' '.join(data.get('args', ''))
+                                    try:
+                                        process = subprocess.run('bash -c "' + run + '"', check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True)
+                                    except Exception as e:
+                                        output = dict(type=type, error=True, description=str(e))
+                                    else:
+                                        output = dict(type=type, executed=run, stdout=process.stdout, stderr=process.stderr, **{'return-code': process.returncode})
                                 useless_properties = exclude_keys_from_dict(data, 'cmd', 'args')
                                 if len(useless_properties) > 0:
                                     output['warning'] = f'Useless properties: {", ".join(useless_properties.keys())}'

@@ -87,5 +87,233 @@
         "description": "Request type unknown"
       }
     ]
+  },
+  {
+    "when": "2020/02/22-14:44:05",
+    "results": [
+      {
+        "type": "parameter",
+        "error": true,
+        "description": "Destination $HOME/astrid-framework/env/filebeat/config/inputs/log.yml not found"
+      }
+    ]
+  },
+  {
+    "when": "2020/02/22-14:45:49",
+    "results": [
+      {
+        "type": "parameter",
+        "error": true,
+        "description": "Destination $HOME/astrid-framework/env/filebeat/config/inputs/log.yml not found"
+      }
+    ]
+  },
+  {
+    "when": "2020/02/22-14:46:58",
+    "results": [
+      {
+        "type": "parameter",
+        "error": true,
+        "description": "Destination $HOME/astrid-framework/env/filebeat/config/inputs/log.yml not found"
+      }
+    ]
+  },
+  {
+    "when": "2020/02/22-14:55:44",
+    "results": [
+      {
+        "type": "action",
+        "error": true,
+        "description": "[WinError 2] The system cannot find the file specified"
+      },
+      {
+        "type": "parameter",
+        "error": true,
+        "description": "Destination prova.txt not found"
+      }
+    ]
+  },
+  {
+    "when": "2020/02/22-14:56:06",
+    "results": [
+      {
+        "type": "action",
+        "error": true,
+        "description": "[WinError 2] The system cannot find the file specified"
+      },
+      {
+        "type": "parameter",
+        "error": true,
+        "description": "Destination prova.txt not found"
+      }
+    ]
+  },
+  {
+    "when": "2020/02/22-14:56:14",
+    "results": [
+      {
+        "type": "action",
+        "error": true,
+        "description": "[WinError 2] The system cannot find the file specified"
+      },
+      {
+        "type": "parameter",
+        "error": true,
+        "description": "Destination prova.txt not found"
+      }
+    ]
+  },
+  {
+    "when": "2020/02/22-14:56:20",
+    "results": [
+      {
+        "type": "action",
+        "error": true,
+        "description": "[WinError 2] The system cannot find the file specified"
+      },
+      {
+        "type": "parameter",
+        "error": true,
+        "description": "Destination prova.txt not found"
+      }
+    ]
+  },
+  {
+    "when": "2020/02/22-14:56:36",
+    "results": [
+      {
+        "type": "action",
+        "error": true,
+        "description": "[WinError 2] The system cannot find the file specified"
+      },
+      {
+        "type": "parameter",
+        "error": true,
+        "description": "Destination prova.txt not found"
+      }
+    ]
+  },
+  {
+    "when": "2020/02/22-14:57:12",
+    "results": [
+      {
+        "type": "action",
+        "error": true,
+        "description": "[WinError 2] The system cannot find the file specified"
+      },
+      {
+        "type": "parameter",
+        "error": true,
+        "description": "Destination prova.txt not found"
+      }
+    ]
+  },
+  {
+    "when": "2020/02/22-14:57:20",
+    "results": [
+      {
+        "type": "action",
+        "executed": "pwd",
+        "stdout": "/c/Users/aless/Dropbox (Personal)/work/projects/astrid/gitlab_repositories/wp2/astrid-local-control-plane\n",
+        "stderr": "",
+        "return-code": 0
+      },
+      {
+        "type": "parameter",
+        "error": true,
+        "description": "Destination prova.txt not found"
+      }
+    ]
+  },
+  {
+    "when": "2020/02/22-14:57:25",
+    "results": [
+      {
+        "type": "action",
+        "executed": "ls",
+        "stdout": "__pycache__\napi\nastrid-local-control-plane.code-workspace\navatar.png\nCHANGELOG\nconfig.ini\nCONTRIBUTING.md\ncurl.py\ndata\nLICENSE\nmain.py\nmode.py\nREADME.md\nrequirements.txt\nresource\nschema\nutils.py\n",
+        "stderr": "",
+        "return-code": 0
+      },
+      {
+        "type": "parameter",
+        "error": true,
+        "description": "Destination prova.txt not found"
+      }
+    ]
+  },
+  {
+    "when": "2020/02/22-14:57:32",
+    "results": [
+      {
+        "type": "action",
+        "error": true,
+        "description": "[WinError 2] The system cannot find the file specified"
+      },
+      {
+        "type": "parameter",
+        "error": true,
+        "description": "Destination prova.txt not found"
+      }
+    ]
+  },
+  {
+    "when": "2020/02/22-14:57:59",
+    "results": [
+      {
+        "type": "action",
+        "error": true,
+        "description": "[WinError 2] The system cannot find the file specified"
+      },
+      {
+        "type": "parameter",
+        "error": true,
+        "description": "Destination prova.txt not found"
+      }
+    ]
+  },
+  {
+    "when": "2020/02/22-16:30:16",
+    "results": [
+      {
+        "type": "action",
+        "error": true,
+        "description": "Command 'bash -c \"mkdir -p ~/test\"\"' returned non-zero exit status 1."
+      }
+    ]
+  },
+  {
+    "when": "2020/02/22-16:30:46",
+    "results": [
+      {
+        "type": "action",
+        "error": true,
+        "description": "Command 'bash -c \"mkdir -p ~/test\"\"' returned non-zero exit status 1."
+      }
+    ]
+  },
+  {
+    "when": "2020/02/22-16:31:10",
+    "results": [
+      {
+        "type": "action",
+        "executed": "mkdir -p ~/test",
+        "stdout": "",
+        "stderr": "",
+        "return-code": 0
+      }
+    ]
+  },
+  {
+    "when": "2020/02/22-16:31:36",
+    "results": [
+      {
+        "type": "action",
+        "executed": "mkdir -p ~/test",
+        "stdout": "",
+        "stderr": "",
+        "return-code": 0
+      }
+    ]
   }
 ]

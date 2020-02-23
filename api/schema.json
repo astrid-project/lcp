@@ -191,11 +191,6 @@
     "BadRequestSchema": {
       "type": "object",
       "properties": {
-        "description": {
-          "type": "string",
-          "description": "Human readable message that describes the error.",
-          "example": "Could not decode the request body, either because it was not valid JSON or because it was not encoded as UTF-8."
-        },
         "title": {
           "type": "string",
           "enum": [
@@ -203,6 +198,11 @@
           ],
           "description": "Title error",
           "example": "400 Bad Request"
+        },
+        "description": {
+          "type": "string",
+          "description": "Human readable message that describes the error.",
+          "example": "Could not decode the request body, either because it was not valid JSON or because it was not encoded as UTF-8."
         }
       },
       "required": [
@@ -213,14 +213,6 @@
     "UnauthorizedSchema": {
       "type": "object",
       "properties": {
-        "description": {
-          "type": "string",
-          "enum": [
-            "Invalid Username/Password."
-          ],
-          "description": "Human readable message that describes the error.",
-          "example": "Invalid Username/Password."
-        },
         "title": {
           "type": "string",
           "enum": [
@@ -228,6 +220,14 @@
           ],
           "description": "Title error",
           "example": "401 Unauthorized"
+        },
+        "description": {
+          "type": "string",
+          "enum": [
+            "Invalid Username/Password."
+          ],
+          "description": "Human readable message that describes the error.",
+          "example": "Invalid Username/Password."
         }
       },
       "required": [
@@ -238,6 +238,12 @@
     "StatusResponseSchema": {
       "type": "object",
       "properties": {
+        "started": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when the LCP is started in this execution environment",
+          "example": "2019_02_14-15:23:30"
+        },
         "id": {
           "type": "string",
           "description": "ID of the execution environment.",
@@ -250,12 +256,6 @@
             "description": "ID of the agent instances installed in this execution environment.",
             "example": "agent-filebeat-1"
           }
-        },
-        "started": {
-          "type": "string",
-          "format": "date-time",
-          "description": "Timestamp when the LCP is started in this execution environment",
-          "example": "2019_02_14-15:23:30"
         }
       },
       "required": [
@@ -314,10 +314,6 @@
     "ConfigActionRequest": {
       "type": "object",
       "properties": {
-        "cmd": {
-          "type": "string",
-          "description": "Command."
-        },
         "args": {
           "type": "array",
           "description": "Command arguments.",
@@ -326,6 +322,10 @@
             "description": "Single command argument.",
             "example": "-al"
           }
+        },
+        "cmd": {
+          "type": "string",
+          "description": "Command."
         }
       },
       "required": [
@@ -340,15 +340,15 @@
           "description": "Destination filename.",
           "example": "filebeat.yml"
         },
-        "sep": {
-          "type": "string",
-          "description": "Separator between name and value.",
-          "example": "="
-        },
         "name": {
           "type": "string",
           "description": "Parameter name.",
           "example": "period"
+        },
+        "sep": {
+          "type": "string",
+          "description": "Separator between name and value.",
+          "example": "="
         },
         "value": {
           "type": "string",
@@ -385,22 +385,22 @@
       "type": "object",
       "properties": {
         "actions": {
-          "type": "array",
           "description": "List of actions.",
+          "type": "array",
           "items": {
             "$ref": "#/definitions/ConfigActionRequest"
           }
         },
         "parameters": {
-          "type": "array",
           "description": "List of parameters.",
+          "type": "array",
           "items": {
             "$ref": "#/definitions/ConfigParameterRequest"
           }
         },
         "resources": {
-          "type": "array",
           "description": "List of resources.",
+          "type": "array",
           "items": {
             "$ref": "#/definitions/ConfigResourceRequest"
           }
