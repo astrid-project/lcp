@@ -1,20 +1,27 @@
-# cspell:ignore strftime
-
 from configparser import ConfigParser
-from datetime import datetime
 from mode import Mode
 from requests.auth import HTTPBasicAuth
-from schema import StatusResponseSchema
+from schema import *
+
 import falcon
+import hashlib
 import requests
 import threading
+import utils
+import uuid
 
 
 class StatusResource(object):
     request_schema = None
     response_schema = StatusResponseSchema()
 
+    auth = {
+        'exempt_methods': ['POST']
+    }
+
     routes = '/status',
+    cb_password = None
+    auth_db = {}
 
     def __init__(self, args):
         """
@@ -24,12 +31,9 @@ class StatusResource(object):
         self.args = args
         self.data = {
                 'id': None,
-                'started': self.get_timestamp(),
+                'started': utils.get_timestamp(),
                 'last_hearthbeat': None
             }
-
-    def get_timestamp(self):
-        return datetime.now().strftime("%Y/%m/%d-%H:%M:%S")
 
     def on_get(self, req, resp):
         """
@@ -44,7 +48,7 @@ class StatusResource(object):
                 schema: StatusResponseSchema
             401:
                 description: Unauthorized.
-                schema: UnauthorizedSchema
+                schema: HTTPErrorSchema
         """
         req.context['result'] = self.data
 
@@ -61,11 +65,25 @@ class StatusResource(object):
                 schema: StatusResponseSchema
             401:
                 description: Unauthorized.
-                schema: UnauthorizedSchema
+                schema: HTTPErrorSchema
         """
         data = req.context.get('json', {})
         id = data.get('id', None)
         self.data['id'] = id
+        StatusResource.cb_password = data.get('cb_password', None)
+        username = data.get('username', None) # FIXME how to send username the first connection
+        if username:
+            del StatusResource.auth_db[username]
+        username = utils.generate_username()
+        password = utils.generate_password()
+        StatusResource.auth_db[username] = utils.hash(password)
         if id is not None:
-            self.data['last_hearthbeat'] = self.get_timestamp()
-        req.context['result'] = self.data
+            now = utils.get_timestamp()
+            self.data['last_hearthbeat'] = now
+            if self.args.dev_debug:
+                print(f'Hearbeating from CB at {now} (password: {StatusResource.cb_password})')
+            else:
+                print(f'Hearbeating from CB at {now}')
+        req.context['result'] = { **self.data,
+                                  'username': username,
+                                  'password': password }

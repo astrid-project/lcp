@@ -1,23 +1,6 @@
 consumes:
 - application/json
 definitions:
-  BadRequestSchema:
-    properties:
-      description:
-        description: Human readable message that describes the error.
-        example: Could not decode the request body, either because it was not valid
-          JSON or because it was not encoded as UTF-8.
-        type: string
-      title:
-        description: Title error
-        enum:
-        - 400 Bad Request
-        example: 400 Bad Request
-        type: string
-    required:
-    - description
-    - title
-    type: object
   CodeRequestSchema:
     properties:
       name:
@@ -39,7 +22,7 @@ definitions:
         type: array
       when:
         description: Datetime of the configuration changes.
-        example: 2020/02/13-15:27:06
+        example: 2020/02/13 15:27:06
         format: date-time
         type: string
     required:
@@ -131,7 +114,7 @@ definitions:
         type: array
       when:
         description: Datetime of the configuration changes
-        example: 2020/02/13-15:27:06
+        example: 2020/02/13 15:27:06
         format: date-time
         type: string
     required:
@@ -150,6 +133,21 @@ definitions:
     required:
     - type
     type: object
+  HTTPError:
+    properties:
+      description:
+        description: Human readable message that describes the error.
+        example: Could not decode the request body, either because it was not valid
+          JSON or because it was not encoded as UTF-8.
+        type: string
+      title:
+        description: Title error
+        example: 400 Bad Request
+        type: string
+    required:
+    - description
+    - title
+    type: object
   StatusResponseSchema:
     properties:
       id:
@@ -158,36 +156,18 @@ definitions:
         type: string
       last_heartbeat:
         description: Timestamp of the last hearthbeat between the LCP and the CB
-        example: 2019_02_14-15:23:33
+        example: 2019_02_14 15:23:33
         format: date-time
         type: string
       started:
         description: Timestamp when the LCP is started in this execution environment
-        example: 2019_02_14-15:23:30
+        example: 2019_02_14 15:23:30
         format: date-time
         type: string
     required:
     - id
     - last_heartbeat
     - started
-    type: object
-  UnauthorizedSchema:
-    properties:
-      description:
-        description: Human readable message that describes the error.
-        enum:
-        - Invalid Username/Password.
-        example: Invalid Username/Password.
-        type: string
-      title:
-        description: Title error
-        enum:
-        - 401 Unauthorized
-        example: 401 Unauthorized
-        type: string
-    required:
-    - description
-    - title
     type: object
 info:
   title: ASTRID Local Control Plane
@@ -204,7 +184,7 @@ paths:
         '401':
           description: Unauthorized.
           schema:
-            $ref: '#/definitions/UnauthorizedSchema'
+            $ref: '#/definitions/HTTPError'
       summary: Status info
       tags:
       - status
@@ -218,7 +198,7 @@ paths:
         '401':
           description: Unauthorized.
           schema:
-            $ref: '#/definitions/UnauthorizedSchema'
+            $ref: '#/definitions/HTTPError'
       summary: Status set.
       tags:
       - status
@@ -230,16 +210,18 @@ paths:
           description: History of the injected code.
           schema:
             items:
-              $ref: '#/definitions/CodeResponseSchema'
+              oneOf:
+              - CodeInjectedResponseSchema
+              - CodeErrorResponseSchema
             type: array
         '400':
           description: Bad Request.
           schema:
-            $ref: '#/definitions/BadRequestSchema'
+            $ref: '#/definitions/HTTPError'
         '401':
           description: Unauthorized.
           schema:
-            $ref: '#/definitions/UnauthorizedSchema'
+            $ref: '#/definitions/HTTPError'
       summary: Code injection history
       tags:
       - code
@@ -250,7 +232,9 @@ paths:
         name: payload
         required: true
         schema:
-          $ref: '#/definitions/CodeRequestSchema'
+          items:
+            $ref: '#/definitions/CodeRequestSchema'
+          type: array
       responses:
         '200':
           description: Code injection executed.
@@ -259,11 +243,11 @@ paths:
         '400':
           description: Bad Request.
           schema:
-            $ref: '#/definitions/BadRequestSchema'
+            $ref: '#/definitions/HTTPError'
         '401':
           description: Unauthorized.
           schema:
-            $ref: '#/definitions/UnauthorizedSchema'
+            $ref: '#/definitions/HTTPError'
       summary: Code injection
       tags:
       - code
@@ -275,16 +259,19 @@ paths:
           description: History of the configuration updates.
           schema:
             items:
-              $ref: '#/definitions/ConfigResponseSchema'
+              oneOf:
+              - ConfigActionResponseSchema
+              - ConfigParameterResponseSchema
+              - ConfigResourceResponseSchema
             type: array
         '400':
           description: Bad Request.
           schema:
-            $ref: '#/definitions/BadRequestSchema'
+            $ref: '#/definitions/HTTPError'
         '401':
           description: Unauthorized.
           schema:
-            $ref: '#/definitions/UnauthorizedSchema'
+            $ref: '#/definitions/HTTPError'
       summary: Configuration update history
       tags:
       - config
@@ -295,20 +282,24 @@ paths:
         name: payload
         required: true
         schema:
-          $ref: '#/definitions/ConfigRequestSchema'
+          items:
+            $ref: '#/definitions/ConfigRequestSchema'
+          type: array
       responses:
         '200':
           description: Configuration changes executed.
           schema:
-            $ref: '#/definitions/ConfigResponseSchema'
+            items:
+              $ref: '#/definitions/ConfigResponseSchema'
+            type: array
         '400':
           description: Bad request.
           schema:
-            $ref: '#/definitions/BadRequestSchema'
+            $ref: '#/definitions/HTTPError'
         '401':
           description: Unauthorized.
           schema:
-            $ref: '#/definitions/UnauthorizedSchema'
+            $ref: '#/definitions/HTTPError'
       summary: Configuration update
       tags:
       - config

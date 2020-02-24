@@ -23,6 +23,7 @@ class CodeInjectedResponseSchema(CodeResultResponseSchema):
     name = fields.String(required=True, description='Code name', example='firewall')
     injected = fields.Boolean(required=True, description='Indicate if the code was injected.', example=True)
 
+
 class CodeErrorResponseSchema(CodeResultResponseSchema):
     """
     Error related to a single item of code response.
@@ -36,5 +37,6 @@ class CodeResponseSchema(Schema):
     """
     Response for code endpoint.
     """
-    when = fields.DateTime(required=True, description='Datetime of the configuration changes.', example='2020/02/13-15:27:06')
+    when = fields.DateTime(required=True, description='Datetime of the configuration changes.',
+                           example='2020/02/13 15:27:06')
     results = fields.Nested(CodeResultResponseSchema, many=True, required=True)

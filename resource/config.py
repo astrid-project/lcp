@@ -1,12 +1,11 @@
-# cspell:ignore strftime
-
 from .base import BaseResource
-from datetime import datetime
-from utils import exclude_keys_from_dict, get_none, wrap
-from schema import ConfigRequestSchema, ConfigResponseSchema
+from schema import *
+
+
 import falcon
 import re
 import subprocess
+import utils
 
 
 class ConfigResource(BaseResource):
@@ -28,13 +27,17 @@ class ConfigResource(BaseResource):
                 description: History of the configuration updates.
                 schema:
                     type: array
-                    items: ConfigResponseSchema
+                    items:
+                        oneOf:
+                            - ConfigActionResponseSchema
+                            - ConfigParameterResponseSchema
+                            - ConfigResourceResponseSchema
             400:
                 description: Bad Request.
-                schema: BadRequestSchema
+                schema: HTTPErrorSchema
             401:
                 description: Unauthorized.
-                schema: UnauthorizedSchema
+                schema: HTTPErrorSchema
         """
         req.context['result'] = self.history
 
@@ -49,27 +52,31 @@ class ConfigResource(BaseResource):
             - name: payload
               required: true
               in: body
-              schema: ConfigRequestSchema
+              schema:
+                type: array
+                items: ConfigRequestSchema
         responses:
             200:
                 description: Configuration changes executed.
-                schema: ConfigResponseSchema
+                schema:
+                    type: array
+                    items: ConfigResponseSchema
             400:
                 description: Bad request.
-                schema: BadRequestSchema
+                schema: HTTPErrorSchema
             401:
                 description: Unauthorized.
-                schema: UnauthorizedSchema
+                schema: HTTPErrorSchema
         """
         json = req.context.get('json', None)
         if json is not None:
             res = {
-                'when': datetime.now().strftime("%Y/%m/%d-%H:%M:%S"),
+                'when': utils.get_timestamp(),
                 'results': []
             }
-            for config in wrap(json):
+            for config in utils.wrap(json):
                 for cfg, cfg_list in config.items():
-                        for data in wrap(cfg_list):
+                        for data in utils.wrap(cfg_list):
                             if cfg == 'actions':
                                 type = 'action'
                                 cmd = data.get('cmd', None)
@@ -83,7 +90,7 @@ class ConfigResource(BaseResource):
                                         output = dict(type=type, error=True, description=str(e))
                                     else:
                                         output = dict(type=type, executed=run, stdout=process.stdout, stderr=process.stderr, **{'return-code': process.returncode})
-                                useless_properties = exclude_keys_from_dict(data, 'cmd', 'args')
+                                useless_properties = utils.exclude_keys_from_dict(data, 'cmd', 'args')
                                 if len(useless_properties) > 0:
                                     output['warning'] = f'Useless properties: {", ".join(useless_properties.keys())}'
                             elif cfg == 'parameters':
@@ -93,7 +100,7 @@ class ConfigResource(BaseResource):
                                 sep = data.get('sep', None)
                                 value = data.get('value', None)
                                 if dest is None or name is None or sep is None or value is None:
-                                    output = dict(type=type, error=True, description=f'Missing {get_none(destination=dest, name=name, sep=sep, value=value)}')
+                                    output = dict(type=type, error=True, description=f'Missing {utils.get_none(destination=dest, name=name, sep=sep, value=value)}')
                                 else:
                                     try:
                                         with open(dest, "r") as file:
@@ -105,7 +112,7 @@ class ConfigResource(BaseResource):
                                         output = dict(type=type, error=True, description=f'Destination {dest} not found')
                                     except:
                                         output = dict(type=type, error=True, description=f'Destination {dest} not accessible')
-                                useless_properties = exclude_keys_from_dict(data, 'destination', 'name', 'sep', 'value')
+                                useless_properties = utils.exclude_keys_from_dict(data, 'destination', 'name', 'sep', 'value')
                                 if len(useless_properties) > 0:
                                     output['warning'] = f'Useless properties: {", ".join(useless_properties.keys())}'
                             elif cfg == 'resources':
@@ -113,7 +120,7 @@ class ConfigResource(BaseResource):
                                 dest = data.get('destination', None)
                                 content = data.get('content', None)
                                 if dest is None or content is None:
-                                    output = dict(type=type, error=True, description=f'Missing {get_none(destination=dest, content=content)}')
+                                    output = dict(type=type, error=True, description=f'Missing {utils.get_none(destination=dest, content=content)}')
                                 else:
                                     try:
                                         with open(dest, "w") as file:
@@ -123,7 +130,7 @@ class ConfigResource(BaseResource):
                                         output = dict(type=type, error=True, description=f'Destination {dest} not found')
                                     except:
                                         output = dict(type=type, error=True, description=f'Destination {dest} not accessible')
-                                useless_properties = exclude_keys_from_dict(data, 'destination', 'content')
+                                useless_properties = utils.exclude_keys_from_dict(data, 'destination', 'content')
                                 if len(useless_properties) > 0:
                                     output['warning'] = f'Useless properties: {", ".join(useless_properties.keys())}'
                             else:

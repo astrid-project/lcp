@@ -1,6 +1,5 @@
-from .bad_request import BadRequestSchema
-from .unauthorized import UnauthorizedSchema
+from .response import *
 
-from .code import CodeRequestSchema, CodeResponseSchema
-from .config import ConfigRequestSchema, ConfigResponseSchema
-from .status import StatusResponseSchema
+from .code import *
+from .config import *
+from .status import *

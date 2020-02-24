@@ -1,14 +1,13 @@
-# cspell:ignore strftime
-
 from .base import BaseResource
-from datetime import datetime
-from utils import exclude_keys_from_dict, get_none, wrap
+
 from schema import CodeRequestSchema, CodeResponseSchema
+
 import atexit
 import falcon
 import json
 import re
 import subprocess
+import utils
 
 
 class CodeResource(BaseResource):
@@ -17,7 +16,6 @@ class CodeResource(BaseResource):
 
     routes = '/code',
     history_filename = 'data/code.history'
-
 
     def on_get(self, req, resp):
         """
@@ -31,13 +29,16 @@ class CodeResource(BaseResource):
                 description: History of the injected code.
                 schema:
                     type: array
-                    items: CodeResponseSchema
+                    items:
+                        oneOf:
+                            - CodeInjectedResponseSchema
+                            - CodeErrorResponseSchema
             400:
                 description: Bad Request.
-                schema: BadRequestSchema
+                schema: HTTPErrorSchema
             401:
                 description: Unauthorized.
-                schema: UnauthorizedSchema
+                schema: HTTPErrorSchema
         """
         req.context['result'] = self.history
 
@@ -51,7 +52,9 @@ class CodeResource(BaseResource):
             - name: payload
               required: true
               in: body
-              schema: CodeRequestSchema
+              schema:
+                type: array
+                items: CodeRequestSchema
         tags: [code]
         responses:
             200:
@@ -59,30 +62,33 @@ class CodeResource(BaseResource):
                 schema: CodeResponseSchema
             400:
                 description: Bad Request.
-                schema: BadRequestSchema
+                schema: HTTPErrorSchema
             401:
                 description: Unauthorized.
-                schema: UnauthorizedSchema
+                schema: HTTPErrorSchema
         """
         json = req.context.get('json', None)
         if json is not None:
             res = {
-                'when': datetime.now().strftime("%Y/%m/%d-%H:%M:%S"),
+                'when': utils.get_timestamp(),
                 'results': []
             }
-            for code in wrap(json):
+            for code in utils.wrap(json):
                 name = code.get('name', None)
                 src = code.get('source', None)
                 if name is None or src is None:
-                    output = dict(error=True, description=f'Missing {get_none(name=name, source=src)}')
+                    output = dict(
+                        error=True, description=f'Missing {utils.get_none(name=name, source=src)}')
                 else:
                     # TODO inject code
                     output = dict(name=name, injected=True)
-                useless_properties = exclude_keys_from_dict(code, 'name', 'source')
+                useless_properties = utils.exclude_keys_from_dict(code,
+                                                                  'name', 'source')
                 if len(useless_properties) > 0:
                     output['warning'] = f'Useless properties: {", ".join(useless_properties.keys())}'
                 res['results'].append(output)
             req.context['result'] = res
             self.history.append(res)
         else:
-            raise falcon.HTTPBadRequest(title='Request error', description='Could not decode the request body, either because it was not valid JSON or because it was not encoded as UTF-8.')
+            raise falcon.HTTPBadRequest(title='Request error',
+                                        description='Could not decode the request body, either because it was not valid JSON or because it was not encoded as UTF-8.')

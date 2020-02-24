@@ -78,13 +78,14 @@ class ConfigResourceResponseSchema(ConfigResultResponseSchema):
     """
     Resource part in a single item of the config response.
     """
-    destination = fields.String(required=True, description='Destination filename', example='filebeat.yml')
+    destination = fields.String(required=True, description='Destination filename',
+                                example='filebeat.yml')
 
 
 class ConfigResponseSchema(Schema):
     """
     Response for config endpoint.
-    TODO one of results of above schemes
     """
-    when = fields.DateTime(required=True, description='Datetime of the configuration changes', example='2020/02/13-15:27:06')
+    when = fields.DateTime(required=True, description='Datetime of the configuration changes',
+                           example='2020/02/13 15:27:06')
     results = fields.Nested(ConfigResultResponseSchema, many=True, required=True)
