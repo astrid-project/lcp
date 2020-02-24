@@ -152,15 +152,14 @@ definitions:
     type: object
   StatusResponseSchema:
     properties:
-      agent:
-        items:
-          description: ID of the agent instances installed in this execution environment.
-          example: agent-filebeat-1
-          type: string
-        type: array
       id:
         description: ID of the execution environment.
         example: fa7ca1b7-80b5-4a47-8cc6-2cb1ca0ed778
+        type: string
+      last_heartbeat:
+        description: Timestamp of the last hearthbeat between the LCP and the CB
+        example: 2019_02_14-15:23:33
+        format: date-time
         type: string
       started:
         description: Timestamp when the LCP is started in this execution environment
@@ -169,6 +168,8 @@ definitions:
         type: string
     required:
     - id
+    - last_heartbeat
+    - started
     type: object
   UnauthorizedSchema:
     properties:
@@ -204,7 +205,21 @@ paths:
           description: Unauthorized.
           schema:
             $ref: '#/definitions/UnauthorizedSchema'
-      summary: Configuration update
+      summary: Status info
+      tags:
+      - status
+    post:
+      description: Set the last heartbeat.
+      responses:
+        '200':
+          description: Status data of the LCP.
+          schema:
+            $ref: '#/definitions/StatusResponseSchema'
+        '401':
+          description: Unauthorized.
+          schema:
+            $ref: '#/definitions/UnauthorizedSchema'
+      summary: Status set.
       tags:
       - status
   /code:
