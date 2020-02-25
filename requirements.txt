@@ -1,7 +1,9 @@
 apispec
+coloredlogs
 falcon
 falcon-apispec
 falcon-auth
 falcon-marshmallow
 swagger-ui-py
+verboselogs
 waitress

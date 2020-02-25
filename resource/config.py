@@ -87,6 +87,7 @@ class ConfigResource(BaseResource):
                                     try:
                                         process = subprocess.run('bash -c "' + run + '"', check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True)
                                     except Exception as e:
+                                        log.debug(e)
                                         output = dict(type=type, error=True, description=str(e))
                                     else:
                                         output = dict(type=type, executed=run, stdout=process.stdout, stderr=process.stderr, **{'return-code': process.returncode})
@@ -103,14 +104,17 @@ class ConfigResource(BaseResource):
                                     output = dict(type=type, error=True, description=f'Missing {utils.get_none(destination=dest, name=name, sep=sep, value=value)}')
                                 else:
                                     try:
-                                        with open(dest, "r") as file:
+                                        fix_dest = os.path.expenduser(dest)
+                                        with open(fix_dest, "r") as file:
                                             content = file.read()
-                                        with open(dest, "w") as file:
+                                        with open(fix_dest, "w") as file:
                                             file.write(re.sub(rf"{name}{sep}[^ ]*", f"{name}{sep}{value}", content))
                                             output = dict(type=type, destination=dest, name=name, value=value)
-                                    except FileNotFoundError:
+                                    except FileNotFoundError as fnfe:
+                                        self.log.debug(fnfe)
                                         output = dict(type=type, error=True, description=f'Destination {dest} not found')
-                                    except:
+                                    except Exception as e:
+                                        self.log.debug(e)
                                         output = dict(type=type, error=True, description=f'Destination {dest} not accessible')
                                 useless_properties = utils.exclude_keys_from_dict(data, 'destination', 'name', 'sep', 'value')
                                 if len(useless_properties) > 0:
@@ -123,12 +127,15 @@ class ConfigResource(BaseResource):
                                     output = dict(type=type, error=True, description=f'Missing {utils.get_none(destination=dest, content=content)}')
                                 else:
                                     try:
-                                        with open(dest, "w") as file:
+                                        fix_dest = os.path.expenduser(dest)
+                                        with open(fix_dest, "w") as file:
                                             file.write(content)
                                             output = dict(type=type, destination=dest)
-                                    except FileNotFoundError:
+                                    except FileNotFoundError as fnfe:
+                                        self.log.debug(fnfe)
                                         output = dict(type=type, error=True, description=f'Destination {dest} not found')
-                                    except:
+                                    except Exception as e:
+                                        self.log.debug(e)
                                         output = dict(type=type, error=True, description=f'Destination {dest} not accessible')
                                 useless_properties = utils.exclude_keys_from_dict(data, 'destination', 'content')
                                 if len(useless_properties) > 0:

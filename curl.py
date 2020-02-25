@@ -1,6 +1,9 @@
-import argparse
+from args import Args
 from configparser import ConfigParser
+from log import Log
 from requests.auth import HTTPBasicAuth
+
+import argparse
 import json
 import requests
 
@@ -16,6 +19,8 @@ lcp_port = config_parser.get('local-control-plane', 'port')
 
 dev_username = config_parser.get('dev', 'username')
 dev_password = 'astrid'
+
+log_level = config_parser.get('log', 'level')
 
 timeout = 20
 method = 'get'
@@ -33,25 +38,34 @@ parser.add_argument('--username', '-u', type=str,
 parser.add_argument('--password', '-p', type=str,
                     help='Authorized password', default=dev_password)
 
+parser.add_argument('--log-level', '-l', choices=Log.get_levels(),
+                    help='Log level', default=log_level)
+
 parser.add_argument('--timeout', '-t', type=float,
                     help='Timeout', default=timeout)
 parser.add_argument('--method', '-m', type=str, help='Method', default=method)
 parser.add_argument('--path', '-a', type=str, help='Path', default=path)
 parser.add_argument('--data', '-d', type=str, help='Request data', default=data)
 
-args = parser.parse_args()
+Args.db = parser.parse_args()
+
+log = Log.get('curl')
 
 try:
-    res = getattr(requests, method)(f'http://{args.ip}:{args.port}/{args.path}',
-                       auth=HTTPBasicAuth(args.username, args.password), timeout=args.timeout, json=json.loads(args.data))
-except ValueError:
-    print(f'Error: not JSON valid data.')
-except:
-    print(f'Error: connection to {args.ip}:{args.port} not possible.')
+    res = getattr(requests, method)(f'http://{Args.db.ip}:{Args.db.port}/{Args.db.path}',
+                       auth=HTTPBasicAuth(Args.db.username, Args.db.password),
+                       timeout=Args.db.timeout, json=json.loads(Args.db.data))
+except ValueError as ve:
+    log.debug(ve)
+    log.error('not JSON valid data')
+except Exception as e:
+    log.debug(e)
+    log.error(f'connection to {Args.db.ip}:{Args.db.port} not possible')
 else:
     try:
-        print(f'Status code: {res.status_code}.')
+        log.info(f'status code: {res.status_code}')
         print(json.dumps(res.json(), indent=2, sort_keys=True))
-    except:
-        print('\nError: response with not valid JSON.')
+    except Exception as e:
+        log.debug(e)
+        log.error('response with not valid JSON')
         print(res.content)
