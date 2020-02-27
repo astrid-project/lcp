@@ -50,14 +50,28 @@ def generate_password():
     return hash(str(uuid.uuid1()))
 
 
-def get_timestamp(ts = datetime.now()):
+def str_to_datetime(date_time_str, format='%Y/%m/%d %H:%M:%S'):
     """
-    Set the timestamp in format %Y/%m/%d %H:%M:%S.
+    Get a datatime object from the string.
 
-    :params ts: Timestamp to format
-    :returns: Timestamp in format %Y/%m/%d %H:%M:%S
+    :params date_time_str: datetime in string
+    :params format: datetime format
+    :returns datetime object
     """
-    return ts.now().strftime('%Y/%m/%d %H:%M:%S')
+    return datetime.strptime(date_time_str, format)
+
+
+def datetime_to_str(date_time = None, format='%Y/%m/%d %H:%M:%S'):
+    """
+    Convert the datetime to string in the given format.
+
+    :params data_time: datetime input
+    :params format: datetime format
+    :returns: datetime string in format %Y/%m/%d %H:%M:%S
+    """
+    if date_time is None:
+        date_time = datetime.now()
+    return date_time.strftime(format)
 
 
 def hash(text):

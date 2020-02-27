@@ -1,15 +1,21 @@
+from configparser import ConfigParser
+config_parser = ConfigParser()
+config_parser.read('config.ini')
+
+from log import Log
+Log.set_levels(config_parser.items('log'))
+
 from apispec import APISpec
 from apispec.ext.marshmallow import MarshmallowPlugin
 from args import Args
-from configparser import ConfigParser
 from falcon_apispec import FalconPlugin
 from falcon_auth import FalconAuthMiddleware, BasicAuthBackend
 from falcon_marshmallow import Marshmallow
-from log import Log
 from mode import Mode
 from resource import *
 from schema import *
 from swagger_ui import falcon_api_doc
+from ttldict import  TTLOrderedDict
 
 import argparse
 import falcon
@@ -19,15 +25,14 @@ import utils
 import waitress
 
 
-config_parser = ConfigParser()
-config_parser.read('config.ini')
-
 title = config_parser.get('info', 'title')
 description = config_parser.get('info', 'description')
 version = config_parser.get('info', 'version')
 
 lcp_host = config_parser.get('local-control-plane', 'host')
 lcp_port = config_parser.get('local-control-plane', 'port')
+
+auth_max_ttl = config_parser.get('auth', 'max-ttl')
 
 dev_username = config_parser.get('dev', 'username')
 dev_password = config_parser.get('dev', 'password')
@@ -46,6 +51,9 @@ parser.add_argument('--host', '-o', type=str,
 parser.add_argument('--port', '-p', type=int,
                     help='TCP Port of the REST Server', default=lcp_port)
 
+parser.add_argument('--auth-max-ttl', '-t', type=int,
+                    help='Max authentication db TTL', default=auth_max_ttl)
+
 parser.add_argument('--dev-username', '-u', type=str,
                     help='Authorized username', default=dev_username)
 parser.add_argument('--dev-password', '-a', type=str,
@@ -60,6 +68,7 @@ parser.add_argument('--version', '-v', help='Show version',
                     action='store_const', const=version)
 
 Args.db = parser.parse_args()
+StatusResource.auth_db = TTLOrderedDict(default_ttl=Args.db.auth_max_ttl)
 
 log = Log.get('main')
 

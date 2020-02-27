@@ -70,7 +70,7 @@ class CodeResource(BaseResource):
         json = req.context.get('json', None)
         if json is not None:
             res = {
-                'when': utils.get_timestamp(),
+                'when': utils.datetime_to_str(),
                 'results': []
             }
             for code in utils.wrap(json):

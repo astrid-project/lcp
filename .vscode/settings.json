@@ -3,12 +3,15 @@
         "ASTRID",
         "apispec",
         "atexit",
+        "coloredlogs",
         "datetime",
         "filebeat",
         "openapi",
         "reloader",
         "resp",
         "strftime",
+        "strptime",
+        "ttldict",
         "use"
     ]
 }

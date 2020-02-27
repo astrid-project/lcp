@@ -1,5 +1,6 @@
 from args import Args
 from configparser import ConfigParser
+from datetime import datetime
 from log import Log
 from mode import Mode
 from requests.auth import HTTPBasicAuth
@@ -7,6 +8,7 @@ from schema import *
 
 import falcon
 import hashlib
+import os
 import requests
 import threading
 import utils
@@ -27,13 +29,14 @@ class StatusResource(object):
 
     def __init__(self):
         """
-        Set the data.
+        Set the data and logger.
         """
         self.data = {
                 'id': None,
-                'started': utils.get_timestamp(),
+                'started': utils.datetime_to_str(),
                 'last_hearthbeat': None
             }
+        self.log = Log.get('status')
 
     def on_get(self, req, resp):
         """
@@ -72,10 +75,15 @@ class StatusResource(object):
         data = req.context.get('json', {})
         id = data.get('id', None)
         self.data['id'] = id
+        cb_expiration = data.get('cb_expiration', None)
         self.cb = {
             'password': data.get('cb_password', None),
-            'expiration': data.get('cb_expiration', None)
+            'expiration': cb_expiration,
+            'host': req.host,
+            'port': req.port
         }
+        os.environ['CB_HOST'] = self.cb.get('host')
+        os.environ['CB_PORT'] = str(self.cb.get('port'))
         username = data.get('username', None) # FIXME how to send username the first connection
         password = data.get('password', None)
         if username and self.auth_db.get(username, None) != utils.hash(password):
@@ -86,15 +94,15 @@ class StatusResource(object):
         if not username:
            username = utils.generate_username()
         password = utils.generate_password()
-        StatusResource.auth_db[username] = utils.hash(password)
+        self.auth_db[username] = utils.hash(password)
+        # self.auth_db.set_ttl(username, (utils.str_to_datetime(cb_expiration) - datetime.now()).total_seconds()) # FIXME
         if id is not None:
-            now = utils.get_timestamp()
+            now = utils.datetime_to_str()
             self.data['last_hearthbeat'] = now
-            log = Log.get('status')
             if Args.db.log_level == 'DEBUG':
-                log.debug(f'Hearbeating from CB at {now} (password: {self.cb.get("password", None)} - expiration: {self.cb.get("expiration", None)})')
+                self.log.debug(f'Hearbeating from CB at {now} (password: {self.cb.get("password", None)} - expiration: {self.cb. get("expiration", None)})')
             else:
-                log.info(f'Hearbeating from CB at {now}')
+                self.log.info(f'Hearbeating from CB at {now}')
         req.context['result'] = { **self.data,
                                   'username': username,
                                   'password': password }
