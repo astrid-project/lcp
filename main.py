@@ -11,7 +11,6 @@ from args import Args
 from falcon_apispec import FalconPlugin
 from falcon_auth import FalconAuthMiddleware, BasicAuthBackend
 from falcon_marshmallow import Marshmallow
-from mode import Mode
 from resource import *
 from schema import *
 from swagger_ui import falcon_api_doc

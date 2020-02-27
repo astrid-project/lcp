@@ -2,7 +2,6 @@ from args import Args
 from configparser import ConfigParser
 from datetime import datetime
 from log import Log
-from mode import Mode
 from requests.auth import HTTPBasicAuth
 from schema import *
 
