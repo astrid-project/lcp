@@ -50,7 +50,7 @@ parser.add_argument('--host', '-o', type=str,
 parser.add_argument('--port', '-p', type=int,
                     help='TCP Port of the REST Server', default=lcp_port)
 
-parser.add_argument('--auth-max-ttl', '-t', type=int,
+parser.add_argument('--auth-max-ttl', '-t', type=str,
                     help='Max authentication db TTL', default=auth_max_ttl)
 
 parser.add_argument('--dev-username', '-u', type=str,
@@ -67,6 +67,9 @@ parser.add_argument('--version', '-v', help='Show version',
                     action='store_const', const=version)
 
 Args.db = parser.parse_args()
+for param in 'auth_max_ttl',:
+    setattr(Args.db, param, utils.get_seconds(getattr(Args.db, param), to_int=True))
+
 StatusResource.auth_db = TTLOrderedDict(default_ttl=Args.db.auth_max_ttl)
 
 log = Log.get('main')

@@ -12,6 +12,7 @@
         "strftime",
         "strptime",
         "ttldict",
+        "ureg",
         "use"
     ]
 }

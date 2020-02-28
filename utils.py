@@ -1,6 +1,7 @@
 from colorama import Back, Fore, Style
 from datetime import datetime
 from requests.adapters import HTTPAdapter
+from pint import UnitRegistry
 
 import hashlib
 import requests
@@ -30,6 +31,21 @@ def get_none(**vars):
         if var is None:
             res.append(text)
     return ', '.join(res)
+
+
+ureg = UnitRegistry()
+Q_ = ureg.Quantity
+
+def get_seconds(text, to_int=False):
+    """
+    Parse the text to get the equivalent number of seconds (e.g., 1min => 60).
+
+    :params text: input time in human format, e.g.: 1m
+    :params to_int: convert to int the result
+    :returns: number of seconds
+    """
+    n = (Q_(text).to(ureg.second)).magnitude
+    return int(n) if to_int else n
 
 
 def generate_username():

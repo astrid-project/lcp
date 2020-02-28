@@ -255,15 +255,15 @@
     "HTTPError": {
       "type": "object",
       "properties": {
-        "title": {
-          "type": "string",
-          "description": "Title error",
-          "example": "400 Bad Request"
-        },
         "description": {
           "type": "string",
           "description": "Human readable message that describes the error.",
           "example": "Could not decode the request body, either because it was not valid JSON or because it was not encoded as UTF-8."
+        },
+        "title": {
+          "type": "string",
+          "description": "Title error",
+          "example": "400 Bad Request"
         }
       },
       "required": [
@@ -274,14 +274,14 @@
     "CodeRequestSchema": {
       "type": "object",
       "properties": {
-        "source": {
-          "type": "string",
-          "description": "Code source"
-        },
         "name": {
           "type": "string",
           "description": "Code name.",
           "example": "firewall"
+        },
+        "source": {
+          "type": "string",
+          "description": "Code source"
         }
       },
       "required": [
@@ -302,22 +302,71 @@
     "CodeResponseSchema": {
       "type": "object",
       "properties": {
-        "when": {
-          "type": "string",
-          "format": "date-time",
-          "description": "Datetime of the configuration changes.",
-          "example": "2020/02/13 15:27:06"
-        },
         "results": {
           "type": "array",
           "items": {
             "$ref": "#/definitions/CodeResultResponse"
           }
+        },
+        "when": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Datetime of the configuration changes.",
+          "example": "2020/02/13 15:27:06"
         }
       },
       "required": [
         "results",
         "when"
+      ]
+    },
+    "ConfigParameterRequest": {
+      "type": "object",
+      "properties": {
+        "destination": {
+          "type": "string",
+          "description": "Destination filename.",
+          "example": "filebeat.yml"
+        },
+        "sep": {
+          "type": "string",
+          "description": "Separator between name and value.",
+          "example": "="
+        },
+        "name": {
+          "type": "string",
+          "description": "Parameter name.",
+          "example": "period"
+        },
+        "value": {
+          "type": "string",
+          "description": "Parameter new value.",
+          "example": "10s"
+        }
+      },
+      "required": [
+        "destination",
+        "name",
+        "sep",
+        "value"
+      ]
+    },
+    "ConfigResourceRequest": {
+      "type": "object",
+      "properties": {
+        "destination": {
+          "type": "string",
+          "description": "Destination filename",
+          "example": "filebeat.yml"
+        },
+        "content": {
+          "type": "string",
+          "description": "Resource content."
+        }
+      },
+      "required": [
+        "content",
+        "destination"
       ]
     },
     "ConfigActionRequest": {
@@ -341,63 +390,14 @@
         "cmd"
       ]
     },
-    "ConfigResourceRequest": {
-      "type": "object",
-      "properties": {
-        "content": {
-          "type": "string",
-          "description": "Resource content."
-        },
-        "destination": {
-          "type": "string",
-          "description": "Destination filename",
-          "example": "filebeat.yml"
-        }
-      },
-      "required": [
-        "content",
-        "destination"
-      ]
-    },
-    "ConfigParameterRequest": {
-      "type": "object",
-      "properties": {
-        "sep": {
-          "type": "string",
-          "description": "Separator between name and value.",
-          "example": "="
-        },
-        "destination": {
-          "type": "string",
-          "description": "Destination filename.",
-          "example": "filebeat.yml"
-        },
-        "name": {
-          "type": "string",
-          "description": "Parameter name.",
-          "example": "period"
-        },
-        "value": {
-          "type": "string",
-          "description": "Parameter new value.",
-          "example": "10s"
-        }
-      },
-      "required": [
-        "destination",
-        "name",
-        "sep",
-        "value"
-      ]
-    },
     "ConfigRequestSchema": {
       "type": "object",
       "properties": {
-        "actions": {
-          "description": "List of actions.",
+        "parameters": {
+          "description": "List of parameters.",
           "type": "array",
           "items": {
-            "$ref": "#/definitions/ConfigActionRequest"
+            "$ref": "#/definitions/ConfigParameterRequest"
           }
         },
         "resources": {
@@ -407,11 +407,11 @@
             "$ref": "#/definitions/ConfigResourceRequest"
           }
         },
-        "parameters": {
-          "description": "List of parameters.",
+        "actions": {
+          "description": "List of actions.",
           "type": "array",
           "items": {
-            "$ref": "#/definitions/ConfigParameterRequest"
+            "$ref": "#/definitions/ConfigActionRequest"
           }
         }
       }
@@ -419,14 +419,14 @@
     "ConfigResultResponse": {
       "type": "object",
       "properties": {
+        "type": {
+          "type": "string",
+          "description": "Configuration type."
+        },
         "warning": {
           "type": "string",
           "description": "Warning message",
           "example": "Useless property: id"
-        },
-        "type": {
-          "type": "string",
-          "description": "Configuration type."
         }
       },
       "required": [
@@ -436,17 +436,17 @@
     "ConfigResponseSchema": {
       "type": "object",
       "properties": {
-        "when": {
-          "type": "string",
-          "format": "date-time",
-          "description": "Datetime of the configuration changes",
-          "example": "2020/02/13 15:27:06"
-        },
         "results": {
           "type": "array",
           "items": {
             "$ref": "#/definitions/ConfigResultResponse"
           }
+        },
+        "when": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Datetime of the configuration changes",
+          "example": "2020/02/13 15:27:06"
         }
       },
       "required": [
