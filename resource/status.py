@@ -37,6 +37,16 @@ class StatusResource(object):
             }
         self.log = Log.get('status')
 
+    @classmethod
+    def set(cls, auth_db):
+        """
+        Set the authentication db.
+
+        :params cls: StatusResource class
+        :auth_db: input db
+        """
+        cls.auth_db = auth_db
+
     def on_get(self, req, resp):
         """
         Get info about the status of the LCP in the execution environment.

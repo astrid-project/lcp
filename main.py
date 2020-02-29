@@ -66,11 +66,8 @@ parser.add_argument('--write-config', '-w', help='Write options to config.ini',
 parser.add_argument('--version', '-v', help='Show version',
                     action='store_const', const=version)
 
-Args.db = parser.parse_args()
-for param in 'auth_max_ttl',:
-    setattr(Args.db, param, utils.get_seconds(getattr(Args.db, param), to_int=True))
-
-StatusResource.auth_db = TTLOrderedDict(default_ttl=Args.db.auth_max_ttl)
+Args.set(parser.parse_args(), convert_to_seconds=['auth_max_ttl'], to_int=True)
+StatusResource.set(TTLOrderedDict(default_ttl=Args.db.auth_max_ttl))
 
 log = Log.get('main')
 
