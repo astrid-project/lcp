@@ -45,7 +45,7 @@ parser.add_argument('--log-level', '-l', choices=Log.get_levels(),
                     help='Log level', default=log_level)
 
 parser.add_argument('--timeout', '-t', type=str,
-                    help='Timeout', default=timeout)
+                    help='Timeout in human format (e.g.: 1min)', default=timeout)
 parser.add_argument('--method', '-m', type=str, help='Method', default=method)
 parser.add_argument('--path', '-a', type=str, help='Path', default=path)
 
