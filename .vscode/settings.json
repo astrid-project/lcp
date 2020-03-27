@@ -3,6 +3,7 @@
         "ASTRID",
         "apispec",
         "atexit",
+        "chdir",
         "coloredlogs",
         "datetime",
         "filebeat",

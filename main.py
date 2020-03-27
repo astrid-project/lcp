@@ -1,3 +1,8 @@
+import os
+path = os.path.abspath(__file__)
+dir_path = os.path.dirname(path)
+os.chdir(dir_path)
+
 from configparser import ConfigParser
 config_parser = ConfigParser()
 config_parser.read('config.ini')
