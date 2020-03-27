@@ -15,7 +15,7 @@ class CodeResource(BaseResource):
     response_schema = CodeResponseSchema()
 
     routes = '/code',
-    history_filename = 'data/code.history'
+    history_filename = f'data/code.history'
 
     def on_get(self, req, resp):
         """

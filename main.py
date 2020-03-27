@@ -1,10 +1,6 @@
-import os
-path = os.path.abspath(__file__)
-dir_path = os.path.dirname(path)
-
 from configparser import ConfigParser
 config_parser = ConfigParser()
-config_parser.read(f'{dir_path}/config.ini')
+config_parser.read('config.ini')
 
 from log import Log
 Log.set_levels(config_parser.items('log'))

@@ -233,17 +233,17 @@
           "description": "ID of the execution environment.",
           "example": "fa7ca1b7-80b5-4a47-8cc6-2cb1ca0ed778"
         },
-        "started": {
-          "type": "string",
-          "format": "date-time",
-          "description": "Timestamp when the LCP is started in this execution environment",
-          "example": "2019_02_14 15:23:30"
-        },
         "last_heartbeat": {
           "type": "string",
           "format": "date-time",
           "description": "Timestamp of the last hearthbeat between the LCP and the CB",
           "example": "2019_02_14 15:23:33"
+        },
+        "started": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when the LCP is started in this execution environment",
+          "example": "2019_02_14 15:23:30"
         }
       },
       "required": [
@@ -274,14 +274,14 @@
     "CodeRequestSchema": {
       "type": "object",
       "properties": {
+        "source": {
+          "type": "string",
+          "description": "Code source"
+        },
         "name": {
           "type": "string",
           "description": "Code name.",
           "example": "firewall"
-        },
-        "source": {
-          "type": "string",
-          "description": "Code source"
         }
       },
       "required": [
@@ -323,14 +323,14 @@
     "ConfigResourceRequest": {
       "type": "object",
       "properties": {
+        "content": {
+          "type": "string",
+          "description": "Resource content."
+        },
         "destination": {
           "type": "string",
           "description": "Destination filename",
           "example": "filebeat.yml"
-        },
-        "content": {
-          "type": "string",
-          "description": "Resource content."
         }
       },
       "required": [
@@ -341,6 +341,10 @@
     "ConfigActionRequest": {
       "type": "object",
       "properties": {
+        "cmd": {
+          "type": "string",
+          "description": "Command."
+        },
         "args": {
           "type": "array",
           "description": "Command arguments.",
@@ -349,10 +353,6 @@
             "description": "Single command argument.",
             "example": "-al"
           }
-        },
-        "cmd": {
-          "type": "string",
-          "description": "Command."
         }
       },
       "required": [
@@ -362,6 +362,16 @@
     "ConfigParameterRequest": {
       "type": "object",
       "properties": {
+        "value": {
+          "type": "string",
+          "description": "Parameter new value.",
+          "example": "10s"
+        },
+        "destination": {
+          "type": "string",
+          "description": "Destination filename.",
+          "example": "filebeat.yml"
+        },
         "name": {
           "type": "string",
           "description": "Parameter name.",
@@ -371,16 +381,6 @@
           "type": "string",
           "description": "Separator between name and value.",
           "example": "="
-        },
-        "destination": {
-          "type": "string",
-          "description": "Destination filename.",
-          "example": "filebeat.yml"
-        },
-        "value": {
-          "type": "string",
-          "description": "Parameter new value.",
-          "example": "10s"
         }
       },
       "required": [
