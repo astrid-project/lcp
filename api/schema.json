@@ -228,6 +228,11 @@
     "StatusResponseSchema": {
       "type": "object",
       "properties": {
+        "id": {
+          "type": "string",
+          "description": "ID of the execution environment.",
+          "example": "fa7ca1b7-80b5-4a47-8cc6-2cb1ca0ed778"
+        },
         "started": {
           "type": "string",
           "format": "date-time",
@@ -239,11 +244,6 @@
           "format": "date-time",
           "description": "Timestamp of the last hearthbeat between the LCP and the CB",
           "example": "2019_02_14 15:23:33"
-        },
-        "id": {
-          "type": "string",
-          "description": "ID of the execution environment.",
-          "example": "fa7ca1b7-80b5-4a47-8cc6-2cb1ca0ed778"
         }
       },
       "required": [
@@ -255,15 +255,15 @@
     "HTTPError": {
       "type": "object",
       "properties": {
-        "title": {
-          "type": "string",
-          "description": "Title error",
-          "example": "400 Bad Request"
-        },
         "description": {
           "type": "string",
           "description": "Human readable message that describes the error.",
           "example": "Could not decode the request body, either because it was not valid JSON or because it was not encoded as UTF-8."
+        },
+        "title": {
+          "type": "string",
+          "description": "Title error",
+          "example": "400 Bad Request"
         }
       },
       "required": [
@@ -274,14 +274,14 @@
     "CodeRequestSchema": {
       "type": "object",
       "properties": {
-        "source": {
-          "type": "string",
-          "description": "Code source"
-        },
         "name": {
           "type": "string",
           "description": "Code name.",
           "example": "firewall"
+        },
+        "source": {
+          "type": "string",
+          "description": "Code source"
         }
       },
       "required": [
@@ -320,27 +320,6 @@
         "when"
       ]
     },
-    "ConfigActionRequest": {
-      "type": "object",
-      "properties": {
-        "cmd": {
-          "type": "string",
-          "description": "Command."
-        },
-        "args": {
-          "type": "array",
-          "description": "Command arguments.",
-          "items": {
-            "type": "string",
-            "description": "Single command argument.",
-            "example": "-al"
-          }
-        }
-      },
-      "required": [
-        "cmd"
-      ]
-    },
     "ConfigResourceRequest": {
       "type": "object",
       "properties": {
@@ -359,28 +338,49 @@
         "destination"
       ]
     },
+    "ConfigActionRequest": {
+      "type": "object",
+      "properties": {
+        "args": {
+          "type": "array",
+          "description": "Command arguments.",
+          "items": {
+            "type": "string",
+            "description": "Single command argument.",
+            "example": "-al"
+          }
+        },
+        "cmd": {
+          "type": "string",
+          "description": "Command."
+        }
+      },
+      "required": [
+        "cmd"
+      ]
+    },
     "ConfigParameterRequest": {
       "type": "object",
       "properties": {
+        "name": {
+          "type": "string",
+          "description": "Parameter name.",
+          "example": "period"
+        },
         "sep": {
           "type": "string",
           "description": "Separator between name and value.",
           "example": "="
-        },
-        "value": {
-          "type": "string",
-          "description": "Parameter new value.",
-          "example": "10s"
         },
         "destination": {
           "type": "string",
           "description": "Destination filename.",
           "example": "filebeat.yml"
         },
-        "name": {
+        "value": {
           "type": "string",
-          "description": "Parameter name.",
-          "example": "period"
+          "description": "Parameter new value.",
+          "example": "10s"
         }
       },
       "required": [
@@ -393,18 +393,18 @@
     "ConfigRequestSchema": {
       "type": "object",
       "properties": {
-        "actions": {
-          "description": "List of actions.",
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/ConfigActionRequest"
-          }
-        },
         "resources": {
           "description": "List of resources.",
           "type": "array",
           "items": {
             "$ref": "#/definitions/ConfigResourceRequest"
+          }
+        },
+        "actions": {
+          "description": "List of actions.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ConfigActionRequest"
           }
         },
         "parameters": {
