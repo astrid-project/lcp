@@ -97,7 +97,7 @@ def hash(text):
     :param text: text to make the hash
     :returns: hashed version of the text
     """
-    return hashlib.sha224(text.encode('utf-8')).hexdigest()
+    return hashlib.sha256(text.encode('utf-8')).hexdigest()
 
 
 def wrap(data):
