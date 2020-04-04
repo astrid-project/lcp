@@ -228,11 +228,6 @@
     "StatusResponseSchema": {
       "type": "object",
       "properties": {
-        "id": {
-          "type": "string",
-          "description": "ID of the execution environment.",
-          "example": "fa7ca1b7-80b5-4a47-8cc6-2cb1ca0ed778"
-        },
         "last_heartbeat": {
           "type": "string",
           "format": "date-time",
@@ -244,6 +239,11 @@
           "format": "date-time",
           "description": "Timestamp when the LCP is started in this execution environment",
           "example": "2019_02_14 15:23:30"
+        },
+        "id": {
+          "type": "string",
+          "description": "ID of the execution environment.",
+          "example": "fa7ca1b7-80b5-4a47-8cc6-2cb1ca0ed778"
         }
       },
       "required": [
@@ -367,20 +367,20 @@
           "description": "Parameter new value.",
           "example": "10s"
         },
-        "destination": {
+        "sep": {
           "type": "string",
-          "description": "Destination filename.",
-          "example": "filebeat.yml"
+          "description": "Separator between name and value.",
+          "example": "="
         },
         "name": {
           "type": "string",
           "description": "Parameter name.",
           "example": "period"
         },
-        "sep": {
+        "destination": {
           "type": "string",
-          "description": "Separator between name and value.",
-          "example": "="
+          "description": "Destination filename.",
+          "example": "filebeat.yml"
         }
       },
       "required": [
@@ -419,14 +419,14 @@
     "ConfigResultResponse": {
       "type": "object",
       "properties": {
+        "type": {
+          "type": "string",
+          "description": "Configuration type."
+        },
         "warning": {
           "type": "string",
           "description": "Warning message",
           "example": "Useless property: id"
-        },
-        "type": {
-          "type": "string",
-          "description": "Configuration type."
         }
       },
       "required": [

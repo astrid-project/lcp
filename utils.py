@@ -3,7 +3,9 @@ from datetime import datetime
 from requests.adapters import HTTPAdapter
 from pint import UnitRegistry
 
+import configparser
 import hashlib
+import os
 import requests
 import uuid
 
@@ -108,3 +110,23 @@ def wrap(data):
     :returns: wrapped data
     """
     return data if type(data) in [list, tuple] else [data]
+
+
+class EnvInterpolation(configparser.BasicInterpolation):
+    """
+    Interpolation which expands environment variables in values.
+    """
+
+    def before_get(self, parser, section, option, value, defaults):
+        """
+        Executes before getting the value.
+
+        :param self: class instance
+        :param parser: configparser instance
+        :param section: section value
+        :param option: option value
+        :param value: current value
+        :param defaults: default values
+        :returns value with expanded variables
+        """
+        return os.path.expandvars(value)

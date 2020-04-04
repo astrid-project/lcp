@@ -3,8 +3,9 @@ path = os.path.abspath(__file__)
 dir_path = os.path.dirname(path)
 os.chdir(dir_path)
 
+import utils
 from configparser import ConfigParser
-config_parser = ConfigParser()
+config_parser = ConfigParser(interpolation=utils.EnvInterpolation())
 config_parser.read('config.ini')
 
 from log import Log
@@ -25,7 +26,6 @@ import argparse
 import falcon
 import hashlib
 import json
-import utils
 import waitress
 
 
