@@ -228,12 +228,6 @@
     "StatusResponseSchema": {
       "type": "object",
       "properties": {
-        "last_heartbeat": {
-          "type": "string",
-          "format": "date-time",
-          "description": "Timestamp of the last hearthbeat between the LCP and the CB",
-          "example": "2019_02_14 15:23:33"
-        },
         "started": {
           "type": "string",
           "format": "date-time",
@@ -244,6 +238,12 @@
           "type": "string",
           "description": "ID of the execution environment.",
           "example": "fa7ca1b7-80b5-4a47-8cc6-2cb1ca0ed778"
+        },
+        "last_heartbeat": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp of the last hearthbeat between the LCP and the CB",
+          "example": "2019_02_14 15:23:33"
         }
       },
       "required": [
@@ -320,6 +320,58 @@
         "when"
       ]
     },
+    "ConfigParameterRequest": {
+      "type": "object",
+      "properties": {
+        "sep": {
+          "type": "string",
+          "description": "Separator between name and value.",
+          "example": "="
+        },
+        "destination": {
+          "type": "string",
+          "description": "Destination filename.",
+          "example": "filebeat.yml"
+        },
+        "name": {
+          "type": "string",
+          "description": "Parameter name.",
+          "example": "period"
+        },
+        "value": {
+          "type": "string",
+          "description": "Parameter new value.",
+          "example": "10s"
+        }
+      },
+      "required": [
+        "destination",
+        "name",
+        "sep",
+        "value"
+      ]
+    },
+    "ConfigActionRequest": {
+      "type": "object",
+      "properties": {
+        "args": {
+          "type": "array",
+          "description": "Command arguments.",
+          "items": {
+            "type": "string",
+            "description": "Single command argument.",
+            "example": "-al"
+          }
+        },
+        "cmd": {
+          "type": "string",
+          "description": "Command."
+        }
+      },
+      "required": [
+        "cmd"
+      ]
+    },
     "ConfigResourceRequest": {
       "type": "object",
       "properties": {
@@ -338,66 +390,14 @@
         "destination"
       ]
     },
-    "ConfigActionRequest": {
-      "type": "object",
-      "properties": {
-        "cmd": {
-          "type": "string",
-          "description": "Command."
-        },
-        "args": {
-          "type": "array",
-          "description": "Command arguments.",
-          "items": {
-            "type": "string",
-            "description": "Single command argument.",
-            "example": "-al"
-          }
-        }
-      },
-      "required": [
-        "cmd"
-      ]
-    },
-    "ConfigParameterRequest": {
-      "type": "object",
-      "properties": {
-        "value": {
-          "type": "string",
-          "description": "Parameter new value.",
-          "example": "10s"
-        },
-        "sep": {
-          "type": "string",
-          "description": "Separator between name and value.",
-          "example": "="
-        },
-        "name": {
-          "type": "string",
-          "description": "Parameter name.",
-          "example": "period"
-        },
-        "destination": {
-          "type": "string",
-          "description": "Destination filename.",
-          "example": "filebeat.yml"
-        }
-      },
-      "required": [
-        "destination",
-        "name",
-        "sep",
-        "value"
-      ]
-    },
     "ConfigRequestSchema": {
       "type": "object",
       "properties": {
-        "resources": {
-          "description": "List of resources.",
+        "parameters": {
+          "description": "List of parameters.",
           "type": "array",
           "items": {
-            "$ref": "#/definitions/ConfigResourceRequest"
+            "$ref": "#/definitions/ConfigParameterRequest"
           }
         },
         "actions": {
@@ -407,11 +407,11 @@
             "$ref": "#/definitions/ConfigActionRequest"
           }
         },
-        "parameters": {
-          "description": "List of parameters.",
+        "resources": {
+          "description": "List of resources.",
           "type": "array",
           "items": {
-            "$ref": "#/definitions/ConfigParameterRequest"
+            "$ref": "#/definitions/ConfigResourceRequest"
           }
         }
       }
