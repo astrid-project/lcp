@@ -170,7 +170,7 @@ definitions:
     - started
     type: object
 info:
-  title: ASTRID Local Control Plane
+  title: Local Control Plane
   version: 0.0.1
 paths:
   /status:
