@@ -1,1 +1,229 @@
-[]
+[
+  {
+    "when": "2020/05/13 10:53:08",
+    "results": [
+      {
+        "type": "action",
+        "executed": "mkdir -p ~/test",
+        "stdout": "",
+        "stderr": "",
+        "return-code": 0
+      }
+    ]
+  },
+  {
+    "when": "2020/05/13 10:57:22",
+    "results": [
+      {
+        "type": "parameter",
+        "error": true,
+        "description": "Destination filebeat.yml not accessible"
+      }
+    ]
+  },
+  {
+    "when": "2020/05/13 11:02:24",
+    "results": [
+      {
+        "type": "parameter",
+        "error": true,
+        "description": "Destination ~\\Downloads\\config\\filebeat\\filebeat.yml not accessible"
+      }
+    ]
+  },
+  {
+    "when": "2020/05/13 11:02:39",
+    "results": [
+      {
+        "type": "parameter",
+        "error": true,
+        "description": "Destination ~/Downloads/config/filebeat/filebeat.yml not accessible"
+      }
+    ]
+  },
+  {
+    "when": "2020/05/13 11:03:23",
+    "results": [
+      {
+        "type": "action",
+        "executed": "ls ~/Downloads/config/filebeat/",
+        "stdout": "filebeat.yml\n",
+        "stderr": "",
+        "return-code": 0
+      },
+      {
+        "type": "parameter",
+        "error": true,
+        "description": "Destination ~/Downloads/config/filebeat/filebeat.yml not accessible"
+      }
+    ]
+  },
+  {
+    "when": "2020/05/13 11:05:28",
+    "results": [
+      {
+        "type": "action",
+        "executed": "ls ~/Downloads/config/filebeat/",
+        "stdout": "~filebeat.yml\nfilebeat.yml\n",
+        "stderr": "",
+        "return-code": 0
+      },
+      {
+        "type": "parameter",
+        "error": true,
+        "description": "Destination ~/filebeat.yml not accessible"
+      }
+    ]
+  },
+  {
+    "when": "2020/05/13 11:06:10",
+    "results": [
+      {
+        "type": "action",
+        "executed": "ls ~/Downloads/config/filebeat/",
+        "stdout": "~filebeat.yml\nfilebeat.yml\n",
+        "stderr": "",
+        "return-code": 0
+      },
+      {
+        "type": "parameter",
+        "error": true,
+        "description": "Destination ~\\filebeat.yml not accessible"
+      }
+    ]
+  },
+  {
+    "when": "2020/05/13 11:07:43",
+    "results": [
+      {
+        "type": "action",
+        "executed": "ls ~/Downloads/config/filebeat/",
+        "stdout": "~filebeat.yml\nfilebeat.yml\n",
+        "stderr": "",
+        "return-code": 0
+      },
+      {
+        "type": "parameter",
+        "error": true,
+        "description": "Destination ~/filebeat.yml not accessible"
+      }
+    ]
+  },
+  {
+    "when": "2020/05/13 11:08:41",
+    "results": [
+      {
+        "type": "action",
+        "executed": "ls ~/Downloads/config/filebeat/",
+        "stdout": "~filebeat.yml\nfilebeat.yml\n",
+        "stderr": "",
+        "return-code": 0
+      },
+      {
+        "type": "parameter",
+        "destination": "~/filebeat.yml",
+        "name": "name",
+        "value": "10s"
+      }
+    ]
+  },
+  {
+    "when": "2020/05/13 11:08:52",
+    "results": [
+      {
+        "type": "parameter",
+        "destination": "~/filebeat.yml",
+        "name": "name",
+        "value": "10s"
+      }
+    ]
+  },
+  {
+    "when": "2020/05/13 11:09:26",
+    "results": [
+      {
+        "type": "parameter",
+        "destination": "~/Downloads/config/filebeat/filebeat.yml",
+        "name": "name",
+        "value": "10s"
+      }
+    ]
+  },
+  {
+    "when": "2020/05/13 11:10:41",
+    "results": [
+      {
+        "type": "parameter",
+        "destination": "~/Downloads/config/filebeat/filebeat.yml",
+        "name": "name",
+        "value": "10s"
+      }
+    ]
+  },
+  {
+    "when": "2020/05/13 11:11:13",
+    "results": [
+      {
+        "type": "parameter",
+        "destination": "~/Downloads/config/filebeat/filebeat.yml",
+        "name": "level",
+        "value": "debug"
+      }
+    ]
+  },
+  {
+    "when": "2020/05/13 11:11:39",
+    "results": [
+      {
+        "type": "parameter",
+        "destination": "~/Downloads/config/filebeat/filebeat.yml",
+        "name": "level",
+        "value": "debug"
+      }
+    ]
+  },
+  {
+    "when": "2020/05/13 11:12:12",
+    "results": [
+      {
+        "type": "parameter",
+        "destination": "~/Downloads/config/filebeat/filebeat.yml",
+        "name": "level",
+        "value": "debug"
+      }
+    ]
+  },
+  {
+    "when": "2020/05/13 11:13:52",
+    "results": [
+      {
+        "type": "parameter",
+        "destination": "~/Downloads/config/filebeat/filebeat.yml",
+        "name": "level",
+        "value": "debug"
+      }
+    ]
+  },
+  {
+    "when": "2020/05/13 11:14:40",
+    "results": [
+      {
+        "type": "parameter",
+        "destination": "~/Downloads/config/filebeat/filebeat.yml",
+        "name": "level",
+        "value": "debug"
+      }
+    ]
+  },
+  {
+    "when": "2020/05/13 11:15:03",
+    "results": [
+      {
+        "type": "parameter",
+        "destination": "~/Downloads/config/filebeat/filebeat.yml",
+        "name": "level",
+        "value": "debug"
+      }
+    ]
+  }
+]
