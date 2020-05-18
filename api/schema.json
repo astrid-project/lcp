@@ -228,11 +228,6 @@
     "StatusResponseSchema": {
       "type": "object",
       "properties": {
-        "id": {
-          "type": "string",
-          "description": "ID of the execution environment.",
-          "example": "fa7ca1b7-80b5-4a47-8cc6-2cb1ca0ed778"
-        },
         "last_heartbeat": {
           "type": "string",
           "format": "date-time",
@@ -244,6 +239,11 @@
           "format": "date-time",
           "description": "Timestamp when the LCP is started in this execution environment",
           "example": "2019_02_14 15:23:30"
+        },
+        "id": {
+          "type": "string",
+          "description": "ID of the execution environment.",
+          "example": "fa7ca1b7-80b5-4a47-8cc6-2cb1ca0ed778"
         }
       },
       "required": [
@@ -255,15 +255,15 @@
     "HTTPError": {
       "type": "object",
       "properties": {
-        "description": {
-          "type": "string",
-          "description": "Human readable message that describes the error.",
-          "example": "Could not decode the request body, either because it was not valid JSON or because it was not encoded as UTF-8."
-        },
         "title": {
           "type": "string",
           "description": "Title error",
           "example": "400 Bad Request"
+        },
+        "description": {
+          "type": "string",
+          "description": "Human readable message that describes the error.",
+          "example": "Could not decode the request body, either because it was not valid JSON or because it was not encoded as UTF-8."
         }
       },
       "required": [
@@ -320,6 +320,58 @@
         "when"
       ]
     },
+    "ConfigResourceRequest": {
+      "type": "object",
+      "properties": {
+        "content": {
+          "type": "string",
+          "description": "Resource content."
+        },
+        "destination": {
+          "type": "string",
+          "description": "Destination filename",
+          "example": "filebeat.yml"
+        }
+      },
+      "required": [
+        "content",
+        "destination"
+      ]
+    },
+    "ConfigParameterRequest": {
+      "type": "object",
+      "properties": {
+        "scheme": {
+          "type": "string",
+          "description": "Scheme.",
+          "example": "yaml"
+        },
+        "source": {
+          "type": "string",
+          "description": "Source filename.",
+          "example": "filebeat.yml"
+        },
+        "path": {
+          "type": "array",
+          "description": "Key path",
+          "items": {
+            "type": "string",
+            "description": "Path item.",
+            "example": "period"
+          }
+        },
+        "value": {
+          "type": "string",
+          "description": "Parameter new value.",
+          "example": "10s"
+        }
+      },
+      "required": [
+        "scheme",
+        "source",
+        "value"
+      ]
+    },
     "ConfigActionRequest": {
       "type": "object",
       "properties": {
@@ -341,66 +393,14 @@
         "cmd"
       ]
     },
-    "ConfigParameterRequest": {
-      "type": "object",
-      "properties": {
-        "scheme": {
-          "type": "string",
-          "description": "Scheme.",
-          "example": "yaml"
-        },
-        "path": {
-          "type": "array",
-          "description": "Key path",
-          "items": {
-            "type": "string",
-            "description": "Path item.",
-            "example": "period"
-          }
-        },
-        "value": {
-          "type": "string",
-          "description": "Parameter new value.",
-          "example": "10s"
-        },
-        "source": {
-          "type": "string",
-          "description": "Source filename.",
-          "example": "filebeat.yml"
-        }
-      },
-      "required": [
-        "scheme",
-        "source",
-        "value"
-      ]
-    },
-    "ConfigResourceRequest": {
-      "type": "object",
-      "properties": {
-        "content": {
-          "type": "string",
-          "description": "Resource content."
-        },
-        "destination": {
-          "type": "string",
-          "description": "Destination filename",
-          "example": "filebeat.yml"
-        }
-      },
-      "required": [
-        "content",
-        "destination"
-      ]
-    },
     "ConfigRequestSchema": {
       "type": "object",
       "properties": {
-        "actions": {
-          "description": "List of actions.",
+        "resources": {
+          "description": "List of resources.",
           "type": "array",
           "items": {
-            "$ref": "#/definitions/ConfigActionRequest"
+            "$ref": "#/definitions/ConfigResourceRequest"
           }
         },
         "parameters": {
@@ -410,11 +410,11 @@
             "$ref": "#/definitions/ConfigParameterRequest"
           }
         },
-        "resources": {
-          "description": "List of resources.",
+        "actions": {
+          "description": "List of actions.",
           "type": "array",
           "items": {
-            "$ref": "#/definitions/ConfigResourceRequest"
+            "$ref": "#/definitions/ConfigActionRequest"
           }
         }
       }
@@ -422,14 +422,14 @@
     "ConfigResultResponse": {
       "type": "object",
       "properties": {
+        "type": {
+          "type": "string",
+          "description": "Configuration type."
+        },
         "warning": {
           "type": "string",
           "description": "Warning message",
           "example": "Useless property: id"
-        },
-        "type": {
-          "type": "string",
-          "description": "Configuration type."
         }
       },
       "required": [
