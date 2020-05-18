@@ -102,6 +102,22 @@ def hash(text):
     return hashlib.sha256(text.encode('utf-8')).hexdigest()
 
 
+def iter_dict(source, *keys):
+    """
+    Iterate a nested dict based on list of keys
+
+    :param source: nested dict
+    :param *keys: list of keys
+    :returns: value
+    """
+    d = source
+    for k in keys:
+        if k not in d:
+            d[k] = {}
+        d = d[k]
+    return d
+
+
 def wrap(data):
     """
     Wrap the data if an array if it is ont a list of tuple.

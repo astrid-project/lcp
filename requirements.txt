@@ -5,7 +5,9 @@ falcon
 falcon-apispec
 falcon-auth
 falcon-marshmallow
+jproperties
 pint
+pyyaml
 requests
 swagger-ui-py
 ttldict

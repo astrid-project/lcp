@@ -53,26 +53,28 @@ definitions:
     type: object
   ConfigParameterRequest:
     properties:
-      destination:
-        description: Destination filename.
+      path:
+        description: Key path
+        items:
+          description: Path item.
+          example: period
+          type: string
+        type: array
+      scheme:
+        description: Scheme.
+        example: yaml
+        type: string
+      source:
+        description: Source filename.
         example: filebeat.yml
-        type: string
-      name:
-        description: Parameter name.
-        example: period
-        type: string
-      sep:
-        description: Separator between name and value.
-        example: '='
         type: string
       value:
         description: Parameter new value.
         example: 10s
         type: string
     required:
-    - destination
-    - name
-    - sep
+    - scheme
+    - source
     - value
     type: object
   ConfigRequestSchema:

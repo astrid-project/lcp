@@ -1,0 +1,5 @@
+{
+   "filebeat": {
+      "period": "10s"
+   }
+}
