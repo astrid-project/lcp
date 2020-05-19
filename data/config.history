@@ -351,5 +351,53 @@
         }
       }
     ]
+  },
+  {
+    "when": "2020/05/19 02:07:48",
+    "results": [
+      {
+        "type": "parameter",
+        "schema": "yaml",
+        "source": "C:\\Users\\aless/Dropbox (Personal)/work/projects/astrid/gitlab_repositories/lcp/test/source.yml",
+        "path": [
+          "filebeat",
+          "period"
+        ],
+        "value": "5s",
+        "note": "No change needed"
+      }
+    ]
+  },
+  {
+    "when": "2020/05/19 02:07:53",
+    "results": [
+      {
+        "type": "parameter",
+        "schema": "yaml",
+        "source": "C:\\Users\\aless/Dropbox (Personal)/work/projects/astrid/gitlab_repositories/lcp/test/source.yml",
+        "path": [
+          "filebeat",
+          "period"
+        ],
+        "value": "5s",
+        "note": "No change needed"
+      }
+    ]
+  },
+  {
+    "when": "2020/05/19 02:11:19",
+    "results": [
+      {
+        "type": "parameter",
+        "schema": "yaml",
+        "source": "C:\\Users\\aless/Dropbox (Personal)/work/projects/astrid/gitlab_repositories/lcp/test/source.yml",
+        "path": [
+          "filebeat",
+          "period"
+        ],
+        "value": "5s",
+        "note": "No change needed"
+      }
+    ]
   }
 ]
