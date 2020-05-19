@@ -173,7 +173,7 @@ definitions:
     type: object
 info:
   title: Local Control Plane
-  version: 0.0.1
+  version: 391a6d23b5137b9abdeff22521c7ce371d1dd4b0@master
 paths:
   /status:
     get:
