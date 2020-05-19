@@ -255,15 +255,15 @@
     "HTTPError": {
       "type": "object",
       "properties": {
-        "title": {
-          "type": "string",
-          "description": "Title error",
-          "example": "400 Bad Request"
-        },
         "description": {
           "type": "string",
           "description": "Human readable message that describes the error.",
           "example": "Could not decode the request body, either because it was not valid JSON or because it was not encoded as UTF-8."
+        },
+        "title": {
+          "type": "string",
+          "description": "Title error",
+          "example": "400 Bad Request"
         }
       },
       "required": [
@@ -274,14 +274,14 @@
     "CodeRequestSchema": {
       "type": "object",
       "properties": {
+        "source": {
+          "type": "string",
+          "description": "Code source"
+        },
         "name": {
           "type": "string",
           "description": "Code name.",
           "example": "firewall"
-        },
-        "source": {
-          "type": "string",
-          "description": "Code source"
         }
       },
       "required": [
@@ -320,36 +320,13 @@
         "when"
       ]
     },
-    "ConfigResourceRequest": {
-      "type": "object",
-      "properties": {
-        "content": {
-          "type": "string",
-          "description": "Resource content."
-        },
-        "destination": {
-          "type": "string",
-          "description": "Destination filename",
-          "example": "filebeat.yml"
-        }
-      },
-      "required": [
-        "content",
-        "destination"
-      ]
-    },
     "ConfigParameterRequest": {
       "type": "object",
       "properties": {
-        "scheme": {
+        "value": {
           "type": "string",
-          "description": "Scheme.",
-          "example": "yaml"
-        },
-        "source": {
-          "type": "string",
-          "description": "Source filename.",
-          "example": "filebeat.yml"
+          "description": "Parameter new value.",
+          "example": "10s"
         },
         "path": {
           "type": "array",
@@ -360,16 +337,39 @@
             "example": "period"
           }
         },
-        "value": {
+        "source": {
           "type": "string",
-          "description": "Parameter new value.",
-          "example": "10s"
+          "description": "Source filename.",
+          "example": "filebeat.yml"
+        },
+        "scheme": {
+          "type": "string",
+          "description": "Scheme.",
+          "example": "yaml"
         }
       },
       "required": [
         "scheme",
         "source",
         "value"
+      ]
+    },
+    "ConfigResourceRequest": {
+      "type": "object",
+      "properties": {
+        "destination": {
+          "type": "string",
+          "description": "Destination filename",
+          "example": "filebeat.yml"
+        },
+        "content": {
+          "type": "string",
+          "description": "Resource content."
+        }
+      },
+      "required": [
+        "content",
+        "destination"
       ]
     },
     "ConfigActionRequest": {
@@ -396,18 +396,18 @@
     "ConfigRequestSchema": {
       "type": "object",
       "properties": {
-        "resources": {
-          "description": "List of resources.",
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/ConfigResourceRequest"
-          }
-        },
         "parameters": {
           "description": "List of parameters.",
           "type": "array",
           "items": {
             "$ref": "#/definitions/ConfigParameterRequest"
+          }
+        },
+        "resources": {
+          "description": "List of resources.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ConfigResourceRequest"
           }
         },
         "actions": {
@@ -422,14 +422,14 @@
     "ConfigResultResponse": {
       "type": "object",
       "properties": {
-        "type": {
-          "type": "string",
-          "description": "Configuration type."
-        },
         "warning": {
           "type": "string",
           "description": "Warning message",
           "example": "Useless property: id"
+        },
+        "type": {
+          "type": "string",
+          "description": "Configuration type."
         }
       },
       "required": [

@@ -1,2 +1,2 @@
 filebeat:
-   period: 10s
+   period: 5s

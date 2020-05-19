@@ -96,8 +96,9 @@ class ConfigParameterResponseSchema(ConfigResultResponseSchema):
         required=True, description='Source filename.', example='filebeat.yml')
     path = fields.List(fields.String(required=True, description='Path item.', example='period'),
                        description='Key path')
-    value = fields.Nested(
+    value = fields.Nested( # TODO It is when note is present.
         ConfigParameterValueResponseSchema, many=False, required=True)
+    note = fields.String(required=False, description='Additional note', example='No change ne')
 
 
 class ConfigResourceResponseSchema(ConfigResultResponseSchema):
