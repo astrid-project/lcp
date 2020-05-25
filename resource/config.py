@@ -1,6 +1,8 @@
 from .base import BaseResource
 from jproperties import Properties
-from schema import *
+from schema.config.request import ConfigRequestSchema
+from schema.config.response import ConfigResponseSchema
+from schema.http_error import HTTPErrorSchema
 
 import falcon
 import json as json_lib
@@ -15,6 +17,7 @@ class ConfigResource(BaseResource):
     request_schema = ConfigRequestSchema()
     response_schema = ConfigResponseSchema()
 
+    tag = {'name': 'config', 'description': 'Configuration at run-time.'}
     routes = '/config',
     history_filename = 'data/config.history'
 
@@ -55,7 +58,7 @@ class ConfigResource(BaseResource):
                 proc = sp.run('bash -c "' + run + '"', check=True,
                               stdout=sp.PIPE, stderr=sp.PIPE, universal_newlines=True)
             except Exception as e:
-                log.debug(e)
+                self.log.debug(e)
                 output = dict(type=type, error=True, description=str(e))
             else:
                 output = dict(type=type, executed=run, stdout=proc.stdout,

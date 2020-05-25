@@ -1,2 +1,2 @@
-filebeat:
-   period: 1s
+-  filebeat: 1s
+   period: 5s

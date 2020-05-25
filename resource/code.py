@@ -1,6 +1,8 @@
 from .base import BaseResource
 
-from schema import CodeRequestSchema, CodeResponseSchema
+from schema.code.request import CodeRequestSchema
+from schema.code.response import CodeResponseSchema
+from schema.http_error import HTTPErrorSchema
 
 import atexit
 import falcon
@@ -14,6 +16,7 @@ class CodeResource(BaseResource):
     request_schema = CodeRequestSchema()
     response_schema = CodeResponseSchema()
 
+    tag = {'name': 'code', 'description': 'Code injection at run-time.'}
     routes = '/code',
     history_filename = f'data/code.history'
 

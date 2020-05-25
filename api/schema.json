@@ -7,63 +7,19 @@
   ],
   "tags": [
     {
-      "name": "status",
-      "description": "Status data of the LCP."
-    },
-    {
       "name": "code",
       "description": "Code injection at run-time."
     },
     {
       "name": "config",
       "description": "Configuration at run-time."
+    },
+    {
+      "name": "status",
+      "description": "Status data of the LCP."
     }
   ],
   "paths": {
-    "/status": {
-      "get": {
-        "summary": "Status info",
-        "description": "Get info about the status of the LCP in the execution environment.",
-        "tags": [
-          "status"
-        ],
-        "responses": {
-          "200": {
-            "description": "Status data of the LCP.",
-            "schema": {
-              "$ref": "#/definitions/StatusResponseSchema"
-            }
-          },
-          "401": {
-            "description": "Unauthorized.",
-            "schema": {
-              "$ref": "#/definitions/HTTPError"
-            }
-          }
-        }
-      },
-      "post": {
-        "summary": "Status set.",
-        "description": "Set the last heartbeat.",
-        "tags": [
-          "status"
-        ],
-        "responses": {
-          "200": {
-            "description": "Status data of the LCP.",
-            "schema": {
-              "$ref": "#/definitions/StatusResponseSchema"
-            }
-          },
-          "401": {
-            "description": "Unauthorized.",
-            "schema": {
-              "$ref": "#/definitions/HTTPError"
-            }
-          }
-        }
-      }
-    },
     "/code": {
       "get": {
         "summary": "Code injection history",
@@ -109,7 +65,7 @@
             "schema": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/CodeRequestSchema"
+                "$ref": "#/definitions/CodeRequest"
               }
             }
           }
@@ -121,7 +77,7 @@
           "200": {
             "description": "Code injection executed.",
             "schema": {
-              "$ref": "#/definitions/CodeResponseSchema"
+              "$ref": "#/definitions/CodeResponse"
             }
           },
           "400": {
@@ -188,7 +144,7 @@
             "schema": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/ConfigRequestSchema"
+                "$ref": "#/definitions/ConfigRequest"
               }
             }
           }
@@ -199,7 +155,7 @@
             "schema": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/ConfigResponseSchema"
+                "$ref": "#/definitions/ConfigResponse"
               }
             }
           },
@@ -217,41 +173,58 @@
           }
         }
       }
+    },
+    "/status": {
+      "get": {
+        "summary": "Status info",
+        "description": "Get info about the status of the LCP in the execution environment.",
+        "tags": [
+          "status"
+        ],
+        "responses": {
+          "200": {
+            "description": "Status data of the LCP.",
+            "schema": {
+              "$ref": "#/definitions/StatusResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized.",
+            "schema": {
+              "$ref": "#/definitions/HTTPError"
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Status set.",
+        "description": "Set the last heartbeat.",
+        "tags": [
+          "status"
+        ],
+        "responses": {
+          "200": {
+            "description": "Status data of the LCP.",
+            "schema": {
+              "$ref": "#/definitions/StatusResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized.",
+            "schema": {
+              "$ref": "#/definitions/HTTPError"
+            }
+          }
+        }
+      }
     }
   },
   "info": {
     "title": "Local Control Plane",
-    "version": "391a6d23b5137b9abdeff22521c7ce371d1dd4b0@master"
+    "version": "b337b4c857461127581f081f105a76e36a3c79ed@master"
   },
   "swagger": "2.0",
   "definitions": {
-    "StatusResponseSchema": {
-      "type": "object",
-      "properties": {
-        "started": {
-          "type": "string",
-          "format": "date-time",
-          "description": "Timestamp when the LCP is started in this execution environment",
-          "example": "2019_02_14 15:23:30"
-        },
-        "id": {
-          "type": "string",
-          "description": "ID of the execution environment.",
-          "example": "fa7ca1b7-80b5-4a47-8cc6-2cb1ca0ed778"
-        },
-        "last_heartbeat": {
-          "type": "string",
-          "format": "date-time",
-          "description": "Timestamp of the last hearthbeat between the LCP and the CB",
-          "example": "2019_02_14 15:23:33"
-        }
-      },
-      "required": [
-        "id",
-        "last_heartbeat",
-        "started"
-      ]
-    },
     "HTTPError": {
       "type": "object",
       "properties": {
@@ -271,17 +244,17 @@
         "title"
       ]
     },
-    "CodeRequestSchema": {
+    "CodeRequest": {
       "type": "object",
       "properties": {
+        "source": {
+          "type": "string",
+          "description": "Code source"
+        },
         "name": {
           "type": "string",
           "description": "Code name.",
           "example": "firewall"
-        },
-        "source": {
-          "type": "string",
-          "description": "Code source"
         }
       },
       "required": [
@@ -299,7 +272,7 @@
         }
       }
     },
-    "CodeResponseSchema": {
+    "CodeResponse": {
       "type": "object",
       "properties": {
         "when": {
@@ -362,16 +335,6 @@
     "ConfigParameterRequest": {
       "type": "object",
       "properties": {
-        "value": {
-          "type": "string",
-          "description": "Parameter new value.",
-          "example": "10s"
-        },
-        "source": {
-          "type": "string",
-          "description": "Source filename.",
-          "example": "filebeat.yml"
-        },
         "path": {
           "type": "array",
           "description": "Key path",
@@ -381,10 +344,20 @@
             "example": "period"
           }
         },
+        "value": {
+          "type": "string",
+          "description": "Parameter new value.",
+          "example": "10s"
+        },
         "scheme": {
           "type": "string",
           "description": "Scheme.",
           "example": "yaml"
+        },
+        "source": {
+          "type": "string",
+          "description": "Source filename.",
+          "example": "filebeat.yml"
         }
       },
       "required": [
@@ -393,7 +366,7 @@
         "value"
       ]
     },
-    "ConfigRequestSchema": {
+    "ConfigRequest": {
       "type": "object",
       "properties": {
         "actions": {
@@ -422,21 +395,21 @@
     "ConfigResultResponse": {
       "type": "object",
       "properties": {
+        "type": {
+          "type": "string",
+          "description": "Configuration type."
+        },
         "warning": {
           "type": "string",
           "description": "Warning message",
           "example": "Useless property: id"
-        },
-        "type": {
-          "type": "string",
-          "description": "Configuration type."
         }
       },
       "required": [
         "type"
       ]
     },
-    "ConfigResponseSchema": {
+    "ConfigResponse": {
       "type": "object",
       "properties": {
         "when": {
@@ -455,6 +428,33 @@
       "required": [
         "results",
         "when"
+      ]
+    },
+    "StatusResponse": {
+      "type": "object",
+      "properties": {
+        "last_heartbeat": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp of the last hearthbeat between the LCP and the CB",
+          "example": "2019_02_14 15:23:33"
+        },
+        "id": {
+          "type": "string",
+          "description": "ID of the execution environment.",
+          "example": "apache"
+        },
+        "started": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when the LCP is started",
+          "example": "2019_02_14 15:23:30"
+        }
+      },
+      "required": [
+        "id",
+        "last_heartbeat",
+        "started"
       ]
     }
   }

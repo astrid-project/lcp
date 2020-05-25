@@ -1,9 +1,9 @@
-from args import Args
-from configparser import ConfigParser
 from datetime import datetime
 from log import Log
+from reader.arg import ArgReader
 from requests.auth import HTTPBasicAuth
-from schema import *
+from schema.http_error import HTTPErrorSchema
+from schema.status.response import StatusResponseSchema
 
 import falcon
 import hashlib
@@ -22,6 +22,7 @@ class StatusResource(object):
         'exempt_methods': ['POST']
     }
 
+    tag = {'name': 'status', 'description': 'Status data of the LCP.'}
     routes = '/status',
     cb = {}
     auth_db = {}
@@ -108,10 +109,10 @@ class StatusResource(object):
         if id is not None:
             now = utils.datetime_to_str()
             self.data['last_hearthbeat'] = now
-            if Args.db.log_level == 'DEBUG':
-                self.log.debug(f'Hearbeating from CB at {now} (password: {self.cb.get("password", None)} - expiration: {self.cb. get("expiration", None)})')
+            if ArgReader.db.log_level == 'DEBUG':
+                self.log.notice(f'Hearbeating from CB at {now} (password: {self.cb.get("password", None)} - expiration: {self.cb. get("expiration", None)})')
             else:
-                self.log.info(f'Hearbeating from CB at {now}')
+                self.log.notice(f'Hearbeating from CB at {now}')
         req.context['result'] = { **self.data,
                                   'username': username,
                                   'password': password }
