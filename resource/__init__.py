@@ -3,7 +3,7 @@ from resource.config import ConfigResource
 from resource.status import StatusResource
 
 from log import Log
-from utils import wrap
+from utils.sequence import wrap
 
 
 db = (

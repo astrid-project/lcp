@@ -1,0 +1,22 @@
+Inject code at run-time in the local environment.
+---
+summary: Code injection
+description: Inject code at run-time in the local environment.
+parameters:
+  - name: payload
+    required: true
+    in: body
+    schema:
+    type: array
+    items: CodeRequestSchema
+tags: [code]
+responses:
+  200:
+    description: Code injection executed.
+    schema: CodeResponseSchema
+  400:
+    description: Bad Request.
+    schema: HTTPErrorSchema
+  401:
+    description: Unauthorized.
+    schema: HTTPErrorSchema

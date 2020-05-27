@@ -1,41 +1,6 @@
 consumes:
 - application/json
 definitions:
-  CodeRequest:
-    properties:
-      name:
-        description: Code name.
-        example: firewall
-        type: string
-      source:
-        description: Code source
-        type: string
-    required:
-    - name
-    - source
-    type: object
-  CodeResponse:
-    properties:
-      results:
-        items:
-          $ref: '#/definitions/CodeResultResponse'
-        type: array
-      when:
-        description: Datetime of the configuration changes.
-        example: 2020/02/13 15:27:06
-        format: date-time
-        type: string
-    required:
-    - results
-    - when
-    type: object
-  CodeResultResponse:
-    properties:
-      warning:
-        description: Warning message.
-        example: 'Useless properties: id'
-        type: string
-    type: object
   ConfigActionRequest:
     properties:
       args:
@@ -173,57 +138,11 @@ definitions:
     type: object
 info:
   title: Local Control Plane
-  version: b337b4c857461127581f081f105a76e36a3c79ed@master
+  version: 1edeee00c413e586de55ee5f6d2769cadeb3771e@master
 paths:
   /code:
-    get:
-      description: Get the history of injected code.
-      responses:
-        '200':
-          description: History of the injected code.
-          schema:
-            items:
-              oneOf:
-              - CodeInjectedResponseSchema
-              - CodeErrorResponseSchema
-            type: array
-        '400':
-          description: Bad Request.
-          schema:
-            $ref: '#/definitions/HTTPError'
-        '401':
-          description: Unauthorized.
-          schema:
-            $ref: '#/definitions/HTTPError'
-      summary: Code injection history
-      tags:
-      - code
-    post:
-      description: Inject code at run-time in the local environment.
-      parameters:
-      - in: body
-        name: payload
-        required: true
-        schema:
-          items:
-            $ref: '#/definitions/CodeRequest'
-          type: array
-      responses:
-        '200':
-          description: Code injection executed.
-          schema:
-            $ref: '#/definitions/CodeResponse'
-        '400':
-          description: Bad Request.
-          schema:
-            $ref: '#/definitions/HTTPError'
-        '401':
-          description: Unauthorized.
-          schema:
-            $ref: '#/definitions/HTTPError'
-      summary: Code injection
-      tags:
-      - code
+    get: {}
+    post: {}
   /config:
     get:
       description: Get the history of configuration updates.

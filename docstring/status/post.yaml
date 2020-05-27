@@ -1,0 +1,12 @@
+Set the last heartbeat.
+---
+summary: Status set.
+description: Set the last heartbeat.
+tags: [status]
+responses:
+  200:
+    description: Status data of the LCP.
+    schema: StatusResponseSchema
+  401:
+    description: Unauthorized.
+    schema: HTTPErrorSchema

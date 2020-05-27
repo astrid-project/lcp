@@ -1,4 +1,4 @@
-import utils
+from utils.time import get_seconds
 
 
 class Args:
@@ -31,4 +31,4 @@ class Args:
         :params to_int: force to set the seconds as integer
         """
         for field in fields:
-            setattr(cls.db, field, utils.get_seconds(getattr(cls.db, field), to_int=to_int))
+            setattr(cls.db, field, get_seconds(getattr(cls.db, field), to_int=to_int))

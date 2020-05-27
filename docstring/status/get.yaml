@@ -1,0 +1,12 @@
+Get info about the status of the LCP in the execution environment.
+---
+summary: Status info
+description: Get info about the status of the LCP in the execution environment.
+tags: [status]
+responses:
+  200:
+    description: Status data of the LCP.
+    schema: StatusResponseSchema
+  401:
+    description: Unauthorized.
+    schema: HTTPErrorSchema

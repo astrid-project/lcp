@@ -1,5 +1,5 @@
 from marshmallow import Schema
-from marshmallow.fields import String
+from marshmallow.fields import Boolean, String
 from schema.code.response.result import CodeResultResponseSchema
 
 

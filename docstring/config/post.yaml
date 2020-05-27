@@ -1,0 +1,24 @@
+Apply configuration changes to the local environment.
+---
+summary: Configuration update
+description: Apply configuration changes to the local environment.
+tags: [config]
+parameters:
+  - name: payload
+    required: true
+    in: body
+    schema:
+      type: array
+      items: ConfigRequestSchema
+responses:
+  200:
+    description: Configuration changes executed.
+    schema:
+      type: array
+      items: ConfigResponseSchema
+  400:
+    description: Bad request.
+    schema: HTTPErrorSchema
+  401:
+    description: Unauthorized.
+    schema: HTTPErrorSchema
