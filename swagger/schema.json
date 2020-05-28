@@ -150,22 +150,22 @@
   },
   "info": {
     "title": "Local Control Plane",
-    "version": "1edeee00c413e586de55ee5f6d2769cadeb3771e@master"
+    "version": "b0b31c4e21dcc04f931adf61d0cb0543154b9b19@master"
   },
   "swagger": "2.0",
   "definitions": {
     "HTTPError": {
       "type": "object",
       "properties": {
-        "description": {
-          "type": "string",
-          "description": "Human readable message that describes the error.",
-          "example": "Could not decode the request body, either because it was not valid JSON or because it was not encoded as UTF-8."
-        },
         "title": {
           "type": "string",
           "description": "Title error",
           "example": "400 Bad Request"
+        },
+        "description": {
+          "type": "string",
+          "description": "Human readable message that describes the error.",
+          "example": "Could not decode the request body, either because it was not valid JSON or because it was not encoded as UTF-8."
         }
       },
       "required": [
@@ -176,20 +176,20 @@
     "ConfigParameterRequest": {
       "type": "object",
       "properties": {
-        "source": {
+        "scheme": {
           "type": "string",
-          "description": "Source filename.",
-          "example": "filebeat.yml"
+          "description": "Scheme.",
+          "example": "yaml"
         },
         "value": {
           "type": "string",
           "description": "Parameter new value.",
           "example": "10s"
         },
-        "scheme": {
+        "source": {
           "type": "string",
-          "description": "Scheme.",
-          "example": "yaml"
+          "description": "Source filename.",
+          "example": "filebeat.yml"
         },
         "path": {
           "type": "array",
@@ -228,10 +228,6 @@
     "ConfigActionRequest": {
       "type": "object",
       "properties": {
-        "cmd": {
-          "type": "string",
-          "description": "Command."
-        },
         "args": {
           "type": "array",
           "description": "Command arguments.",
@@ -240,6 +236,10 @@
             "description": "Single command argument.",
             "example": "-al"
           }
+        },
+        "cmd": {
+          "type": "string",
+          "description": "Command."
         }
       },
       "required": [

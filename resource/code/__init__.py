@@ -1,4 +1,4 @@
-from error.error.http_not_valid_json import HTTPNotValidJson
+from error.http_not_valid_json import HTTPNotValidJSON
 from resource.base import BaseResource
 from resource.code.polycube import injection
 from schema.code.request import CodeRequestSchema

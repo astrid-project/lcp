@@ -21,7 +21,7 @@ class ArgReader:
 
          add('--polycube-host', '-s', type=str, help='Hostname/IP of Polycube', default=cr.polycube_host)
          add('--polycube-port', '-c', type=int, help='Port of Polycube', default=cr.polycube_port)
-         add('--polycube-timeout', '-w', type=str, help='Timeout for Polycube connection',
+         add('--polycube-timeout', '-m', type=str, help='Timeout for Polycube connection',
                                          default=cr.polycube_timeout)
 
          add('--dev-username', '-u', type=str, help='Authorized username', default=cr.dev_username)
