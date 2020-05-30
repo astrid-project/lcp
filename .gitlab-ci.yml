@@ -1,5 +1,36 @@
 image: "astridproject:python3"
 
+stages:
+  - build
+
+code_quality:
+  stage: build
+  image: docker:stable
+  allow_failure: true
+  services:
+    - docker:stable-dind
+  variables:
+    DOCKER_DRIVER: overlay2
+    DOCKER_TLS_CERTDIR: ""
+  script:
+    - docker info
+    - docker run
+       --env CODECLIMATE_DEBUG=1
+       --env CODECLIMATE_CODE="$PWD"
+       --volume "$PWD":/code
+       --volume /var/run/docker.sock:/var/run/docker.sock
+       --volume /tmp/cc:/tmp/cc
+       codeclimate/codeclimate:0.85.2 analyze -f html > report.html
+    #- cat report.html
+
+  artifacts:
+    paths: [report.html]
+    expire_in: 10 weeks
+  dependencies: []
+  except:
+    variables:
+      - $CODE_QUALITY_DISABLED
+
 lcp:
   script:
     - python3 main.py
