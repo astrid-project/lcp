@@ -1,12 +1,10 @@
-image: "astridproject:python3"
-
 stages:
   - build
   - run
 
 code_quality:
   stage: build
-  image: docker:stable
+    image: docker:stable
   allow_failure: true
   services:
     - docker:stable-dind
@@ -34,5 +32,6 @@ code_quality:
 
 lcp:
   stage: run
+  image: "astridproject:python3"
   script:
     - python3 main.py
