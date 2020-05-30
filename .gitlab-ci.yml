@@ -1,9 +1,8 @@
 stages:
-  - build
-  - run
+  - code-quality
 
 code_quality:
-  stage: build
+  stage: code-quality
   image: docker:stable
   allow_failure: true
   services:
@@ -29,9 +28,3 @@ code_quality:
   except:
     variables:
       - $CODE_QUALITY_DISABLED
-
-lcp:
-  stage: run
-  image: "astridproject:python3"
-  script:
-    - python3 main.py
