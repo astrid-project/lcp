@@ -1,4 +1,4 @@
-image: "astrid/python3"
+image: "astridproject:python3"
 
 lcp:
   script:
