@@ -1,7 +1,7 @@
 stages:
   - code-quality
 
-code_quality:
+codeclimate:
   stage: code-quality
   image: docker:stable
   allow_failure: true
