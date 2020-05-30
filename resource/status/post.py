@@ -1,6 +1,10 @@
 from datetime import datetime
+from docstring import docstring
+from falcon.errors import HTTPUnauthorized
+from reader.arg import ArgReader
 from utils.datetime import datetime_from_str, datetime_to_str
-from utils.docstring import docstring
+from utils.hash import generate_username, generate_password, hash
+from utils.sequence import wrap
 
 
 @docstring(source='status/post.yaml')
@@ -14,7 +18,7 @@ def on_post(self, req, resp):
     username = data.get('username', None) # FIXME how to send username the first connection
     password = data.get('password', None)
     if username and self.auth_db.get(username, None) != hash(password):
-        raise HTTPUnauthorized(dict(title='401 Unauthorized', description='Invalid Username/Password'))
+        raise HTTPUnauthorized(title='401 Unauthorized', description='Invalid Username/Password')
     if not username:
         username = generate_username()
     password = generate_password()

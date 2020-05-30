@@ -1,6 +1,6 @@
 from configparser import ConfigParser
-from log import Log
 from reader.config.env_interpolation import EnvInterpolation
+from utils.log import Log
 
 import git
 

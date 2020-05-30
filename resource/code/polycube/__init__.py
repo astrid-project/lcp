@@ -1,34 +1,37 @@
-from log import Log
-from resource.code.polycube.check import Check
-from resource.code.polycube.cube import Cube
-from resource.code.polycube.interface import Interface
+from json import loads
 from reader.arg import ArgReader
+from requests import get as get_req, HTTPError
+from utils.log import Log
 
 
-def injection(cube, code, interface):
-    host = ArgReader.db.polycube_host
-    port = ArgReader.db.polycube_post
-    endpoint = f'http://{host}:{port}/polycube/v1'
+class Polycube:
+    from resource.code.polycube.error import request_manager
+    from resource.code.polycube.interface import attach, detach
 
-    log = Log.get('polycube')
+    from resource.code.polycube.create import create
+    from resource.code.polycube.update import update
+    from resource.code.polycube.delete import delete
 
-    check = Check(endpoint)
-    check.connection(endpoint)
-    service = check.service_exists(endpoint, cube)
+    def __init__(self):
+        self.host = ArgReader.db.polycube_host
+        self.port = ArgReader.db.polycube_port
+        self.timeout = ArgReader.db.polycube_timeout
+        self.endpoint = f'http://{self.host}:{self.port}/polycube/v1'
+        self.log = Log.get('polycube')
 
-    cube_obj = Cube(endpoint)
-    iface = Interface(endpoint)
-    if service is None:
-        log.info('Create new cube {cube}.')
-        cube_obj.create(endpoint, cube, code)
-        iface.attach(endpoint, cube, interface)
-    else:
-        log.info('Cube {cube} found.')
-        attached_iface = service.get('parent', None)
-        if attached_iface is None:
-            iface.attach(cube, cube)
-            if attached_iface != interface:
-                iface.detach(cube, attached_iface)
-                iface.attach(cube, interface)
-        else:
-            cube_obj.inject(cube, code)
+        self.log.info(f'Check connection to {self.endpoint}')
+        resp_req = get_req(self.endpoint, timeout=ArgReader.db.polycube_timeout)
+        self.request_manager(resp_req)
+
+    def get(self, cube):
+        self.log.info(f'Get info of cube {cube}')
+        try:
+            resp_req = get_req(f'{self.endpoint}/dynmon/{cube}',
+                               timeout=self.timeout)
+            self.request_manager(resp_req)
+            return loads(resp_req.content)
+        except HTTPError:
+            return None
+
+    def resp_from_resp(self, resp):
+        return loads(resp.content) if resp.content else {}

@@ -1,10 +1,10 @@
 from api.spec import Spec
-from auth import auth
 from falcon import API
 from falcon_auth import FalconAuthMiddleware, BasicAuthBackend
 from falcon_marshmallow import Marshmallow
 from resource import routes
 from swagger_ui import falcon_api_doc
+from utils.auth import auth
 
 
 def api(title, version, dev_username, dev_password):

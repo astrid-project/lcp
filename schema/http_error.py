@@ -8,4 +8,4 @@ class HTTPErrorSchema(Schema):
     """
     title = String(required=True, description='Title error', example='400 Bad Request')
     description = String(required=True, description='Human readable message that describes the error.',
-                         example='Could not decode the request body, either because it was not valid JSON or because it was not encoded as UTF-8.')
+                         example='The request body is not a valid JSON or it is not encoded as UTF-8.')

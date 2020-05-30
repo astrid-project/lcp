@@ -1,0 +1,5 @@
+image: "astrid/python3"
+
+lcp:
+  script:
+    - python3 main.py

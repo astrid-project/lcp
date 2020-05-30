@@ -1,9 +1,13 @@
 import os
-import waitress
 
 path = os.path.abspath(__file__)
 dir_path = os.path.dirname(path)
 os.chdir(dir_path)
+
+try:
+    import waitress
+except ImportError:
+    os.system('pip3 install -r requirements.txt')
 
 from api import api
 from reader.arg import ArgReader

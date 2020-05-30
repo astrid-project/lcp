@@ -1,5 +1,5 @@
 from resource.status import StatusResource
-from utils import hash
+from utils.hash import hash
 
 
 def auth(dev_username, dev_password):

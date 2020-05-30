@@ -2,6 +2,7 @@ import coloredlogs
 import logging
 import verboselogs
 
+# TODO Add Indentation adapter
 # FIXME DEBUG level not working
 
 class Log:

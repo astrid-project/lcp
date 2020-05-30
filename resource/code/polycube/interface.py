@@ -1,20 +1,29 @@
-from json import dump
+from json import dumps, loads
 from reader.arg import ArgReader
-from requests import post
-from resource.code.polycube.base import Base
+from requests import post as post_req
 
 
-class Interface(Base):
-    def detach(self, cube, interface):
-        def proc():
-            resp = post(f'{self.endpoint}/detach', dumps({'cube': cube, 'port': interface}),
-                        timeout=ArgReader.db.polycube_timeout)
-            resp.raise_for_status()
-        self.error_(proc)
+def detach(self, cube, interface):
+    data = dict(cube=cube, interface=interface)
 
-    def attach(self, cube, interface):
-        def proc():
-            resp = post(f'{self.endpoint}/attach', dumps({'cube': cube, 'port': interface}),
-                        timeout=ArgReader.db.polycube_timeout)
-            resp.raise_for_status()
-        self.error_manager(proc)
+    body_req = dict(cube=cube, port=interface)
+    resp_req = post_req(f'{self.endpoint}/detach', json=body_req, timeout=self.timeout)
+    self.request_manager(resp_req)
+
+    return dict(status='detached',
+                description='Cube [cube] detached from interface [interface]',
+                data=data,
+                polycube_response=self.resp_from_resp(resp_req))
+
+
+def attach(self, cube, interface):
+    data = dict(cube=cube, interface=interface)
+
+    body_req = dict(cube=cube, port=interface)
+    resp_req = post_req(f'{self.endpoint}/attach', json=body_req, timeout=self.timeout)
+    self.request_manager(resp_req)
+
+    return dict(status='attached',
+                description='Cube [cube] attached to interface [interface]',
+                data=data,
+                polycube_response=self.resp_from_resp(resp_req))

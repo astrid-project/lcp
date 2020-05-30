@@ -21,44 +21,11 @@
   ],
   "paths": {
     "/code": {
-      "get": {},
-      "post": {}
+      "delete": {},
+      "post": {},
+      "put": {}
     },
     "/config": {
-      "get": {
-        "summary": "Configuration update history",
-        "description": "Get the history of configuration updates.",
-        "tags": [
-          "config"
-        ],
-        "responses": {
-          "200": {
-            "description": "History of the configuration updates.",
-            "schema": {
-              "type": "array",
-              "items": {
-                "oneOf": [
-                  "ConfigActionResponseSchema",
-                  "ConfigParameterResponseSchema",
-                  "ConfigResourceResponseSchema"
-                ]
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request.",
-            "schema": {
-              "$ref": "#/definitions/HTTPError"
-            }
-          },
-          "401": {
-            "description": "Unauthorized.",
-            "schema": {
-              "$ref": "#/definitions/HTTPError"
-            }
-          }
-        }
-      },
       "post": {
         "summary": "Configuration update",
         "description": "Apply configuration changes to the local environment.",
@@ -104,27 +71,6 @@
       }
     },
     "/status": {
-      "get": {
-        "summary": "Status info",
-        "description": "Get info about the status of the LCP in the execution environment.",
-        "tags": [
-          "status"
-        ],
-        "responses": {
-          "200": {
-            "description": "Status data of the LCP.",
-            "schema": {
-              "$ref": "#/definitions/StatusResponse"
-            }
-          },
-          "401": {
-            "description": "Unauthorized.",
-            "schema": {
-              "$ref": "#/definitions/HTTPError"
-            }
-          }
-        }
-      },
       "post": {
         "summary": "Status set.",
         "description": "Set the last heartbeat.",
@@ -150,46 +96,22 @@
   },
   "info": {
     "title": "Local Control Plane",
-    "version": "b0b31c4e21dcc04f931adf61d0cb0543154b9b19@master"
+    "version": "bd1a6a7c4d433e29c92915503a4903c368e5a759@master"
   },
   "swagger": "2.0",
   "definitions": {
-    "HTTPError": {
-      "type": "object",
-      "properties": {
-        "title": {
-          "type": "string",
-          "description": "Title error",
-          "example": "400 Bad Request"
-        },
-        "description": {
-          "type": "string",
-          "description": "Human readable message that describes the error.",
-          "example": "Could not decode the request body, either because it was not valid JSON or because it was not encoded as UTF-8."
-        }
-      },
-      "required": [
-        "description",
-        "title"
-      ]
-    },
     "ConfigParameterRequest": {
       "type": "object",
       "properties": {
-        "scheme": {
-          "type": "string",
-          "description": "Scheme.",
-          "example": "yaml"
-        },
-        "value": {
-          "type": "string",
-          "description": "Parameter new value.",
-          "example": "10s"
-        },
         "source": {
           "type": "string",
           "description": "Source filename.",
           "example": "filebeat.yml"
+        },
+        "scheme": {
+          "type": "string",
+          "description": "Scheme.",
+          "example": "yaml"
         },
         "path": {
           "type": "array",
@@ -199,30 +121,17 @@
             "description": "Path item.",
             "example": "period"
           }
+        },
+        "value": {
+          "type": "string",
+          "description": "Parameter new value.",
+          "example": "10s"
         }
       },
       "required": [
         "scheme",
         "source",
         "value"
-      ]
-    },
-    "ConfigResourceRequest": {
-      "type": "object",
-      "properties": {
-        "destination": {
-          "type": "string",
-          "description": "Destination filename",
-          "example": "filebeat.yml"
-        },
-        "content": {
-          "type": "string",
-          "description": "Resource content."
-        }
-      },
-      "required": [
-        "content",
-        "destination"
       ]
     },
     "ConfigActionRequest": {
@@ -246,6 +155,24 @@
         "cmd"
       ]
     },
+    "ConfigResourceRequest": {
+      "type": "object",
+      "properties": {
+        "content": {
+          "type": "string",
+          "description": "Resource content."
+        },
+        "destination": {
+          "type": "string",
+          "description": "Destination filename",
+          "example": "filebeat.yml"
+        }
+      },
+      "required": [
+        "content",
+        "destination"
+      ]
+    },
     "ConfigRequest": {
       "type": "object",
       "properties": {
@@ -256,18 +183,18 @@
             "$ref": "#/definitions/ConfigParameterRequest"
           }
         },
-        "resources": {
-          "description": "List of resources.",
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/ConfigResourceRequest"
-          }
-        },
         "actions": {
           "description": "List of actions.",
           "type": "array",
           "items": {
             "$ref": "#/definitions/ConfigActionRequest"
+          }
+        },
+        "resources": {
+          "description": "List of resources.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ConfigResourceRequest"
           }
         }
       }
@@ -275,14 +202,14 @@
     "ConfigResultResponse": {
       "type": "object",
       "properties": {
+        "type": {
+          "type": "string",
+          "description": "Configuration type."
+        },
         "warning": {
           "type": "string",
           "description": "Warning message",
           "example": "Useless property: id"
-        },
-        "type": {
-          "type": "string",
-          "description": "Configuration type."
         }
       },
       "required": [
@@ -292,17 +219,17 @@
     "ConfigResponse": {
       "type": "object",
       "properties": {
-        "when": {
-          "type": "string",
-          "format": "date-time",
-          "description": "Datetime of the configuration changes",
-          "example": "2020/02/13 15:27:06"
-        },
         "results": {
           "type": "array",
           "items": {
             "$ref": "#/definitions/ConfigResultResponse"
           }
+        },
+        "when": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Datetime of the configuration changes",
+          "example": "2020/02/13 15:27:06"
         }
       },
       "required": [
@@ -310,20 +237,39 @@
         "when"
       ]
     },
+    "HTTPError": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string",
+          "description": "Human readable message that describes the error.",
+          "example": "The request body is not a valid JSON or it is not encoded as UTF-8."
+        },
+        "title": {
+          "type": "string",
+          "description": "Title error",
+          "example": "400 Bad Request"
+        }
+      },
+      "required": [
+        "description",
+        "title"
+      ]
+    },
     "StatusResponse": {
       "type": "object",
       "properties": {
-        "last_heartbeat": {
-          "type": "string",
-          "format": "date-time",
-          "description": "Timestamp of the last hearthbeat between the LCP and the CB",
-          "example": "2019_02_14 15:23:33"
-        },
         "started": {
           "type": "string",
           "format": "date-time",
           "description": "Timestamp when the LCP is started",
           "example": "2019_02_14 15:23:30"
+        },
+        "last_heartbeat": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp of the last hearthbeat between the LCP and the CB",
+          "example": "2019_02_14 15:23:33"
         },
         "id": {
           "type": "string",

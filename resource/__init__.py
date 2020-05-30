@@ -1,8 +1,7 @@
 from resource.code import CodeResource
 from resource.config import ConfigResource
 from resource.status import StatusResource
-
-from log import Log
+from utils.log import Log
 from utils.sequence import wrap
 
 

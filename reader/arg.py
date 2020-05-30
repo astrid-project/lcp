@@ -1,8 +1,7 @@
 from argparse import ArgumentParser
-from log import Log
 from reader.config import ConfigReader
+from utils.log import Log
 from utils.time import get_seconds
-
 
 class ArgReader:
       db = None
@@ -35,7 +34,8 @@ class ArgReader:
          cls.db = ap.parse_args()
          cls.db.config = cr
 
-         for field in ('auth_max_ttl',): setattr(cls.db, field, get_seconds(getattr(cls.db, field)))
+         for field in ('auth_max_ttl', 'polycube_timeout'):
+            setattr(cls.db, field, get_seconds(getattr(cls.db, field)))
 
          if cls.db.write_config: cr.write(cls.db)
 

@@ -1,11 +1,8 @@
-from falcon import HTTPUnauthorized
-from log import Log
-from reader.arg import ArgReader
+from docstring import docstring
 from schema.http_error import HTTPErrorSchema
 from schema.status.response import StatusResponseSchema
 from utils.datetime import datetime_to_str
-from utils.docstring import docstring
-from utils.hash import generate_password, generate_username, hash
+from utils.log import Log
 
 import os
 
@@ -35,9 +32,5 @@ class StatusResource(object):
         :auth_db: input db
         """
         cls.auth_db = auth_db
-
-    @docstring(source='status/get.yaml')
-    def on_get(self, req, resp):
-        req.context['result'] = { **self.data, **dict(auth_db=self.auth_db, cb=self.cb) }
 
     from resource.status.post import on_post
