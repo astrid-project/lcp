@@ -1,10 +1,11 @@
 stages:
   - code-quality
+  - deploy
 
 code-climate:
   stage: code-quality
   image: docker:stable
-  allow_failure: true
+  allow_failure: false
   services:
     - docker:stable-dind
   variables:
@@ -19,8 +20,6 @@ code-climate:
        --volume /var/run/docker.sock:/var/run/docker.sock
        --volume /tmp/cc:/tmp/cc
        codeclimate/codeclimate:0.85.2 analyze -f html > report.html
-    #- cat report.html
-
   artifacts:
     paths: [report.html]
     expire_in: 10 weeks
@@ -28,3 +27,8 @@ code-climate:
   except:
     variables:
       - $CODE_QUALITY_DISABLED
+
+docker-build:
+  stage: deploy
+  trigger:
+    project: astrid-repository/framework

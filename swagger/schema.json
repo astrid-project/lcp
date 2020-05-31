@@ -96,65 +96,10 @@
   },
   "info": {
     "title": "Local Control Plane",
-    "version": "bd1a6a7c4d433e29c92915503a4903c368e5a759@master"
+    "version": "e2d12cf3367ef29fdf763b781bc4406a90eab706@master"
   },
   "swagger": "2.0",
   "definitions": {
-    "ConfigParameterRequest": {
-      "type": "object",
-      "properties": {
-        "source": {
-          "type": "string",
-          "description": "Source filename.",
-          "example": "filebeat.yml"
-        },
-        "scheme": {
-          "type": "string",
-          "description": "Scheme.",
-          "example": "yaml"
-        },
-        "path": {
-          "type": "array",
-          "description": "Key path",
-          "items": {
-            "type": "string",
-            "description": "Path item.",
-            "example": "period"
-          }
-        },
-        "value": {
-          "type": "string",
-          "description": "Parameter new value.",
-          "example": "10s"
-        }
-      },
-      "required": [
-        "scheme",
-        "source",
-        "value"
-      ]
-    },
-    "ConfigActionRequest": {
-      "type": "object",
-      "properties": {
-        "args": {
-          "type": "array",
-          "description": "Command arguments.",
-          "items": {
-            "type": "string",
-            "description": "Single command argument.",
-            "example": "-al"
-          }
-        },
-        "cmd": {
-          "type": "string",
-          "description": "Command."
-        }
-      },
-      "required": [
-        "cmd"
-      ]
-    },
     "ConfigResourceRequest": {
       "type": "object",
       "properties": {
@@ -173,14 +118,62 @@
         "destination"
       ]
     },
+    "ConfigActionRequest": {
+      "type": "object",
+      "properties": {
+        "cmd": {
+          "type": "string",
+          "description": "Command."
+        },
+        "args": {
+          "type": "string",
+          "description": "Single command argument.",
+          "example": "-al"
+        }
+      },
+      "required": [
+        "cmd"
+      ]
+    },
+    "ConfigParameterRequest": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string",
+          "description": "Key path.",
+          "example": "period"
+        },
+        "value": {
+          "type": "string",
+          "description": "Parameter new value.",
+          "example": "10s"
+        },
+        "scheme": {
+          "type": "string",
+          "description": "Scheme.",
+          "example": "yaml"
+        },
+        "source": {
+          "type": "string",
+          "description": "Source filename.",
+          "example": "filebeat.yml"
+        }
+      },
+      "required": [
+        "path",
+        "scheme",
+        "source",
+        "value"
+      ]
+    },
     "ConfigRequest": {
       "type": "object",
       "properties": {
-        "parameters": {
-          "description": "List of parameters.",
+        "resources": {
+          "description": "List of resources.",
           "type": "array",
           "items": {
-            "$ref": "#/definitions/ConfigParameterRequest"
+            "$ref": "#/definitions/ConfigResourceRequest"
           }
         },
         "actions": {
@@ -190,11 +183,11 @@
             "$ref": "#/definitions/ConfigActionRequest"
           }
         },
-        "resources": {
-          "description": "List of resources.",
+        "parameters": {
+          "description": "List of parameters.",
           "type": "array",
           "items": {
-            "$ref": "#/definitions/ConfigResourceRequest"
+            "$ref": "#/definitions/ConfigParameterRequest"
           }
         }
       }
@@ -202,14 +195,14 @@
     "ConfigResultResponse": {
       "type": "object",
       "properties": {
-        "type": {
-          "type": "string",
-          "description": "Configuration type."
-        },
         "warning": {
           "type": "string",
           "description": "Warning message",
           "example": "Useless property: id"
+        },
+        "type": {
+          "type": "string",
+          "description": "Configuration type."
         }
       },
       "required": [
@@ -219,17 +212,17 @@
     "ConfigResponse": {
       "type": "object",
       "properties": {
-        "results": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/ConfigResultResponse"
-          }
-        },
         "when": {
           "type": "string",
           "format": "date-time",
           "description": "Datetime of the configuration changes",
           "example": "2020/02/13 15:27:06"
+        },
+        "results": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ConfigResultResponse"
+          }
         }
       },
       "required": [

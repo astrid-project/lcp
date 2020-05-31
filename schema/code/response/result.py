@@ -6,4 +6,5 @@ class CodeResultResponseSchema(Schema):
     """
     Single item of the code results.
     """
+
     warning = String(description='Warning message.', example='Useless properties: id')

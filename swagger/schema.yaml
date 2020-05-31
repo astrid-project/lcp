@@ -4,12 +4,9 @@ definitions:
   ConfigActionRequest:
     properties:
       args:
-        description: Command arguments.
-        items:
-          description: Single command argument.
-          example: -al
-          type: string
-        type: array
+        description: Single command argument.
+        example: -al
+        type: string
       cmd:
         description: Command.
         type: string
@@ -19,12 +16,9 @@ definitions:
   ConfigParameterRequest:
     properties:
       path:
-        description: Key path
-        items:
-          description: Path item.
-          example: period
-          type: string
-        type: array
+        description: Key path.
+        example: period
+        type: string
       scheme:
         description: Scheme.
         example: yaml
@@ -38,6 +32,7 @@ definitions:
         example: 10s
         type: string
     required:
+    - path
     - scheme
     - source
     - value
@@ -137,7 +132,7 @@ definitions:
     type: object
 info:
   title: Local Control Plane
-  version: bd1a6a7c4d433e29c92915503a4903c368e5a759@master
+  version: e2d12cf3367ef29fdf763b781bc4406a90eab706@master
 paths:
   /code:
     delete: {}
