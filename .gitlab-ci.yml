@@ -3,21 +3,20 @@ docker-build:
   script:
     - "curl -X POST -F token=0fc35482b4ca31b76ad4ee95587028 -F ref=master https://gitlab.com/api/v4/projects/18720527/trigger/pipeline"
 
-rspec:
+code_quality:
+  image: docker:stable
+  variables:
+    DOCKER_DRIVER: overlay2
+  allow_failure: true
+  services:
+    - docker:stable-dind
   script:
-    - bundle install
-    - rspec
+    - export SP_VERSION=$(echo "$CI_SERVER_VERSION" | sed 's/^\([0-9]*\)\.\([0-9]*\).*/\1-\2-stable/')
+    - docker run
+        --env SOURCE_CODE="$PWD"
+        --volume "$PWD":/code
+        --volume /var/run/docker.sock:/var/run/docker.sock
+        "registry.gitlab.com/gitlab-org/ci-cd/codequality:$SP_VERSION" /code
   artifacts:
-    paths:
-      - coverage/
-
-pages:
-  stage: deploy
-  dependencies:
-    - rspec
-  script:
-    - mv coverage/ public/
-  artifacts:
-    paths:
-      - public
-    expire_in: 30 days
+    reports:
+      codequality: gl-code-quality-report.json
