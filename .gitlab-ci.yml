@@ -10,22 +10,11 @@ docker-build:
         - "**/*.yaml"
         - "**/*.docstring"
 
+
+include:
+  - template: Code-Quality.gitlab-ci.yml
+
 code_quality:
-  image: docker:stable
-  variables:
-    DOCKER_DRIVER: overlay2
-    SP_VERSION: 0.85.6
-  services:
-    - docker:stable-dind
-  script:
-    - docker run
-        --env SOURCE_CODE="$PWD"
-        --volume "$PWD":/code
-        --volume /var/run/docker.sock:/var/run/docker.sock
-        "registry.gitlab.com/gitlab-org/ci-cd/codequality:$SP_VERSION" /code
-  artifacts:
-    reports:
-      codequality: gl-code-quality-report.json
   rules:
     - changes:
         - "**/*.py"
