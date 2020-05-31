@@ -2,16 +2,23 @@ docker-build:
   stage: build
   script:
     - "curl -X POST -F token=0fc35482b4ca31b76ad4ee95587028 -F ref=master https://gitlab.com/api/v4/projects/18720527/trigger/pipeline"
+  rules:
+    - changes:
+        - "**/*.py"
+        - "**/*.ini"
+        - "**/*.sh"
+        - "**/*.yaml"
+        - "**/*.docstring"
 
 code_quality:
   image: docker:stable
   variables:
     DOCKER_DRIVER: overlay2
+    SP_VERSION: 0.85.6
   allow_failure: true
   services:
     - docker:stable-dind
   script:
-    - export SP_VERSION=$(echo "$CI_SERVER_VERSION" | sed 's/^\([0-9]*\)\.\([0-9]*\).*/\1-\2-stable/')
     - docker run
         --env SOURCE_CODE="$PWD"
         --volume "$PWD":/code
@@ -20,3 +27,8 @@ code_quality:
   artifacts:
     reports:
       codequality: gl-code-quality-report.json
+  rules:
+    - changes:
+        - "**/*.py"
+        - "**/*.ini"
+        - "**/*.sh"
