@@ -1,6 +1,11 @@
 stages:
+  - deploys
   - code-quality
-  - deploy
+
+docker-build:
+  stage: deploys
+  trigger:
+    project: astrid-repository/framework
 
 code-climate:
   stage: code-quality
@@ -23,12 +28,6 @@ code-climate:
   artifacts:
     paths: [report.html]
     expire_in: 10 weeks
-  dependencies: []
   except:
     variables:
       - $CODE_QUALITY_DISABLED
-
-docker-build:
-  stage: deploy
-  trigger:
-    project: astrid-repository/framework
