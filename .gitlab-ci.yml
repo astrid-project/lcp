@@ -1,4 +1,4 @@
 docker-build:
   stage: build
-  trigger:
-    project: astrid-repository/framework
+  script:
+    - "curl -X POST -F token=0fc35482b4ca31b76ad4ee95587028 -F ref=master https://gitlab.com/api/v4/projects/18720527/trigger/pipeline"
