@@ -2,3 +2,22 @@ docker-build:
   stage: build
   script:
     - "curl -X POST -F token=0fc35482b4ca31b76ad4ee95587028 -F ref=master https://gitlab.com/api/v4/projects/18720527/trigger/pipeline"
+
+rspec:
+  script:
+    - bundle install
+    - rspec
+  artifacts:
+    paths:
+      - coverage/
+
+pages:
+  stage: deploy
+  dependencies:
+    - rspec
+  script:
+    - mv coverage/ public/
+  artifacts:
+    paths:
+      - public
+    expire_in: 30 days
