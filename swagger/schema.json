@@ -96,28 +96,10 @@
   },
   "info": {
     "title": "Local Control Plane",
-    "version": "e2d12cf3367ef29fdf763b781bc4406a90eab706@master"
+    "version": "ef4705579ffcf66562935b0f02c7144ce2dd723d@master"
   },
   "swagger": "2.0",
   "definitions": {
-    "ConfigResourceRequest": {
-      "type": "object",
-      "properties": {
-        "content": {
-          "type": "string",
-          "description": "Resource content."
-        },
-        "destination": {
-          "type": "string",
-          "description": "Destination filename",
-          "example": "filebeat.yml"
-        }
-      },
-      "required": [
-        "content",
-        "destination"
-      ]
-    },
     "ConfigActionRequest": {
       "type": "object",
       "properties": {
@@ -138,25 +120,25 @@
     "ConfigParameterRequest": {
       "type": "object",
       "properties": {
-        "path": {
+        "scheme": {
           "type": "string",
-          "description": "Key path.",
-          "example": "period"
+          "description": "Scheme.",
+          "example": "yaml"
         },
         "value": {
           "type": "string",
           "description": "Parameter new value.",
           "example": "10s"
         },
-        "scheme": {
-          "type": "string",
-          "description": "Scheme.",
-          "example": "yaml"
-        },
         "source": {
           "type": "string",
           "description": "Source filename.",
           "example": "filebeat.yml"
+        },
+        "path": {
+          "type": "string",
+          "description": "Key path.",
+          "example": "period"
         }
       },
       "required": [
@@ -166,16 +148,27 @@
         "value"
       ]
     },
+    "ConfigResourceRequest": {
+      "type": "object",
+      "properties": {
+        "destination": {
+          "type": "string",
+          "description": "Destination filename",
+          "example": "filebeat.yml"
+        },
+        "content": {
+          "type": "string",
+          "description": "Resource content."
+        }
+      },
+      "required": [
+        "content",
+        "destination"
+      ]
+    },
     "ConfigRequest": {
       "type": "object",
       "properties": {
-        "resources": {
-          "description": "List of resources.",
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/ConfigResourceRequest"
-          }
-        },
         "actions": {
           "description": "List of actions.",
           "type": "array",
@@ -189,20 +182,27 @@
           "items": {
             "$ref": "#/definitions/ConfigParameterRequest"
           }
+        },
+        "resources": {
+          "description": "List of resources.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ConfigResourceRequest"
+          }
         }
       }
     },
     "ConfigResultResponse": {
       "type": "object",
       "properties": {
+        "type": {
+          "type": "string",
+          "description": "Configuration type."
+        },
         "warning": {
           "type": "string",
           "description": "Warning message",
           "example": "Useless property: id"
-        },
-        "type": {
-          "type": "string",
-          "description": "Configuration type."
         }
       },
       "required": [
@@ -212,17 +212,17 @@
     "ConfigResponse": {
       "type": "object",
       "properties": {
-        "when": {
-          "type": "string",
-          "format": "date-time",
-          "description": "Datetime of the configuration changes",
-          "example": "2020/02/13 15:27:06"
-        },
         "results": {
           "type": "array",
           "items": {
             "$ref": "#/definitions/ConfigResultResponse"
           }
+        },
+        "when": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Datetime of the configuration changes",
+          "example": "2020/02/13 15:27:06"
         }
       },
       "required": [
@@ -258,16 +258,16 @@
           "description": "Timestamp when the LCP is started",
           "example": "2019_02_14 15:23:30"
         },
+        "id": {
+          "type": "string",
+          "description": "ID of the execution environment.",
+          "example": "apache"
+        },
         "last_heartbeat": {
           "type": "string",
           "format": "date-time",
           "description": "Timestamp of the last hearthbeat between the LCP and the CB",
           "example": "2019_02_14 15:23:33"
-        },
-        "id": {
-          "type": "string",
-          "description": "ID of the execution environment.",
-          "example": "apache"
         }
       },
       "required": [

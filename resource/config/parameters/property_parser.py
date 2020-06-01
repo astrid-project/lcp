@@ -1,4 +1,5 @@
 from jproperties import Properties
+from utils.log import Log
 
 
 def property_parser(type, schema, source, path, value):
@@ -6,7 +7,11 @@ def property_parser(type, schema, source, path, value):
         content = Properties()
         content.load(file, 'utf-8')
         k = '.'.join(path)
-        old_value, _ = content[k]
+        try:
+            old_value, _ = content[k]
+        except Exception as exception:
+            Log.get('property-paper').error(f'exception: {exception}')
+            old_value = None
         if old_value != value:
             content[k] = value
             with open(source, 'wb') as file:

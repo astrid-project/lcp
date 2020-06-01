@@ -132,7 +132,7 @@ definitions:
     type: object
 info:
   title: Local Control Plane
-  version: e2d12cf3367ef29fdf763b781bc4406a90eab706@master
+  version: ef4705579ffcf66562935b0f02c7144ce2dd723d@master
 paths:
   /code:
     delete: {}
