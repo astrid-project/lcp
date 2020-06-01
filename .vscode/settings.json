@@ -4,6 +4,7 @@
         "apispec",
         "atexit",
         "chdir",
+        "gitlab",
         "coloredlogs",
         "datetime",
         "filebeat",

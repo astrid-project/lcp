@@ -9,7 +9,7 @@ gitpython
 jproperties
 pint
 psutil
-pyyaml
+pyyaml>=5.0
 requests
 swagger-ui-py
 ttldict
