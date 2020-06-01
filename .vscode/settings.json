@@ -1,6 +1,6 @@
 {
     "cSpell.words": [
-        "ASTRID",
+        "astrid",
         "apispec",
         "atexit",
         "chdir",
@@ -9,6 +9,8 @@
         "datetime",
         "filebeat",
         "hexsha",
+        "iface",
+        "noninfringement",
         "openapi",
         "pids",
         "proc",
@@ -16,6 +18,7 @@
         "resp",
         "strftime",
         "strptime",
+        "sublicense",
         "ttldict",
         "ureg",
         "use"

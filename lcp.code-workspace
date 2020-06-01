@@ -9,11 +9,6 @@
 		"editor.wordWrap": "on",
 		"editor.wrappingIndent": "deepIndent",
 		"files.insertFinalNewline": true,
-		"cSpell.language": "en-GB",
-		"cSpell.words": [
-			"NONINFRINGEMENT",
-			"iface",
-			"sublicense"
-		]
+		"cSpell.language": "en-GB"
 	}
 }
