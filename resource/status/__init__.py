@@ -17,16 +17,13 @@ class StatusResource(object):
     auth_db = {}
 
     def __init__(self):
-        """
-        Set the data and logger.
-        """
+        """Set the data and logger."""
         self.data = dict(id=None, started=datetime_to_str(), last_hearthbeat=None)
         self.log = Log.get('status')
 
     @classmethod
     def set(cls, auth_db):
-        """
-        Set the authentication db.
+        """Set the authentication db.
 
         :params cls: StatusResource class
         :auth_db: input db

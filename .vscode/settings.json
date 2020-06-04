@@ -7,10 +7,13 @@
         "coloredlogs",
         "datetime",
         "filebeat",
+        "frmt",
         "gitlab",
         "hexsha",
         "iface",
         "jproperties",
+        "kwrd",
+        "kwrds",
         "noninfringement",
         "openapi",
         "pids",
@@ -21,6 +24,7 @@
         "strptime",
         "sublicense",
         "ttldict",
+        "toolz",
         "ureg",
         "use"
     ]

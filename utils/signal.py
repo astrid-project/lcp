@@ -3,12 +3,8 @@ from signal import SIGTERM
 
 
 def send_tree(pid, sig=SIGTERM, include_parent=True, timeout=None, on_terminate=None):
-    """
-    Kill a process tree (including grandchildren) with signal
-    "sig" and return a (gone, still_alive) tuple.
-    "on_terminate", if specified, is a callabck function which is
-    called as soon as a child terminates.
-    """
+    """Kill a process tree (including grandchildren) with signal "sig" and return a (gone, still_alive) tuple.
+       "on_terminate", if specified, is a callabck function which is called as soon as a child terminates."""
     parent = Process(pid)
     children = parent.children(recursive=True)
     if include_parent:

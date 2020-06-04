@@ -12,6 +12,7 @@ psutil
 pyyaml>=5.0
 requests
 swagger-ui-py
+toolz
 ttldict
 verboselogs
 waitress

@@ -6,8 +6,7 @@ Q_ = ureg.Quantity
 
 
 def get_seconds(text, to_int=False):
-    """
-    Parse the text to get the equivalent number of seconds (e.g., 1min => 60).
+    """Parse the text to get the equivalent number of seconds (e.g., 1min => 60).
 
     :params text: input time in human format, e.g.: 1m
     :params to_int: convert to int the result

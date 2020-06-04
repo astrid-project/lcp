@@ -3,13 +3,10 @@ from os import path
 
 
 class EnvInterpolation(BasicInterpolation):
-    """
-    Interpolation which expands environment variables in values.
-    """
+    """Interpolation which expands environment variables in values."""
 
     def before_get(self, parser, section, option, value, defaults):
-        """
-        Executes before getting the value.
+        """Executes before getting the value.
 
         :param self: class instance
         :param parser: configparser instance
