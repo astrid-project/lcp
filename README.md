@@ -17,7 +17,7 @@ In each local agent, the control plane is responsible for programmability, i.e.,
 
 ## Guide
 
-See the [Swagger Schema](swagger.yml) and the relative [documentation](<!-- TODO -->) for more details about the REST endpoints and relative formats and requirements of request and response.
+See the [Swagger Schema](swagger/schema.yaml) for more details about the REST endpoints and relative formats and requirements of request and response.
 
 ## Installation
 
