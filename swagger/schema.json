@@ -96,7 +96,7 @@
   },
   "info": {
     "title": "Local Control Plane",
-    "version": "ef4705579ffcf66562935b0f02c7144ce2dd723d@master"
+    "version": "d1ea3b989168c26ce9b52993734eec6dd9772fd9@master"
   },
   "swagger": "2.0",
   "definitions": {
@@ -111,6 +111,11 @@
           "type": "string",
           "description": "Single command argument.",
           "example": "-al"
+        },
+        "daemon": {
+          "type": "string",
+          "description": "Key used to execute the command as daemon.",
+          "example": "firewall"
         }
       },
       "required": [
@@ -120,25 +125,25 @@
     "ConfigParameterRequest": {
       "type": "object",
       "properties": {
-        "scheme": {
-          "type": "string",
-          "description": "Scheme.",
-          "example": "yaml"
-        },
         "value": {
           "type": "string",
           "description": "Parameter new value.",
           "example": "10s"
         },
-        "source": {
-          "type": "string",
-          "description": "Source filename.",
-          "example": "filebeat.yml"
-        },
         "path": {
           "type": "string",
           "description": "Key path.",
           "example": "period"
+        },
+        "scheme": {
+          "type": "string",
+          "description": "Scheme.",
+          "example": "yaml"
+        },
+        "source": {
+          "type": "string",
+          "description": "Source filename.",
+          "example": "filebeat.yml"
         }
       },
       "required": [
@@ -233,15 +238,15 @@
     "HTTPError": {
       "type": "object",
       "properties": {
-        "description": {
-          "type": "string",
-          "description": "Human readable message that describes the error.",
-          "example": "The request body is not a valid JSON or it is not encoded as UTF-8."
-        },
         "title": {
           "type": "string",
           "description": "Title error",
           "example": "400 Bad Request"
+        },
+        "description": {
+          "type": "string",
+          "description": "Human readable message that describes the error.",
+          "example": "The request body is not a valid JSON or it is not encoded as UTF-8."
         }
       },
       "required": [
@@ -252,6 +257,12 @@
     "StatusResponse": {
       "type": "object",
       "properties": {
+        "last_heartbeat": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2019_02_14 15:23:33",
+          "description": "Timestamp of the last hearthbeat between the LCP and the CB"
+        },
         "started": {
           "type": "string",
           "format": "date-time",
@@ -262,12 +273,6 @@
           "type": "string",
           "description": "ID of the execution environment.",
           "example": "apache"
-        },
-        "last_heartbeat": {
-          "type": "string",
-          "format": "date-time",
-          "description": "Timestamp of the last hearthbeat between the LCP and the CB",
-          "example": "2019_02_14 15:23:33"
         }
       },
       "required": [

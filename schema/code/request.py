@@ -1,11 +1,8 @@
 from marshmallow import Schema
-from marshmallow.fields import String
+from marshmallow.fields import Str
 
 
 class CodeRequestSchema(Schema):
-    """
-    Request for code endpoint.
-    """
-    name = String(required=True, description='Code name.', example='firewall')
-
-    source = String(required=True, description='Code source')
+    """Request for code endpoint."""
+    name = Str(required=True, description='Code name.', example='firewall')
+    source = Str(required=True, description='Code source')

@@ -10,6 +10,10 @@ definitions:
       cmd:
         description: Command.
         type: string
+      daemon:
+        description: Key used to execute the command as daemon.
+        example: firewall
+        type: string
     required:
     - cmd
     type: object
@@ -132,7 +136,7 @@ definitions:
     type: object
 info:
   title: Local Control Plane
-  version: ef4705579ffcf66562935b0f02c7144ce2dd723d@master
+  version: d1ea3b989168c26ce9b52993734eec6dd9772fd9@master
 paths:
   /code:
     delete: {}

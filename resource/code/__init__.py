@@ -1,8 +1,6 @@
 from resource.base import BaseResource
 from schema.code.request import CodeRequestSchema
 from schema.code.response import CodeResponseSchema
-from schema.code.response.injected import CodeInjectedResponseSchema
-from schema.code.response.error import CodeErrorResponseSchema
 from schema.http_error import HTTPErrorSchema
 
 
