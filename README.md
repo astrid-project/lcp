@@ -7,6 +7,7 @@ In each local agent, the control plane is responsible for programmability, i.e.,
 - [Local Control Plane](#local-control-plane)
   - [Guide](#guide)
   - [Installation](#installation)
+  - [Configuration](#configuration)
   - [Usage](#usage)
     - [Display help](#display-help)
     - [Execute](#execute)
@@ -32,11 +33,26 @@ See the [Swagger Schema](swagger.yml) and the relative [documentation](<!-- TODO
    cd lcp
    ```
 
-3. Install the dependencies.
+3. Install the dependencies (optional).
 
    ```bash
    pip3 install -r requirements.txt
    ```
+
+## Configuration
+
+The configurations are stored in the [config.ini](config.ini) file.
+
+Section             | Setting   | Default value   | Note
+--------------------|-----------|-----------------|---------------------------
+local-control-plane | host      | 0.0.0.0         | IP address to accept requests.
+local-control-plane | port      | 4000            | TCP port to accept requests.
+auth                | max-ttl   | 10min           | Maximum TTL of the authorization with the CB-Manager.
+polycube            | host      | localhost       | IP address to contact the polycube installation.
+polycube            | port      | 9000            | Port address to contact the polycube installation.
+polycube            | timeout   | 20s             | Timeout for the connection to polycube.
+dev                 | username  | lcp             | Username for HTTP authentication (for developer use).
+dev                 | password  |                 | Password for HTTP authentication (for developer use).
 
 ## Usage
 
