@@ -8,7 +8,7 @@
         - "**/*.sh"
 
 code_quality:
-  extends: quality
+  extends: .quality
   image: docker:stable
   services:
     - docker:stable-dind
