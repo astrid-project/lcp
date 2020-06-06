@@ -13,8 +13,9 @@ class ConfigActionResponseSchema(ConfigResultResponseSchema):
     """Action part in a single item of the config response."""
     execute = Str(required=True, description='Command executed.',
                   example='ls -al')
-    stdout = Str(description='Standard output of the execution.')
-    stderr = Str(description='Standard error output of the execution.')
+    stdout = Str(description='Standard output of the execution.', many=True)
+    stderr = Str(description='Standard error output of the execution.', many=True)
+    daemon = Str(description='Key used to execute the command as daemon.', example='firewall')
     return_code = Integer(data_key='return-code', required=True,
                           description='Exit code of the execution (0: no error).', example=0)
 

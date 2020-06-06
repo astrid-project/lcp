@@ -96,13 +96,23 @@
   },
   "info": {
     "title": "Local Control Plane",
-    "version": "cd98692ab9ea4889bb92f0a9ef26292f4aaff62e@master"
+    "version": "5432b1228feceddb87132396156a6f935d000067@master"
   },
   "swagger": "2.0",
   "definitions": {
     "ConfigParameterRequest": {
       "type": "object",
       "properties": {
+        "path": {
+          "type": "string",
+          "description": "Key path.",
+          "example": "period"
+        },
+        "source": {
+          "type": "string",
+          "description": "Source filename.",
+          "example": "filebeat.yml"
+        },
         "value": {
           "type": "string",
           "description": "Parameter new value.",
@@ -112,16 +122,6 @@
           "type": "string",
           "description": "Scheme.",
           "example": "yaml"
-        },
-        "source": {
-          "type": "string",
-          "description": "Source filename.",
-          "example": "filebeat.yml"
-        },
-        "path": {
-          "type": "string",
-          "description": "Key path.",
-          "example": "period"
         }
       },
       "required": [
@@ -129,28 +129,6 @@
         "scheme",
         "source",
         "value"
-      ]
-    },
-    "ConfigActionRequest": {
-      "type": "object",
-      "properties": {
-        "args": {
-          "type": "string",
-          "description": "Single command argument.",
-          "example": "-al"
-        },
-        "daemon": {
-          "type": "string",
-          "description": "Key used to execute the command as daemon.",
-          "example": "firewall"
-        },
-        "cmd": {
-          "type": "string",
-          "description": "Command."
-        }
-      },
-      "required": [
-        "cmd"
       ]
     },
     "ConfigResourceRequest": {
@@ -171,6 +149,28 @@
         "destination"
       ]
     },
+    "ConfigActionRequest": {
+      "type": "object",
+      "properties": {
+        "daemon": {
+          "type": "string",
+          "description": "Key used to execute the command as daemon.",
+          "example": "firewall"
+        },
+        "cmd": {
+          "type": "string",
+          "description": "Command."
+        },
+        "args": {
+          "type": "string",
+          "description": "Single command argument.",
+          "example": "-al"
+        }
+      },
+      "required": [
+        "cmd"
+      ]
+    },
     "ConfigRequest": {
       "type": "object",
       "properties": {
@@ -181,18 +181,18 @@
             "$ref": "#/definitions/ConfigParameterRequest"
           }
         },
-        "actions": {
-          "description": "List of actions.",
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/ConfigActionRequest"
-          }
-        },
         "resources": {
           "description": "List of resources.",
           "type": "array",
           "items": {
             "$ref": "#/definitions/ConfigResourceRequest"
+          }
+        },
+        "actions": {
+          "description": "List of actions.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ConfigActionRequest"
           }
         }
       }
@@ -200,14 +200,14 @@
     "ConfigResultResponse": {
       "type": "object",
       "properties": {
+        "type": {
+          "type": "string",
+          "description": "Configuration type."
+        },
         "warning": {
           "type": "string",
           "description": "Warning message",
           "example": "Useless property: id"
-        },
-        "type": {
-          "type": "string",
-          "description": "Configuration type."
         }
       },
       "required": [
@@ -257,6 +257,12 @@
     "StatusResponse": {
       "type": "object",
       "properties": {
+        "started": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when the LCP is started",
+          "example": "2019_02_14 15:23:30"
+        },
         "last_heartbeat": {
           "type": "string",
           "format": "date-time",
@@ -267,12 +273,6 @@
           "type": "string",
           "description": "ID of the execution environment.",
           "example": "apache"
-        },
-        "started": {
-          "type": "string",
-          "format": "date-time",
-          "description": "Timestamp when the LCP is started",
-          "example": "2019_02_14 15:23:30"
         }
       },
       "required": [

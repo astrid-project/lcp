@@ -1,3 +1,4 @@
+from utils.json import loads
 from utils.sequence import exclude_keys
 from utils.signal import send_tree
 
@@ -29,25 +30,30 @@ def make_actions(self, data):
                         output = dict(type=type, cmd=cmd, daemon=daemon, pid=daemon_pid)
                     except Exception as exception:
                         self.log.error(f'Exception: {exception}')
-                        output = dict(error=True, type=type, data=data,
-                                      description=f'{cmd.replace("@", "").title()} {daemon} not possible',
-                                      exception=str(exception))
+                        output = dict(error=True, type=type, data=data, exception=str(exception),
+                                      description=f'{cmd.replace("@", "").title()} {daemon} not possible')
         else:
-            run = cmd + ' ' + ' '.join(data.get('args', ''))
-            try:
-                if not daemon:
-                    proc = sp.run(run, check=True, shell=True, stdout=sp.PIPE, stderr=sp.PIPE, universal_newlines=True)
-                    output = dict(type=type, executed=run, stdout=proc.stdout,
-                                    stderr=proc.stderr, **{'return-code': proc.returncode})
-                else:
-                    proc = sp.Popen(run, stdout=sp.PIPE, stderr=sp.PIPE, shell=True,
-                                    creationflags=sp.DETACHED_PROCESS, start_new_session=True)
-                    self.daemon_pids[daemon] = proc.pid
-                    output = dict(type=type, executed=run, daemon=daemon)
-            except Exception as exception:
-                self.log.error(f'Exception: {exception}')
-                output = dict(error=True, type=type, data=data,
-                              description=str(exception))
+            run = ' '.join([cmd] + data.get('args', []))
+            if not daemon:
+                proc = sp.run(run, check=False, shell=True,
+                              stdout=sp.PIPE, stderr=sp.PIPE, universal_newlines=True)
+            else:
+                proc = sp.Popen(run, shell=True, stdout=sp.PIPE, stderr=sp.PIPE,
+                                creationflags=sp.DETACHED_PROCESS, start_new_session=True)
+                self.daemon_pids[daemon] = proc.pid
+            output = dict(type=type, error=proc.returncode != 0, executed=run,
+                            **{'return-code': proc.returncode})
+            if proc.stdout:
+                try:
+                    output['stdout'] = loads(proc.stdout)
+                except:
+                    output['stdout'] = proc.stdout.splitlines()
+            if proc.stderr:
+                try:
+                    output['stderr'] = loads(proc.stderr)
+                except:
+                    output['stderr'] = proc.stderr.splitlines()
+            if daemon: output['daemon'] = daemon
     useless_properties = exclude_keys(data, 'cmd', 'args', 'daemon')
     if len(useless_properties) > 0:
         output['warning'] = f'Useless properties: {", ".join(useless_properties.keys())}'
