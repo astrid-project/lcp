@@ -27,7 +27,3 @@ code_quality:
   artifacts:
     paths: [report.html]
     expire_in: 10 weeks
-  dependencies: []
-  except:
-    variables:
-      - $CODE_QUALITY_DISABLED
