@@ -42,8 +42,7 @@ class ConfigParameterResponseSchema(ConfigResultResponseSchema):
 
 class ConfigResourceResponseSchema(ConfigResultResponseSchema):
     """Resource part in a single item of the config response."""
-    destination = Str(required=True, example='filebeat.yml',
-                      description='Destination filename')
+    path = Str(required=True, example='filebeat.yml', description='File path')
 
 
 class ConfigErrorResponseSchema(ConfigResultResponseSchema):

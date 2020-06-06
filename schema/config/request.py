@@ -19,7 +19,7 @@ class ConfigParameterRequestSchema(Schema):
 
 class ConfigResourceRequestSchema(Schema):
     """Resource part in a single item of the code request."""
-    destination = Str(required=True, description='Destination filename', example='filebeat.yml')
+    path = Str(required=True, description='File path', example='filebeat.yml')
     content = Str(required=True, description='Resource content.')
 
 

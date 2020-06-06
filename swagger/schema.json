@@ -96,18 +96,13 @@
   },
   "info": {
     "title": "Local Control Plane",
-    "version": "5432b1228feceddb87132396156a6f935d000067@master"
+    "version": "200af8053a09827bbce66c967d69231b88c59d55@master"
   },
   "swagger": "2.0",
   "definitions": {
     "ConfigParameterRequest": {
       "type": "object",
       "properties": {
-        "path": {
-          "type": "string",
-          "description": "Key path.",
-          "example": "period"
-        },
         "source": {
           "type": "string",
           "description": "Source filename.",
@@ -117,6 +112,11 @@
           "type": "string",
           "description": "Parameter new value.",
           "example": "10s"
+        },
+        "path": {
+          "type": "string",
+          "description": "Key path.",
+          "example": "period"
         },
         "scheme": {
           "type": "string",
@@ -131,27 +131,14 @@
         "value"
       ]
     },
-    "ConfigResourceRequest": {
-      "type": "object",
-      "properties": {
-        "destination": {
-          "type": "string",
-          "description": "Destination filename",
-          "example": "filebeat.yml"
-        },
-        "content": {
-          "type": "string",
-          "description": "Resource content."
-        }
-      },
-      "required": [
-        "content",
-        "destination"
-      ]
-    },
     "ConfigActionRequest": {
       "type": "object",
       "properties": {
+        "args": {
+          "type": "string",
+          "description": "Single command argument.",
+          "example": "-al"
+        },
         "daemon": {
           "type": "string",
           "description": "Key used to execute the command as daemon.",
@@ -160,15 +147,28 @@
         "cmd": {
           "type": "string",
           "description": "Command."
-        },
-        "args": {
-          "type": "string",
-          "description": "Single command argument.",
-          "example": "-al"
         }
       },
       "required": [
         "cmd"
+      ]
+    },
+    "ConfigResourceRequest": {
+      "type": "object",
+      "properties": {
+        "content": {
+          "type": "string",
+          "description": "Resource content."
+        },
+        "path": {
+          "type": "string",
+          "description": "File path",
+          "example": "filebeat.yml"
+        }
+      },
+      "required": [
+        "content",
+        "path"
       ]
     },
     "ConfigRequest": {
@@ -181,18 +181,18 @@
             "$ref": "#/definitions/ConfigParameterRequest"
           }
         },
-        "resources": {
-          "description": "List of resources.",
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/ConfigResourceRequest"
-          }
-        },
         "actions": {
           "description": "List of actions.",
           "type": "array",
           "items": {
             "$ref": "#/definitions/ConfigActionRequest"
+          }
+        },
+        "resources": {
+          "description": "List of resources.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ConfigResourceRequest"
           }
         }
       }
@@ -200,14 +200,14 @@
     "ConfigResultResponse": {
       "type": "object",
       "properties": {
-        "type": {
-          "type": "string",
-          "description": "Configuration type."
-        },
         "warning": {
           "type": "string",
           "description": "Warning message",
           "example": "Useless property: id"
+        },
+        "type": {
+          "type": "string",
+          "description": "Configuration type."
         }
       },
       "required": [
@@ -263,16 +263,16 @@
           "description": "Timestamp when the LCP is started",
           "example": "2019_02_14 15:23:30"
         },
+        "id": {
+          "type": "string",
+          "description": "ID of the execution environment.",
+          "example": "apache"
+        },
         "last_heartbeat": {
           "type": "string",
           "format": "date-time",
           "example": "2019_02_14 15:23:33",
           "description": "Timestamp of the last hearthbeat between the LCP and the CB"
-        },
-        "id": {
-          "type": "string",
-          "description": "ID of the execution environment.",
-          "example": "apache"
         }
       },
       "required": [

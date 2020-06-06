@@ -64,13 +64,13 @@ definitions:
       content:
         description: Resource content.
         type: string
-      destination:
-        description: Destination filename
+      path:
+        description: File path
         example: filebeat.yml
         type: string
     required:
     - content
-    - destination
+    - path
     type: object
   ConfigResponse:
     properties:
@@ -136,7 +136,7 @@ definitions:
     type: object
 info:
   title: Local Control Plane
-  version: 5432b1228feceddb87132396156a6f935d000067@master
+  version: 200af8053a09827bbce66c967d69231b88c59d55@master
 paths:
   /code:
     delete: {}
