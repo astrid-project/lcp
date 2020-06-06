@@ -1,22 +1,33 @@
-docker-build:
-  stage: build
-  script:
-    - "curl -X POST -F token=0fc35482b4ca31b76ad4ee95587028 -F ref=master https://gitlab.com/api/v4/projects/18720527/trigger/pipeline"
+.quality:
+  stage: test
+  allow_failure: true
   rules:
     - changes:
         - "**/*.py"
         - "**/*.ini"
         - "**/*.sh"
-        - "**/*.yaml"
-        - "**/*.docstring"
-
-
-include:
-  - template: Code-Quality.gitlab-ci.yml
 
 code_quality:
-  rules:
-    - changes:
-        - "**/*.py"
-        - "**/*.ini"
-        - "**/*.sh"
+  extends: quality
+  image: docker:stable
+  services:
+    - docker:stable-dind
+  variables:
+    DOCKER_DRIVER: overlay2
+    DOCKER_TLS_CERTDIR: ""
+  script:
+    - docker info
+    - docker run
+       --env CODECLIMATE_DEBUG=1
+       --env CODECLIMATE_CODE="$PWD"
+       --volume "$PWD":/code
+       --volume /var/run/docker.sock:/var/run/docker.sock
+       --volume /tmp/cc:/tmp/cc
+       codeclimate/codeclimate:0.85.2 analyze -f html > report.html
+  artifacts:
+    paths: [report.html]
+    expire_in: 10 weeks
+  dependencies: []
+  except:
+    variables:
+      - $CODE_QUALITY_DISABLED
