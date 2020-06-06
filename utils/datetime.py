@@ -11,7 +11,7 @@ def datetime_from_str(date_time_str, format='%Y/%m/%d %H:%M:%S'):
     return datetime.strptime(date_time_str, format)
 
 
-def datetime_to_str(date_time = None, format='%Y/%m/%d %H:%M:%S'):
+def datetime_to_str(date_time=None, format='%Y/%m/%d %H:%M:%S'):
     """Convert the datetime to string in the given format.
 
     :params data_time: datetime input

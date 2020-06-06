@@ -1,7 +1,8 @@
 from utils.sequence import exclude_keys
 
+
 def get_none(**vars):
-    """Get the keys that are None value.
+    """ Get the keys that are None value.
 
     :param vars: key/value arguments
     :returns: keys with value = None

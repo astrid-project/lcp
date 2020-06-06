@@ -14,11 +14,13 @@ def on_post(self, req, resp):
     self.data['id'] = id
     cb_expiration = data.get('cb_expiration', None)
     self.cb = dict(password=data.get('cb_password', None), expiration=cb_expiration,
-                    host=req.host, port=req.port)
-    username = data.get('username', None) # FIXME how to send username the first connection
+                   host=req.host, port=req.port)
+    # FIXME how to send username the first connection
+    username = data.get('username', None)
     password = data.get('password', None)
     if username and self.auth_db.get(username, None) != hash(password):
-        raise HTTPUnauthorized(title='401 Unauthorized', description='Invalid Username/Password')
+        raise HTTPUnauthorized(title='401 Unauthorized',
+                               description='Invalid Username/Password')
     if not username:
         username = generate_username()
     password = generate_password()
@@ -29,7 +31,9 @@ def on_post(self, req, resp):
         now = datetime_to_str()
         self.data['last_hearthbeat'] = now
         if ArgReader.db.log_level == 'DEBUG':
-            self.log.notice(f'Hearbeating from CB at {now} (password: {self.cb.get("password", None)} - expiration: {self.cb. get("expiration", None)})')
+            self.log.notice(
+                f'Hearbeating from CB at {now} (password: {self.cb.get("password", None)} - expiration: {self.cb. get("expiration", None)})')
         else:
             self.log.notice(f'Hearbeating from CB at {now}')
-    req.context['result'] = dict(**self.data, username=username, password=password)
+    req.context['result'] = dict(
+        **self.data, username=username, password=password)

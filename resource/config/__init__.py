@@ -27,12 +27,18 @@ class ConfigResource(BaseResource):
             for config in wrap(data):
                 for cfg, cfg_list in config.items():
                     for data in wrap(cfg_list):
-                        if cfg == 'actions': output = self.make_actions(data)
-                        elif cfg == 'parameters': output = self.make_parameters(data)
-                        elif cfg == 'resources': output = self.make_resources(data)
-                        else: output = dict(type=cfg, error=True, description='Request type unknown')
+                        if cfg == 'actions':
+                            output = self.make_actions(data)
+                        elif cfg == 'parameters':
+                            output = self.make_parameters(data)
+                        elif cfg == 'resources':
+                            output = self.make_resources(data)
+                        else:
+                            output = dict(type=cfg, error=True,
+                                          description='Request type unknown')
                         res['results'].append(output)
             req.context['result'] = res
-        else: raise HTTPBadRequest(
-            title='Not valid JSON',
-            description='The request body is not a valid JSON or it is not encoded as UTF-8.')
+        else:
+            raise HTTPBadRequest(
+                title='Not valid JSON',
+                description='The request body is not a valid JSON or it is not encoded as UTF-8.')

@@ -5,6 +5,7 @@ import verboselogs
 # TODO Add Indentation adapter
 # FIXME DEBUG level not working
 
+
 class Log:
     """Wrapper class for coloured and verbuse logs."""
     levels = {}
@@ -21,7 +22,7 @@ class Log:
         verboselogs.install()
         coloredlogs.install()
         cls.default = default
-        cls.levels = { module: level for module, level in levels}
+        cls.levels = {module: level for module, level in levels}
         for module, level in levels:
             logging.getLogger(module).setLevel(level)
 

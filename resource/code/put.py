@@ -6,7 +6,7 @@ from utils.datetime import datetime_to_str
 from utils.sequence import wrap
 
 
-#@docstring(source='code/put.yaml') #FIXME
+# @docstring(source='code/put.yaml') #FIXME
 def on_put(self, req, resp):
     json = req.context.get('json', None)
     if json is not None:
@@ -14,9 +14,11 @@ def on_put(self, req, resp):
         req_ctx_res = dict(when=datetime_to_str(), results=[])
 
         for data in wrap(json):
-            id, code, interface, metrics, output = get_data(data, 'id', 'code', 'interface', 'metrics')
+            id, code, interface, metrics, output = get_data(
+                data, 'id', 'code', 'interface', 'metrics')
             if all([id, code, interface]):
-                output.update(polycube.update(cube=id, code=code, interface=interface, metrics=metrics))
+                output.update(polycube.update(cube=id, code=code,
+                                              interface=interface, metrics=metrics))
             req_ctx_res['results'].append(output)
 
         req.context['result'] = req_ctx_res

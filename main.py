@@ -5,15 +5,14 @@ dir_path = os.path.dirname(path)
 os.chdir(dir_path)
 
 try:
+    from werkzeug.serving import run_with_reloader
+    from ttldict import TTLOrderedDict
+    from resource.status import StatusResource
+    from reader.arg import ArgReader
+    from api import api
     import waitress
 except ImportError:
     os.system('pip3 install -r requirements.txt')
-
-from api import api
-from reader.arg import ArgReader
-from resource.status import StatusResource
-from ttldict import  TTLOrderedDict
-from werkzeug.serving import run_with_reloader
 
 
 db = ArgReader.read()
@@ -28,8 +27,9 @@ else:
 
     @run_with_reloader
     def run_server():
+        u, p = db.dev_username, db.dev_password
         waitress.serve(api(title=db.config.title, version=db.config.version,
-                           dev_username=db.dev_username, dev_password=db.dev_password),
-                           host=db.host, port=db.port)
+                           dev_username=u, dev_password=p),
+                       host=db.host, port=db.port)
 
     run_server()

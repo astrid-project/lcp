@@ -1,4 +1,5 @@
 apispec
+bandit
 colorama
 coloredlogs
 falcon
@@ -9,6 +10,8 @@ gitpython
 jproperties
 pint
 psutil
+pycodestyle
+pydocstyle
 pyyaml>=5.0
 requests
 swagger-ui-py

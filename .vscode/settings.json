@@ -3,9 +3,12 @@
         "astrid",
         "apispec",
         "atexit",
+        "certdir",
         "chdir",
+        "codeclimate",
         "coloredlogs",
         "datetime",
+        "dind",
         "filebeat",
         "frmt",
         "gitlab",
@@ -18,6 +21,8 @@
         "openapi",
         "pids",
         "proc",
+        "pycodestyle",
+        "pydocstyle",
         "reloader",
         "resp",
         "strftime",
@@ -26,6 +31,7 @@
         "ttldict",
         "toolz",
         "ureg",
-        "use"
+        "use",
+        "werkzeug"
     ]
 }

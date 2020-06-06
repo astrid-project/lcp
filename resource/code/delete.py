@@ -6,7 +6,7 @@ from utils.datetime import datetime_to_str
 from utils.sequence import wrap
 
 
-#@docstring(source='code/post.yaml') #FIXME
+# @docstring(source='code/post.yaml') # FIXME
 def on_delete(self, req, resp):
     json = req.context.get('json', None)
     if json is not None:
