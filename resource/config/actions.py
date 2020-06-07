@@ -2,6 +2,7 @@ from utils.json import loads
 from utils.sequence import exclude_keys
 from utils.signal import send_tree
 
+import signal
 import subprocess as sp
 
 
