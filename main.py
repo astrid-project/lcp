@@ -6,14 +6,12 @@ os.chdir(dir_path)
 
 try:
     from werkzeug.serving import run_with_reloader
-    from ttldict import TTLOrderedDict
-    from resource.status import StatusResource
     from reader.arg import ArgReader
     from api import api
     import waitress
-except ImportError:
+except ImportError as error:
+    print(error)
     os.system('pip3 install -r requirements.txt')
-
 
 db = ArgReader.read()
 
@@ -23,8 +21,6 @@ print(f'{db.config.title} version:{db.config.version}')
 if db.version is not None:
     print(db.version)
 else:
-    StatusResource.set(TTLOrderedDict(default_ttl=int(db.auth_max_ttl)))
-
     @run_with_reloader
     def run_server():
         u, p = db.dev_username, db.dev_password

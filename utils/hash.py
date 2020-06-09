@@ -8,7 +8,10 @@ def hash(text):
     :param text: text to make the hash
     :returns: hashed version of the text
     """
-    return hashlib.sha256(text.encode('utf-8')).hexdigest()
+    if text is not None:
+        return hashlib.sha256(text.encode('utf-8')).hexdigest()
+    else:
+        return None
 
 
 def generate_username():

@@ -1,7 +1,7 @@
-Inject code at run-time in the local environment.
+Update the injected code at run-time in the local environment.
 ---
-summary: Code injection
-description: Inject code at run-time in the local environment.
+summary: Update injected code
+description: Update the injected code at run-time in the local environment.
 parameters:
   - name: payload
     required: true

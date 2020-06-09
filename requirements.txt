@@ -5,9 +5,10 @@ coloredlogs
 falcon
 falcon-apispec
 falcon-auth
-falcon-marshmallow
 gitpython
 jproperties
+pint
+msgpack
 pint
 psutil
 pycodestyle

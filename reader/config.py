@@ -1,5 +1,5 @@
-from configparser import ConfigParser
-from reader.config.env_interpolation import EnvInterpolation
+from configparser import BasicInterpolation, ConfigParser
+from os import path
 from utils.log import Log
 
 import git
@@ -10,7 +10,7 @@ class ConfigReader:
         repo = git.Repo(search_parent_directories=True)
         self.version = f'{repo.head.object.hexsha}@{repo.active_branch}'
 
-        self.cr = ConfigParser(interpolation=EnvInterpolation())
+        self.cr = ConfigParser(interpolation=ConfigReader.EnvInterpolation())
         self.cr.read('config.ini')
 
         self.title = self.cr.get('info', 'title')
@@ -38,3 +38,19 @@ class ConfigReader:
 
         with open('config.ini', 'w') as f:
             self.cr.write(f)
+
+    class EnvInterpolation(BasicInterpolation):
+        """Interpolation which expands environment variables in values."""
+
+        def before_get(self, parser, section, option, value, defaults):
+            """Executes before getting the value.
+
+            :param self: class instance
+            :param parser: configparser instance
+            :param section: section value
+            :param option: option value
+            :param value: current value
+            :param defaults: default values
+            :returns value with expanded variables
+            """
+            return path.expandvars(value)

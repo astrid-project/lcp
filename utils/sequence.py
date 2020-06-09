@@ -25,6 +25,10 @@ def format(elements, data):
     return list(map(element_map, wrap(elements)))
 
 
+def is_list(obj):
+    return isinstance(obj, list)
+
+
 def iterate(source, *keys):
     """Iterate a nested dict based on list of keys
 

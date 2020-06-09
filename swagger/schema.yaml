@@ -1,6 +1,41 @@
 consumes:
 - application/json
 definitions:
+  CodeRequest:
+    properties:
+      name:
+        description: Code name.
+        example: firewall
+        type: string
+      source:
+        description: Code source
+        type: string
+    required:
+    - name
+    - source
+    type: object
+  CodeResponse:
+    properties:
+      results:
+        items:
+          $ref: '#/definitions/CodeResultResponse'
+        type: array
+      when:
+        description: Datetime of the configuration changes.
+        example: 2020/02/13 15:27:06
+        format: date-time
+        type: string
+    required:
+    - results
+    - when
+    type: object
+  CodeResultResponse:
+    properties:
+      warning:
+        description: Warning message.
+        example: 'Useless properties: id'
+        type: string
+    type: object
   ConfigActionRequest:
     properties:
       args:
@@ -20,11 +55,17 @@ definitions:
   ConfigParameterRequest:
     properties:
       path:
-        description: Key path.
-        example: period
-        type: string
-      scheme:
+        items:
+          description: Key path.
+          example: period
+          type: string
+        type: array
+      schema:
         description: Scheme.
+        enum:
+        - json
+        - yaml
+        - properties
         example: yaml
         type: string
       source:
@@ -36,8 +77,7 @@ definitions:
         example: 10s
         type: string
     required:
-    - path
-    - scheme
+    - schema
     - source
     - value
     type: object
@@ -88,16 +128,7 @@ definitions:
     - when
     type: object
   ConfigResultResponse:
-    properties:
-      type:
-        description: Configuration type.
-        type: string
-      warning:
-        description: Warning message
-        example: 'Useless property: id'
-        type: string
-    required:
-    - type
+    properties: {}
     type: object
   HTTPError:
     properties:
@@ -120,14 +151,20 @@ definitions:
         example: apache
         type: string
       last_heartbeat:
-        description: Timestamp of the last hearthbeat between the LCP and the CB
-        example: 2019_02_14 15:23:33
+        description: Timestamp of the expiration of the API access configuration.
+        example: 2019/02/14 15:23:33
         format: date-time
+        type: string
+      password:
+        description: Password for the CB to connect to this LCP.
         type: string
       started:
         description: Timestamp when the LCP is started
-        example: 2019_02_14 15:23:30
+        example: 2019/02/14 15:23:30
         format: date-time
+        type: string
+      username:
+        description: Username for the CB to connect to this LCP.
         type: string
     required:
     - id
@@ -136,12 +173,87 @@ definitions:
     type: object
 info:
   title: Local Control Plane
-  version: 745cba246f75aa378787f350ed3f73634687c635@master
+  version: 38d7a241e58adb8644144fc7201688addb15dbbe@master
 paths:
-  /code:
-    delete: {}
-    post: {}
-    put: {}
+  /code/{id}:
+    delete:
+      description: Inject code at run-time in the local environment.
+      parameters:
+      - in: body
+        name: payload
+        required: true
+        schema:
+          items:
+            $ref: '#/definitions/CodeRequest'
+          type: array
+      responses:
+        '200':
+          description: Code injection executed.
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '400':
+          description: Bad Request.
+          schema:
+            $ref: '#/definitions/HTTPError'
+        '401':
+          description: Unauthorized.
+          schema:
+            $ref: '#/definitions/HTTPError'
+      summary: Code injection
+      tags:
+      - code
+    post:
+      description: Inject code at run-time in the local environment.
+      parameters:
+      - in: body
+        name: payload
+        required: true
+        schema:
+          items:
+            $ref: '#/definitions/CodeRequest'
+          type: array
+      responses:
+        '200':
+          description: Code injection executed.
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '400':
+          description: Bad Request.
+          schema:
+            $ref: '#/definitions/HTTPError'
+        '401':
+          description: Unauthorized.
+          schema:
+            $ref: '#/definitions/HTTPError'
+      summary: Code injection
+      tags:
+      - code
+    put:
+      description: Update the injected code at run-time in the local environment.
+      parameters:
+      - in: body
+        name: payload
+        required: true
+        schema:
+          items:
+            $ref: '#/definitions/CodeRequest'
+          type: array
+      responses:
+        '200':
+          description: Code injection executed.
+          schema:
+            $ref: '#/definitions/CodeResponse'
+        '400':
+          description: Bad Request.
+          schema:
+            $ref: '#/definitions/HTTPError'
+        '401':
+          description: Unauthorized.
+          schema:
+            $ref: '#/definitions/HTTPError'
+      summary: Update injected code
+      tags:
+      - code
   /config:
     post:
       description: Apply configuration changes to the local environment.
@@ -172,6 +284,7 @@ paths:
       tags:
       - config
   /status:
+    get: {}
     post:
       description: Set the last heartbeat.
       responses:

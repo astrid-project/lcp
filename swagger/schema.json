@@ -20,10 +20,127 @@
     }
   ],
   "paths": {
-    "/code": {
-      "delete": {},
-      "post": {},
-      "put": {}
+    "/code/{id}": {
+      "delete": {
+        "summary": "Code injection",
+        "description": "Inject code at run-time in the local environment.",
+        "parameters": [
+          {
+            "name": "payload",
+            "required": true,
+            "in": "body",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/CodeRequest"
+              }
+            }
+          }
+        ],
+        "tags": [
+          "code"
+        ],
+        "responses": {
+          "200": {
+            "description": "Code injection executed.",
+            "schema": {
+              "$ref": "#/definitions/CodeResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request.",
+            "schema": {
+              "$ref": "#/definitions/HTTPError"
+            }
+          },
+          "401": {
+            "description": "Unauthorized.",
+            "schema": {
+              "$ref": "#/definitions/HTTPError"
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Code injection",
+        "description": "Inject code at run-time in the local environment.",
+        "parameters": [
+          {
+            "name": "payload",
+            "required": true,
+            "in": "body",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/CodeRequest"
+              }
+            }
+          }
+        ],
+        "tags": [
+          "code"
+        ],
+        "responses": {
+          "200": {
+            "description": "Code injection executed.",
+            "schema": {
+              "$ref": "#/definitions/CodeResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request.",
+            "schema": {
+              "$ref": "#/definitions/HTTPError"
+            }
+          },
+          "401": {
+            "description": "Unauthorized.",
+            "schema": {
+              "$ref": "#/definitions/HTTPError"
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Update injected code",
+        "description": "Update the injected code at run-time in the local environment.",
+        "parameters": [
+          {
+            "name": "payload",
+            "required": true,
+            "in": "body",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/CodeRequest"
+              }
+            }
+          }
+        ],
+        "tags": [
+          "code"
+        ],
+        "responses": {
+          "200": {
+            "description": "Code injection executed.",
+            "schema": {
+              "$ref": "#/definitions/CodeResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request.",
+            "schema": {
+              "$ref": "#/definitions/HTTPError"
+            }
+          },
+          "401": {
+            "description": "Unauthorized.",
+            "schema": {
+              "$ref": "#/definitions/HTTPError"
+            }
+          }
+        }
+      }
     },
     "/config": {
       "post": {
@@ -71,6 +188,7 @@
       }
     },
     "/status": {
+      "get": {},
       "post": {
         "summary": "Status set.",
         "description": "Set the last heartbeat.",
@@ -96,74 +214,149 @@
   },
   "info": {
     "title": "Local Control Plane",
-    "version": "745cba246f75aa378787f350ed3f73634687c635@master"
+    "version": "38d7a241e58adb8644144fc7201688addb15dbbe@master"
   },
   "swagger": "2.0",
   "definitions": {
+    "CodeRequest": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "firewall",
+          "description": "Code name."
+        },
+        "source": {
+          "type": "string",
+          "description": "Code source"
+        }
+      },
+      "required": [
+        "name",
+        "source"
+      ]
+    },
+    "CodeResultResponse": {
+      "type": "object",
+      "properties": {
+        "warning": {
+          "type": "string",
+          "example": "Useless properties: id",
+          "description": "Warning message."
+        }
+      }
+    },
+    "CodeResponse": {
+      "type": "object",
+      "properties": {
+        "results": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/CodeResultResponse"
+          }
+        },
+        "when": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2020/02/13 15:27:06",
+          "description": "Datetime of the configuration changes."
+        }
+      },
+      "required": [
+        "results",
+        "when"
+      ]
+    },
+    "HTTPError": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "description": "Title error",
+          "example": "400 Bad Request"
+        },
+        "description": {
+          "type": "string",
+          "description": "Human readable message that describes the error.",
+          "example": "The request body is not a valid JSON or it is not encoded as UTF-8."
+        }
+      },
+      "required": [
+        "description",
+        "title"
+      ]
+    },
+    "ConfigParameterRequest": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "example": "period",
+            "description": "Key path."
+          }
+        },
+        "value": {
+          "type": "string",
+          "example": "10s",
+          "description": "Parameter new value."
+        },
+        "schema": {
+          "type": "string",
+          "enum": [
+            "json",
+            "yaml",
+            "properties"
+          ],
+          "example": "yaml",
+          "description": "Scheme."
+        },
+        "source": {
+          "type": "string",
+          "example": "filebeat.yml",
+          "description": "Source filename."
+        }
+      },
+      "required": [
+        "schema",
+        "source",
+        "value"
+      ]
+    },
     "ConfigActionRequest": {
       "type": "object",
       "properties": {
-        "args": {
-          "type": "string",
-          "description": "Single command argument.",
-          "example": "-al"
-        },
         "cmd": {
           "type": "string",
           "description": "Command."
         },
         "daemon": {
           "type": "string",
-          "description": "Key used to execute the command as daemon.",
-          "example": "firewall"
+          "example": "firewall",
+          "description": "Key used to execute the command as daemon."
+        },
+        "args": {
+          "type": "string",
+          "example": "-al",
+          "description": "Single command argument."
         }
       },
       "required": [
         "cmd"
       ]
     },
-    "ConfigParameterRequest": {
-      "type": "object",
-      "properties": {
-        "value": {
-          "type": "string",
-          "description": "Parameter new value.",
-          "example": "10s"
-        },
-        "scheme": {
-          "type": "string",
-          "description": "Scheme.",
-          "example": "yaml"
-        },
-        "path": {
-          "type": "string",
-          "description": "Key path.",
-          "example": "period"
-        },
-        "source": {
-          "type": "string",
-          "description": "Source filename.",
-          "example": "filebeat.yml"
-        }
-      },
-      "required": [
-        "path",
-        "scheme",
-        "source",
-        "value"
-      ]
-    },
     "ConfigResourceRequest": {
       "type": "object",
       "properties": {
+        "path": {
+          "type": "string",
+          "example": "filebeat.yml",
+          "description": "File path"
+        },
         "content": {
           "type": "string",
           "description": "Resource content."
-        },
-        "path": {
-          "type": "string",
-          "description": "File path",
-          "example": "filebeat.yml"
         }
       },
       "required": [
@@ -174,18 +367,18 @@
     "ConfigRequest": {
       "type": "object",
       "properties": {
-        "actions": {
-          "description": "List of actions.",
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/ConfigActionRequest"
-          }
-        },
         "parameters": {
           "description": "List of parameters.",
           "type": "array",
           "items": {
             "$ref": "#/definitions/ConfigParameterRequest"
+          }
+        },
+        "actions": {
+          "description": "List of actions.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ConfigActionRequest"
           }
         },
         "resources": {
@@ -199,35 +392,22 @@
     },
     "ConfigResultResponse": {
       "type": "object",
-      "properties": {
-        "warning": {
-          "type": "string",
-          "description": "Warning message",
-          "example": "Useless property: id"
-        },
-        "type": {
-          "type": "string",
-          "description": "Configuration type."
-        }
-      },
-      "required": [
-        "type"
-      ]
+      "properties": {}
     },
     "ConfigResponse": {
       "type": "object",
       "properties": {
-        "when": {
-          "type": "string",
-          "format": "date-time",
-          "description": "Datetime of the configuration changes",
-          "example": "2020/02/13 15:27:06"
-        },
         "results": {
           "type": "array",
           "items": {
             "$ref": "#/definitions/ConfigResultResponse"
           }
+        },
+        "when": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2020/02/13 15:27:06",
+          "description": "Datetime of the configuration changes"
         }
       },
       "required": [
@@ -235,44 +415,33 @@
         "when"
       ]
     },
-    "HTTPError": {
-      "type": "object",
-      "properties": {
-        "description": {
-          "type": "string",
-          "description": "Human readable message that describes the error.",
-          "example": "The request body is not a valid JSON or it is not encoded as UTF-8."
-        },
-        "title": {
-          "type": "string",
-          "description": "Title error",
-          "example": "400 Bad Request"
-        }
-      },
-      "required": [
-        "description",
-        "title"
-      ]
-    },
     "StatusResponse": {
       "type": "object",
       "properties": {
-        "started": {
-          "type": "string",
-          "format": "date-time",
-          "description": "Timestamp when the LCP is started",
-          "example": "2019_02_14 15:23:30"
-        },
-        "id": {
-          "type": "string",
-          "description": "ID of the execution environment.",
-          "example": "apache"
-        },
         "last_heartbeat": {
           "type": "string",
           "format": "date-time",
-          "example": "2019_02_14 15:23:33",
-          "description": "Timestamp of the last hearthbeat between the LCP and the CB"
+          "example": "2019/02/14 15:23:33",
+          "description": "Timestamp of the expiration of the API access configuration."
+        },
+        "started": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2019/02/14 15:23:30",
+          "description": "Timestamp when the LCP is started"
+        },
+        "password": {
+          "type": "string",
+          "description": "Password for the CB to connect to this LCP."
+        },
+        "id": {
+          "type": "string",
+          "example": "apache",
+          "description": "ID of the execution environment."
+        },
+        "username": {
+          "type": "string",
+          "description": "Username for the CB to connect to this LCP."
         }
       },
       "required": [

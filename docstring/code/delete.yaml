@@ -1,7 +1,7 @@
-Inject code at run-time in the local environment.
+Delete inject code at run-time in the local environment.
 ---
-summary: Code injection
-description: Inject code at run-time in the local environment.
+summary: Delete injected code
+description: Delete inject code at run-time in the local environment.
 parameters:
   - name: payload
     required: true
@@ -12,7 +12,7 @@ parameters:
 tags: [code]
 responses:
   200:
-    description: Code injection executed.
+    description: Injected code deleted.
     schema: CodeResponseSchema
   400:
     description: Bad Request.
