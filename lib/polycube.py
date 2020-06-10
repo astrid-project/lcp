@@ -15,9 +15,12 @@ class Polycube:
         self.log = Log.get('polycube')
 
         self.log.info(f'Check connection to {self.endpoint}')
-        resp_req = get_req(self.endpoint,
-                           timeout=ArgReader.db.polycube_timeout)
-        self.__manager(resp_req)
+        try:
+            resp_req = get_req(self.endpoint,
+                               timeout=ArgReader.db.polycube_timeout)
+            self.__manager(resp_req)
+        except ConnectionError as conn_err:
+            self.log.error(f'exception: {conn_err}')
 
     def get(self, cube):
         self.log.info(f'Get info of cube {cube}')

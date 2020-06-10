@@ -214,21 +214,21 @@
   },
   "info": {
     "title": "Local Control Plane",
-    "version": "19a75f3e0a270822e07011f21da4e8b708627266@master"
+    "version": "097b2b58c99c7151fa0c82639abe940cde56c436@master"
   },
   "swagger": "2.0",
   "definitions": {
     "CodeRequest": {
       "type": "object",
       "properties": {
-        "source": {
-          "type": "string",
-          "description": "Code source"
-        },
         "name": {
           "type": "string",
           "example": "firewall",
           "description": "Code name."
+        },
+        "source": {
+          "type": "string",
+          "description": "Code source"
         }
       },
       "required": [
@@ -249,17 +249,17 @@
     "CodeResponse": {
       "type": "object",
       "properties": {
-        "when": {
-          "type": "string",
-          "format": "date-time",
-          "example": "2020/02/13 15:27:06",
-          "description": "Datetime of the configuration changes."
-        },
         "results": {
           "type": "array",
           "items": {
             "$ref": "#/definitions/CodeResultResponse"
           }
+        },
+        "when": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2020/02/13 15:27:06",
+          "description": "Datetime of the configuration changes."
         }
       },
       "required": [
@@ -286,6 +286,24 @@
         "title"
       ]
     },
+    "ConfigResourceRequest": {
+      "type": "object",
+      "properties": {
+        "content": {
+          "type": "string",
+          "description": "Resource content."
+        },
+        "path": {
+          "type": "string",
+          "example": "filebeat.yml",
+          "description": "File path"
+        }
+      },
+      "required": [
+        "content",
+        "path"
+      ]
+    },
     "ConfigActionRequest": {
       "type": "object",
       "properties": {
@@ -308,32 +326,9 @@
         "cmd"
       ]
     },
-    "ConfigResourceRequest": {
-      "type": "object",
-      "properties": {
-        "content": {
-          "type": "string",
-          "description": "Resource content."
-        },
-        "path": {
-          "type": "string",
-          "example": "filebeat.yml",
-          "description": "File path"
-        }
-      },
-      "required": [
-        "content",
-        "path"
-      ]
-    },
     "ConfigParameterRequest": {
       "type": "object",
       "properties": {
-        "source": {
-          "type": "string",
-          "example": "filebeat.yml",
-          "description": "Source filename."
-        },
         "schema": {
           "type": "string",
           "enum": [
@@ -356,6 +351,11 @@
           "type": "string",
           "example": "10s",
           "description": "Parameter new value."
+        },
+        "source": {
+          "type": "string",
+          "example": "filebeat.yml",
+          "description": "Source filename."
         }
       },
       "required": [
@@ -367,18 +367,18 @@
     "ConfigRequest": {
       "type": "object",
       "properties": {
-        "actions": {
-          "description": "List of actions.",
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/ConfigActionRequest"
-          }
-        },
         "resources": {
           "description": "List of resources.",
           "type": "array",
           "items": {
             "$ref": "#/definitions/ConfigResourceRequest"
+          }
+        },
+        "actions": {
+          "description": "List of actions.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ConfigActionRequest"
           }
         },
         "parameters": {
@@ -397,17 +397,17 @@
     "ConfigResponse": {
       "type": "object",
       "properties": {
-        "when": {
-          "type": "string",
-          "format": "date-time",
-          "example": "2020/02/13 15:27:06",
-          "description": "Datetime of the configuration changes"
-        },
         "results": {
           "type": "array",
           "items": {
             "$ref": "#/definitions/ConfigResultResponse"
           }
+        },
+        "when": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2020/02/13 15:27:06",
+          "description": "Datetime of the configuration changes"
         }
       },
       "required": [
@@ -421,6 +421,12 @@
         "password": {
           "type": "string",
           "description": "Password for the CB to connect to this LCP."
+        },
+        "started": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2019/02/14 15:23:30",
+          "description": "Timestamp when the LCP is started"
         },
         "last_heartbeat": {
           "type": "string",
@@ -436,12 +442,6 @@
           "type": "string",
           "example": "apache",
           "description": "ID of the execution environment."
-        },
-        "started": {
-          "type": "string",
-          "format": "date-time",
-          "example": "2019/02/14 15:23:30",
-          "description": "Timestamp when the LCP is started"
         }
       },
       "required": [
