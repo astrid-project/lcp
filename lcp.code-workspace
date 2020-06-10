@@ -5,13 +5,52 @@
 		}
 	],
 	"settings": {
-		"workbench.colorTheme": "Panda Syntax",
+		"cSpell.language": "en-GB",
+		"cSpell.words": [
+			"astrid",
+			"apispec",
+			"atexit",
+			"certdir",
+			"chdir",
+			"codeclimate",
+			"coloredlogs",
+			"datetime",
+			"dind",
+			"filebeat",
+			"frmt",
+			"gitlab",
+			"hexsha",
+			"iface",
+			"jproperties",
+			"kwrd",
+			"kwrds",
+			"msgpack",
+			"noninfringement",
+			"openapi",
+			"pids",
+			"popen",
+			"proc",
+			"pycodestyle",
+			"pydocstyle",
+			"reloader",
+			"resp",
+			"ruamel",
+			"sigterm",
+			"sighup",
+			"strftime",
+			"strptime",
+			"sublicense",
+			"ttldict",
+			"toolz",
+			"ureg",
+			"use",
+			"werkzeug"
+		],
+		"editor.tabCompletion": "on",
 		"editor.wordWrap": "on",
 		"editor.wrappingIndent": "deepIndent",
 		"files.insertFinalNewline": true,
-		"cSpell.language": "en-GB",
-		"cSpell.words": [
-			"SIGTERM"
-		]
+		"workbench.colorTheme": "Panda Syntax",
+		"workbench.editor.tabSizing": "shrink"
 	}
 }
