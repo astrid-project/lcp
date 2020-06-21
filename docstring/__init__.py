@@ -1,3 +1,8 @@
+__all__ = [
+    'docstring'
+]
+
+
 def docstring(source):
     """Generate automatic docstring for the class with a decorator.
 

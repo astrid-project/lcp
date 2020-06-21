@@ -1,17 +1,21 @@
-from argparse import ArgumentParser
-from reader.config import ConfigReader
+from argparse import ArgumentParser as Argument_Parser
+from reader.config import Config_Reader
 from utils.log import Log
 from utils.time import get_seconds
 
+__all__ = [
+    'Arg_Reader'
+]
 
-class ArgReader:
+
+class Arg_Reader:
     db = None
 
     @classmethod
     def read(cls):
-        cr = ConfigReader()
+        cr = Config_Reader()
 
-        ap = ArgumentParser(prog='python3 main.py',
+        ap = Argument_Parser(prog='python3 main.py',
                             description=f'{cr.title}: {cr.description}')
         add = ap.add_argument
 

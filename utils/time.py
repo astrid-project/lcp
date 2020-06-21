@@ -1,8 +1,11 @@
-from pint import UnitRegistry
+from pint import UnitRegistry as Unit_Registry
 
+__all__ = [
+    'get_seconds'
+]
 
-ureg = UnitRegistry()
-Q_ = ureg.Quantity
+__ureg = Unit_Registry()
+__Q = __ureg.Quantity
 
 
 def get_seconds(text, to_int=False):
@@ -12,5 +15,5 @@ def get_seconds(text, to_int=False):
     :params to_int: convert to int the result
     :returns: number of seconds
     """
-    n = (Q_(text).to(ureg.second)).magnitude
+    n = (__Q(text).to(__ureg.second)).magnitude
     return int(n) if to_int else n

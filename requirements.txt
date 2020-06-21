@@ -2,17 +2,20 @@ apispec
 bandit
 colorama
 coloredlogs
+dicttoxml
 falcon
 falcon-apispec
 falcon-auth
 gitpython
 jproperties
-pint
+locust
 msgpack
+pint
 pint
 psutil
 pycodestyle
 pydocstyle
+pytest
 pyyaml>=5.0
 requests
 swagger-ui-py
@@ -21,3 +24,4 @@ ttldict
 verboselogs
 waitress
 werkzeug
+xmltodict

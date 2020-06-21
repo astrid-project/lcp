@@ -1,13 +1,23 @@
-from marshmallow import Schema, validate
-from marshmallow.fields import Boolean, Constant, DateTime, Integer, List, Nested, Raw, Str
+from marshmallow import validate
+from marshmallow.fields import Boolean, Constant, DateTime as Date_Time, Float, Integer, List, Nested, Raw, Str
+from schema.base import Base_Schema
 from utils.datetime import FORMAT
 
+_all__ = [
+    'Config_Request_Schema',
+    'Config_Response_Schema'
+]
 
-parameter_schemas = ['json', 'yaml', 'properties']
+PARAMETER_SCHEMAS = ['json', 'properties', 'xml', 'yaml']
+RESPONSE_TYPES = ['action', 'parameter', 'resource']
+
+EXAMPLE_FILENAME = 'firewall.xml'
 
 
-class ConfigActionRequestSchema(Schema):
+class Config_Action_Request_Schema(Base_Schema):
     """Action part in a single item of the code request."""
+    id = Str(required=True, example='start',
+             description='Id of the action.')
     cmd = Str(required=True,
               description='Command.')
     args = Str(many=True, example='-al',
@@ -16,12 +26,14 @@ class ConfigActionRequestSchema(Schema):
                  description='Key used to execute the command as daemon.')
 
 
-class ConfigParameterRequestSchema(Schema):
+class Config_Parameter_Request_Schema(Base_Schema):
     """Parameter part in a single item of the code request."""
-    schema = Str(required=True, enum=parameter_schemas, example='yaml',
+    id = Str(required=True, example='period',
+             description='Id of the parameter.')
+    schema = Str(required=True, enum=PARAMETER_SCHEMAS, example='yaml',
                  description='Scheme.',
-                 validate=validate.OneOf(parameter_schemas))
-    source = Str(required=True, example='filebeat.yml',
+                 validate=validate.OneOf(PARAMETER_SCHEMAS))
+    source = Str(required=True, example=EXAMPLE_FILENAME,
                  description='Source filename.')
     path = List(Str(required=True, example='period',
                     description='Key path.'))
@@ -29,49 +41,51 @@ class ConfigParameterRequestSchema(Schema):
                 description='Parameter new value.')
 
 
-class ConfigResourceRequestSchema(Schema):
+class Config_Resource_Request_Schema(Base_Schema):
     """Resource part in a single item of the code request."""
-    path = Str(required=True, example='filebeat.yml',
+    id = Str(required=True, example='filebeat-config',
+             description='Id of the resource.')
+    path = Str(required=True, example=EXAMPLE_FILENAME,
                description='File path')
     content = Str(required=True,
                   description='Resource content.')
 
 
-class ConfigRequestSchema(Schema):
+class Config_Request_Schema(Base_Schema):
     """Request for config endpoint."""
-    actions = Nested(ConfigActionRequestSchema, many=True,
+    actions = Nested(Config_Action_Request_Schema, many=True,
                      description='List of actions.')
-    parameters = Nested(ConfigParameterRequestSchema, many=True,
+    parameters = Nested(Config_Parameter_Request_Schema, many=True,
                         description='List of parameters.')
-    resources = Nested(ConfigResourceRequestSchema, many=True,
+    resources = Nested(Config_Resource_Request_Schema, many=True,
                        description='List of resources.')
 
 
-class ConfigBaseResponseSchema(Schema):
-    """Single item of the config response."""
-    type = Str(required=True,
-               description='Configuration type.')
-    warning = Str(description='Warning message',
-                  example='Useless property: id')
-
-
-class ConfigActionResponseSchema(ConfigBaseResponseSchema):
-    """Action part in a single item of the config response."""
+class Config_Response_Schema(Base_Schema):
+    """Response for config endpoint."""
+    type = Str(enum=RESPONSE_TYPES, example=RESPONSE_TYPES[0],
+               description='Type of the response.',
+               validate=validate.OneOf(RESPONSE_TYPES))
     error = Boolean(default=False, example=True,
                     description='Indicate the presence of an error.')
+
+
+class Config_Action_Response_Schema(Config_Response_Schema):
+    """Action part in a single item of the config response."""
     executed = Str(required=True, example='ls -al',
                    description='Command executed.')
     stdout = Raw(many=True,
                  description='Standard output of the execution.')
     stderr = Raw(many=True,
                  description='Standard error output of the execution.')
+    duration = Float(description='Execution time of the action (in seconds')
     daemon = Str(example='firewall',
                  description='Key used to execute the command as daemon.')
     return_code = Integer(required=True, example=0,
                           description='Exit code of the execution (0: no error).')
 
 
-class ConfigParameterValueResponseSchema(Schema):
+class Config_Parameter_Value_Response_Schema(Base_Schema):
     """Parameter value part in a single item of the config response."""
     new = Str(required=True, example='5s',
               description='New value.')
@@ -79,41 +93,25 @@ class ConfigParameterValueResponseSchema(Schema):
               description='Old value')
 
 
-class ConfigParameterResponseSchema(ConfigBaseResponseSchema):
+class Config_Parameter_Response_Schema(Config_Response_Schema):
     """Parameter part in a single item of the config response."""
-    schema = Str(required=True, example='yaml', enum=parameter_schemas,
+    schema = Str(required=True, example='yaml', enum=PARAMETER_SCHEMAS,
                  description='Scheme.',
-                 validate=validate.OneOf(parameter_schemas))
+                 validate=validate.OneOf(PARAMETER_SCHEMAS))
     source = Str(required=True, example='filebeat.yml',
                  description='Source filename.')
     path = Str(required=True, many=True, example='period',
                description='Key path')
-    value = Nested(ConfigParameterValueResponseSchema,
+    value = Nested(Config_Parameter_Value_Response_Schema,
                    required=True)
-    note = Str(required=False, example='No change needed.',
+    note = Str(example='No change needed.',
                description='Additional note.')
 
 
-class ConfigResourceResponseSchema(Schema):
+class Config_Resource_Response_Schema(Config_Response_Schema):
     """Resource part in a single item of the config response."""
     path = Str(required=True, example='filebeat.yml',
                description='File path')
-
-
-class ConfigErrorResponseSchema(ConfigBaseResponseSchema):
-    """Error related to a single item of config response."""
-    error = Constant(required=True, constant=True,
-                     description='Indicate the presence of an error.')
-    description = Str(required=True, example='Request type unknown',
-                      description='Human readable message that describes the error.')
-
-
-class ConfigResultResponseSchema(Schema):  # TODO
-    pass
-
-
-class ConfigResponseSchema(Schema):
-    """Response for config endpoint."""
-    when = DateTime(format=FORMAT, required=True, example='2020/02/13 15:27:06',
-                    description='Datetime of the configuration changes',)
-    results = Nested(ConfigResultResponseSchema, many=True, required=True)
+    """Resource part in a single item of the config response."""
+    content = Str(required=True, example='<config><period>10s</period></config>',
+                  description='File content')

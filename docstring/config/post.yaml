@@ -9,16 +9,16 @@ parameters:
     in: body
     schema:
       type: array
-      items: ConfigRequestSchema
+      items: Config_Request_Schema
 responses:
   200:
     description: Configuration changes executed.
     schema:
       type: array
-      items: ConfigResponseSchema
+      items: Config_Response_Schema
   400:
     description: Bad request.
-    schema: HTTPErrorSchema
+    schema: Config_Response_Schema
   401:
     description: Unauthorized.
-    schema: HTTPErrorSchema
+    schema: Config_Response_Schema

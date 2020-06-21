@@ -1,6 +1,12 @@
 import hashlib
 import uuid
 
+__all__ = [
+    'hash',
+    'generate_username',
+    'generate_password'
+]
+
 
 def hash(text):
     """Make a hash of the text
@@ -8,10 +14,7 @@ def hash(text):
     :param text: text to make the hash
     :returns: hashed version of the text
     """
-    if text is not None:
-        return hashlib.sha256(text.encode('utf-8')).hexdigest()
-    else:
-        return None
+    return hashlib.sha256(text.encode('utf-8')).hexdigest()
 
 
 def generate_username():

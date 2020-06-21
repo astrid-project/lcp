@@ -1,18 +1,19 @@
-from apispec import APISpec
-from apispec.ext.marshmallow import MarshmallowPlugin
-from falcon_apispec import FalconPlugin
+from apispec import APISpec as API_Spec
+from apispec.ext.marshmallow import MarshmallowPlugin as Marshmallow_Plugin
+from falcon_apispec import FalconPlugin as Falcon_Plugin
 from json import dumps
 from resource import tags as rc_tags
+
+__all__ = [
+    'Spec'
+]
 
 
 class Spec:
     def __init__(self, api, title, version):
-        self.obj = APISpec(title=title, version=version,
-                           openapi_version='2.0',
-                           produces=['application/json'], consumes=['application/json'],
-                           tags=rc_tags,
-                           plugins=[FalconPlugin(api), MarshmallowPlugin()],
-                           )
+        self.obj = API_Spec(title=title, version=version, openapi_version='2.0',
+                            produces=['application/json'], consumes=['application/json'],
+                            tags=rc_tags,    plugins=[Falcon_Plugin(api), Marshmallow_Plugin()])
 
     def get(self):
         return self.obj

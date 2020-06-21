@@ -6,7 +6,7 @@ tags: [status]
 responses:
   200:
     description: Status data of the LCP.
-    schema: StatusResponseSchema
+    schema: Status_Response_Schema
   401:
     description: Unauthorized.
-    schema: HTTPErrorSchema
+    schema: Code_Response_Schema

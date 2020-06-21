@@ -32,7 +32,7 @@
             "schema": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/CodeRequest"
+                "$ref": "#/definitions/Code_Request_"
               }
             }
           }
@@ -44,19 +44,19 @@
           "200": {
             "description": "Code injection executed.",
             "schema": {
-              "$ref": "#/definitions/CodeResponse"
+              "$ref": "#/definitions/Code_Response_"
             }
           },
           "400": {
             "description": "Bad Request.",
             "schema": {
-              "$ref": "#/definitions/HTTPError"
+              "$ref": "#/definitions/Code_Response_"
             }
           },
           "401": {
             "description": "Unauthorized.",
             "schema": {
-              "$ref": "#/definitions/HTTPError"
+              "$ref": "#/definitions/Code_Response_"
             }
           }
         }
@@ -72,7 +72,7 @@
             "schema": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/CodeRequest"
+                "$ref": "#/definitions/Code_Request_"
               }
             }
           }
@@ -84,19 +84,19 @@
           "200": {
             "description": "Code injection executed.",
             "schema": {
-              "$ref": "#/definitions/CodeResponse"
+              "$ref": "#/definitions/Code_Response_"
             }
           },
           "400": {
             "description": "Bad Request.",
             "schema": {
-              "$ref": "#/definitions/HTTPError"
+              "$ref": "#/definitions/Code_Response_"
             }
           },
           "401": {
             "description": "Unauthorized.",
             "schema": {
-              "$ref": "#/definitions/HTTPError"
+              "$ref": "#/definitions/Code_Response_"
             }
           }
         }
@@ -112,7 +112,7 @@
             "schema": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/CodeRequest"
+                "$ref": "#/definitions/Code_Request_"
               }
             }
           }
@@ -124,19 +124,19 @@
           "200": {
             "description": "Code injection executed.",
             "schema": {
-              "$ref": "#/definitions/CodeResponse"
+              "$ref": "#/definitions/Code_Response_"
             }
           },
           "400": {
             "description": "Bad Request.",
             "schema": {
-              "$ref": "#/definitions/HTTPError"
+              "$ref": "#/definitions/Code_Response_"
             }
           },
           "401": {
             "description": "Unauthorized.",
             "schema": {
-              "$ref": "#/definitions/HTTPError"
+              "$ref": "#/definitions/Code_Response_"
             }
           }
         }
@@ -157,7 +157,7 @@
             "schema": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/ConfigRequest"
+                "$ref": "#/definitions/Config_Request_"
               }
             }
           }
@@ -168,27 +168,47 @@
             "schema": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/ConfigResponse"
+                "$ref": "#/definitions/Config_Response_"
               }
             }
           },
           "400": {
             "description": "Bad request.",
             "schema": {
-              "$ref": "#/definitions/HTTPError"
+              "$ref": "#/definitions/Config_Response_"
             }
           },
           "401": {
             "description": "Unauthorized.",
             "schema": {
-              "$ref": "#/definitions/HTTPError"
+              "$ref": "#/definitions/Config_Response_"
             }
           }
         }
       }
     },
     "/status": {
-      "get": {},
+      "get": {
+        "summary": "Status info",
+        "description": "Get info about the status of the LCP in the execution environment.",
+        "tags": [
+          "status"
+        ],
+        "responses": {
+          "200": {
+            "description": "Status data of the LCP.",
+            "schema": {
+              "$ref": "#/definitions/Status_Response_"
+            }
+          },
+          "401": {
+            "description": "Unauthorized.",
+            "schema": {
+              "$ref": "#/definitions/Code_Response_"
+            }
+          }
+        }
+      },
       "post": {
         "summary": "Status set.",
         "description": "Set the last heartbeat.",
@@ -199,13 +219,13 @@
           "200": {
             "description": "Status data of the LCP.",
             "schema": {
-              "$ref": "#/definitions/StatusResponse"
+              "$ref": "#/definitions/Status_Response_"
             }
           },
           "401": {
             "description": "Unauthorized.",
             "schema": {
-              "$ref": "#/definitions/HTTPError"
+              "$ref": "#/definitions/Code_Response_"
             }
           }
         }
@@ -214,11 +234,11 @@
   },
   "info": {
     "title": "Local Control Plane",
-    "version": "097b2b58c99c7151fa0c82639abe940cde56c436@master"
+    "version": "7b358d78660d0b524f43218a0fda414fa7f3c239@master"
   },
   "swagger": "2.0",
   "definitions": {
-    "CodeRequest": {
+    "Code_Request_": {
       "type": "object",
       "properties": {
         "name": {
@@ -236,7 +256,7 @@
         "source"
       ]
     },
-    "CodeResultResponse": {
+    "Code_Result_Response_": {
       "type": "object",
       "properties": {
         "warning": {
@@ -246,13 +266,13 @@
         }
       }
     },
-    "CodeResponse": {
+    "Code_Response_": {
       "type": "object",
       "properties": {
         "results": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/CodeResultResponse"
+            "$ref": "#/definitions/Code_Result_Response_"
           }
         },
         "when": {
@@ -267,49 +287,62 @@
         "when"
       ]
     },
-    "HTTPError": {
+    "Config_Parameter_Request_": {
       "type": "object",
       "properties": {
-        "title": {
+        "value": {
           "type": "string",
-          "description": "Title error",
-          "example": "400 Bad Request"
-        },
-        "description": {
-          "type": "string",
-          "description": "Human readable message that describes the error.",
-          "example": "The request body is not a valid JSON or it is not encoded as UTF-8."
-        }
-      },
-      "required": [
-        "description",
-        "title"
-      ]
-    },
-    "ConfigResourceRequest": {
-      "type": "object",
-      "properties": {
-        "content": {
-          "type": "string",
-          "description": "Resource content."
+          "example": "10s",
+          "description": "Parameter new value."
         },
         "path": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "example": "period",
+            "description": "Key path."
+          }
+        },
+        "id": {
           "type": "string",
-          "example": "filebeat.yml",
-          "description": "File path"
+          "example": "period",
+          "description": "Id of the parameter."
+        },
+        "source": {
+          "type": "string",
+          "example": "firewall.xml",
+          "description": "Source filename."
+        },
+        "schema": {
+          "type": "string",
+          "enum": [
+            "json",
+            "properties",
+            "xml",
+            "yaml"
+          ],
+          "example": "yaml",
+          "description": "Scheme."
         }
       },
       "required": [
-        "content",
-        "path"
+        "id",
+        "schema",
+        "source",
+        "value"
       ]
     },
-    "ConfigActionRequest": {
+    "Config_Action_Request_": {
       "type": "object",
       "properties": {
         "cmd": {
           "type": "string",
           "description": "Command."
+        },
+        "id": {
+          "type": "string",
+          "example": "start",
+          "description": "Id of the action."
         },
         "args": {
           "type": "string",
@@ -323,110 +356,91 @@
         }
       },
       "required": [
-        "cmd"
+        "cmd",
+        "id"
       ]
     },
-    "ConfigParameterRequest": {
+    "Config_Resource_Request_": {
       "type": "object",
       "properties": {
-        "schema": {
+        "content": {
           "type": "string",
-          "enum": [
-            "json",
-            "yaml",
-            "properties"
-          ],
-          "example": "yaml",
-          "description": "Scheme."
+          "description": "Resource content."
         },
         "path": {
-          "type": "array",
-          "items": {
-            "type": "string",
-            "example": "period",
-            "description": "Key path."
-          }
-        },
-        "value": {
           "type": "string",
-          "example": "10s",
-          "description": "Parameter new value."
+          "example": "firewall.xml",
+          "description": "File path"
         },
-        "source": {
+        "id": {
           "type": "string",
-          "example": "filebeat.yml",
-          "description": "Source filename."
+          "example": "filebeat-config",
+          "description": "Id of the resource."
         }
       },
       "required": [
-        "schema",
-        "source",
-        "value"
+        "content",
+        "id",
+        "path"
       ]
     },
-    "ConfigRequest": {
+    "Config_Request_": {
       "type": "object",
       "properties": {
-        "resources": {
-          "description": "List of resources.",
+        "parameters": {
+          "description": "List of parameters.",
           "type": "array",
           "items": {
-            "$ref": "#/definitions/ConfigResourceRequest"
+            "$ref": "#/definitions/Config_Parameter_Request_"
           }
         },
         "actions": {
           "description": "List of actions.",
           "type": "array",
           "items": {
-            "$ref": "#/definitions/ConfigActionRequest"
+            "$ref": "#/definitions/Config_Action_Request_"
           }
         },
-        "parameters": {
-          "description": "List of parameters.",
+        "resources": {
+          "description": "List of resources.",
           "type": "array",
           "items": {
-            "$ref": "#/definitions/ConfigParameterRequest"
+            "$ref": "#/definitions/Config_Resource_Request_"
           }
         }
       }
     },
-    "ConfigResultResponse": {
-      "type": "object",
-      "properties": {}
-    },
-    "ConfigResponse": {
+    "Config_Response_": {
       "type": "object",
       "properties": {
-        "results": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/ConfigResultResponse"
-          }
-        },
-        "when": {
+        "type": {
           "type": "string",
-          "format": "date-time",
-          "example": "2020/02/13 15:27:06",
-          "description": "Datetime of the configuration changes"
+          "enum": [
+            "action",
+            "parameter",
+            "resource"
+          ],
+          "example": "action",
+          "description": "Type of the response."
+        },
+        "error": {
+          "type": "boolean",
+          "example": true,
+          "description": "Indicate the presence of an error."
         }
-      },
-      "required": [
-        "results",
-        "when"
-      ]
+      }
     },
-    "StatusResponse": {
+    "Status_Response_": {
       "type": "object",
       "properties": {
         "password": {
           "type": "string",
           "description": "Password for the CB to connect to this LCP."
         },
-        "started": {
+        "id": {
           "type": "string",
-          "format": "date-time",
-          "example": "2019/02/14 15:23:30",
-          "description": "Timestamp when the LCP is started"
+          "example": "apache",
+          "description": "ID of the execution environment."
         },
         "last_heartbeat": {
           "type": "string",
@@ -438,10 +452,11 @@
           "type": "string",
           "description": "Username for the CB to connect to this LCP."
         },
-        "id": {
+        "started": {
           "type": "string",
-          "example": "apache",
-          "description": "ID of the execution environment."
+          "format": "date-time",
+          "example": "2019/02/14 15:23:30",
+          "description": "Timestamp when the LCP is started"
         }
       },
       "required": [

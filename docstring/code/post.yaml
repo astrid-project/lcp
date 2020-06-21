@@ -8,15 +8,15 @@ parameters:
     in: body
     schema:
       type: array
-      items: CodeRequestSchema
+      items: Code_Request_Schema
 tags: [code]
 responses:
   200:
     description: Code injection executed.
-    schema: CodeResponseSchema
+    schema: Code_Response_Schema
   400:
     description: Bad Request.
-    schema: HTTPErrorSchema
+    schema: Code_Response_Schema
   401:
     description: Unauthorized.
-    schema: HTTPErrorSchema
+    schema: Code_Response_Schema

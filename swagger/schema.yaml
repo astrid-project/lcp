@@ -1,7 +1,7 @@
 consumes:
 - application/json
 definitions:
-  CodeRequest:
+  Code_Request_:
     properties:
       name:
         description: Code name.
@@ -14,11 +14,11 @@ definitions:
     - name
     - source
     type: object
-  CodeResponse:
+  Code_Response_:
     properties:
       results:
         items:
-          $ref: '#/definitions/CodeResultResponse'
+          $ref: '#/definitions/Code_Result_Response_'
         type: array
       when:
         description: Datetime of the configuration changes.
@@ -29,14 +29,14 @@ definitions:
     - results
     - when
     type: object
-  CodeResultResponse:
+  Code_Result_Response_:
     properties:
       warning:
         description: Warning message.
         example: 'Useless properties: id'
         type: string
     type: object
-  ConfigActionRequest:
+  Config_Action_Request_:
     properties:
       args:
         description: Single command argument.
@@ -49,11 +49,20 @@ definitions:
         description: Key used to execute the command as daemon.
         example: firewall
         type: string
+      id:
+        description: Id of the action.
+        example: start
+        type: string
     required:
     - cmd
+    - id
     type: object
-  ConfigParameterRequest:
+  Config_Parameter_Request_:
     properties:
+      id:
+        description: Id of the parameter.
+        example: period
+        type: string
       path:
         items:
           description: Key path.
@@ -64,87 +73,77 @@ definitions:
         description: Scheme.
         enum:
         - json
-        - yaml
         - properties
+        - xml
+        - yaml
         example: yaml
         type: string
       source:
         description: Source filename.
-        example: filebeat.yml
+        example: firewall.xml
         type: string
       value:
         description: Parameter new value.
         example: 10s
         type: string
     required:
+    - id
     - schema
     - source
     - value
     type: object
-  ConfigRequest:
+  Config_Request_:
     properties:
       actions:
         description: List of actions.
         items:
-          $ref: '#/definitions/ConfigActionRequest'
+          $ref: '#/definitions/Config_Action_Request_'
         type: array
       parameters:
         description: List of parameters.
         items:
-          $ref: '#/definitions/ConfigParameterRequest'
+          $ref: '#/definitions/Config_Parameter_Request_'
         type: array
       resources:
         description: List of resources.
         items:
-          $ref: '#/definitions/ConfigResourceRequest'
+          $ref: '#/definitions/Config_Resource_Request_'
         type: array
     type: object
-  ConfigResourceRequest:
+  Config_Resource_Request_:
     properties:
       content:
         description: Resource content.
         type: string
+      id:
+        description: Id of the resource.
+        example: filebeat-config
+        type: string
       path:
         description: File path
-        example: filebeat.yml
+        example: firewall.xml
         type: string
     required:
     - content
+    - id
     - path
     type: object
-  ConfigResponse:
+  Config_Response_:
     properties:
-      results:
-        items:
-          $ref: '#/definitions/ConfigResultResponse'
-        type: array
-      when:
-        description: Datetime of the configuration changes
-        example: 2020/02/13 15:27:06
-        format: date-time
+      error:
+        description: Indicate the presence of an error.
+        example: true
+        type: boolean
+      type:
+        description: Type of the response.
+        enum:
+        - action
+        - parameter
+        - resource
+        example: action
         type: string
-    required:
-    - results
-    - when
     type: object
-  ConfigResultResponse:
-    properties: {}
-    type: object
-  HTTPError:
-    properties:
-      description:
-        description: Human readable message that describes the error.
-        example: The request body is not a valid JSON or it is not encoded as UTF-8.
-        type: string
-      title:
-        description: Title error
-        example: 400 Bad Request
-        type: string
-    required:
-    - description
-    - title
-    type: object
-  StatusResponse:
+  Status_Response_:
     properties:
       id:
         description: ID of the execution environment.
@@ -173,7 +172,7 @@ definitions:
     type: object
 info:
   title: Local Control Plane
-  version: 097b2b58c99c7151fa0c82639abe940cde56c436@master
+  version: 7b358d78660d0b524f43218a0fda414fa7f3c239@master
 paths:
   /code/{id}:
     delete:
@@ -184,21 +183,21 @@ paths:
         required: true
         schema:
           items:
-            $ref: '#/definitions/CodeRequest'
+            $ref: '#/definitions/Code_Request_'
           type: array
       responses:
         '200':
           description: Code injection executed.
           schema:
-            $ref: '#/definitions/CodeResponse'
+            $ref: '#/definitions/Code_Response_'
         '400':
           description: Bad Request.
           schema:
-            $ref: '#/definitions/HTTPError'
+            $ref: '#/definitions/Code_Response_'
         '401':
           description: Unauthorized.
           schema:
-            $ref: '#/definitions/HTTPError'
+            $ref: '#/definitions/Code_Response_'
       summary: Code injection
       tags:
       - code
@@ -210,21 +209,21 @@ paths:
         required: true
         schema:
           items:
-            $ref: '#/definitions/CodeRequest'
+            $ref: '#/definitions/Code_Request_'
           type: array
       responses:
         '200':
           description: Code injection executed.
           schema:
-            $ref: '#/definitions/CodeResponse'
+            $ref: '#/definitions/Code_Response_'
         '400':
           description: Bad Request.
           schema:
-            $ref: '#/definitions/HTTPError'
+            $ref: '#/definitions/Code_Response_'
         '401':
           description: Unauthorized.
           schema:
-            $ref: '#/definitions/HTTPError'
+            $ref: '#/definitions/Code_Response_'
       summary: Code injection
       tags:
       - code
@@ -236,21 +235,21 @@ paths:
         required: true
         schema:
           items:
-            $ref: '#/definitions/CodeRequest'
+            $ref: '#/definitions/Code_Request_'
           type: array
       responses:
         '200':
           description: Code injection executed.
           schema:
-            $ref: '#/definitions/CodeResponse'
+            $ref: '#/definitions/Code_Response_'
         '400':
           description: Bad Request.
           schema:
-            $ref: '#/definitions/HTTPError'
+            $ref: '#/definitions/Code_Response_'
         '401':
           description: Unauthorized.
           schema:
-            $ref: '#/definitions/HTTPError'
+            $ref: '#/definitions/Code_Response_'
       summary: Update injected code
       tags:
       - code
@@ -263,39 +262,52 @@ paths:
         required: true
         schema:
           items:
-            $ref: '#/definitions/ConfigRequest'
+            $ref: '#/definitions/Config_Request_'
           type: array
       responses:
         '200':
           description: Configuration changes executed.
           schema:
             items:
-              $ref: '#/definitions/ConfigResponse'
+              $ref: '#/definitions/Config_Response_'
             type: array
         '400':
           description: Bad request.
           schema:
-            $ref: '#/definitions/HTTPError'
+            $ref: '#/definitions/Config_Response_'
         '401':
           description: Unauthorized.
           schema:
-            $ref: '#/definitions/HTTPError'
+            $ref: '#/definitions/Config_Response_'
       summary: Configuration update
       tags:
       - config
   /status:
-    get: {}
+    get:
+      description: Get info about the status of the LCP in the execution environment.
+      responses:
+        '200':
+          description: Status data of the LCP.
+          schema:
+            $ref: '#/definitions/Status_Response_'
+        '401':
+          description: Unauthorized.
+          schema:
+            $ref: '#/definitions/Code_Response_'
+      summary: Status info
+      tags:
+      - status
     post:
       description: Set the last heartbeat.
       responses:
         '200':
           description: Status data of the LCP.
           schema:
-            $ref: '#/definitions/StatusResponse'
+            $ref: '#/definitions/Status_Response_'
         '401':
           description: Unauthorized.
           schema:
-            $ref: '#/definitions/HTTPError'
+            $ref: '#/definitions/Code_Response_'
       summary: Status set.
       tags:
       - status

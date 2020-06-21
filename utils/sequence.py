@@ -1,14 +1,14 @@
 from toolz import valmap
 
-
-def exclude_keys(dict_base, *keys):
-    """Exclude the keys from the dictionary.
-
-    :param dict_base: dictionary to check
-    :keys: key to exclude from the dictionary
-    :returns: dictionary without the keys
-    """
-    return {k: v for k, v in dict_base.items() if k not in keys}
+__all__ = [
+    'expand',
+    'format',
+    'is_dict',
+    'is_list',
+    'iterate',
+    'subset',
+    'wrap'
+]
 
 
 def expand(elements, **kwrds):
@@ -23,6 +23,10 @@ def format(elements, data):
         return valmap(frmt, element)
 
     return list(map(element_map, wrap(elements)))
+
+
+def is_dict(obj):
+    return isinstance(obj, dict)
 
 
 def is_list(obj):
@@ -55,6 +59,18 @@ def subset(elements, *keys, negation=False):
             return element[0] in keys
     return dict(filter(match, elements.items()))
 
+
+def table_to_dict(data):
+    keys = data.pop(0).split()
+    output = []
+    for dr in data:
+        vals = dr.split()
+        item = {}
+        for k, v in zip(keys, vals):
+            item[k] = v
+        if len(item) > 0:
+            output.append(item)
+    return output
 
 def wrap(data):
     """Wrap the data if an array if it is ont a list of tuple.
