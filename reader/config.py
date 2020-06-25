@@ -2,8 +2,6 @@ from configparser import BasicInterpolation as Basic_Interpolation, ConfigParser
 from os import path
 from utils.log import Log
 
-import git
-
 __all__ = [
     'Config_Reader'
 ]
@@ -11,14 +9,8 @@ __all__ = [
 
 class Config_Reader:
     def __init__(self):
-        repo = git.Repo(search_parent_directories=True)
-        self.version = f'{repo.head.object.hexsha}@{repo.active_branch}'
-
         self.cr = Config_Parser(interpolation=Config_Reader.Env_Interpolation())
         self.cr.read('config.ini')
-
-        self.title = self.cr.get('info', 'title')
-        self.description = self.cr.get('info', 'description')
 
         self.lcp_host = self.cr.get('local-control-plane', 'host')
         self.lcp_port = self.cr.get('local-control-plane', 'port')

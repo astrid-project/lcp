@@ -1,3 +1,4 @@
+from about import title, description, version
 from argparse import ArgumentParser as Argument_Parser
 from reader.config import Config_Reader
 from utils.log import Log
@@ -18,7 +19,7 @@ class Arg_Reader:
         cls.cr = Config_Reader()
         cls.cr.read()
         cls.ap = Argument_Parser(prog='python3 main.py',
-                                 description=f'{cls.cr.title}: {cls.cr.description}')
+                                 description=f'{title}: {description}')
         add = cls.ap.add_argument
 
         add('--host', '-o', type=str,
@@ -54,7 +55,7 @@ class Arg_Reader:
         add('--write-config', '-w',
             help='Write options to config.ini', action='store_true')
         add('--version', '-v', help='Show version',
-            action='store_const', const=cls.cr.version)
+            action='store_const', const=version)
 
         return cls.ap
 

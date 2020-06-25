@@ -8,9 +8,10 @@ os.chdir(dir_path)
 while True:
     from utils.exception import reload_import
     try:
-        from werkzeug.serving import run_with_reloader
-        from reader.arg import Arg_Reader
+        from about import title, version
         from api import api
+        from reader.arg import Arg_Reader
+        from werkzeug.serving import run_with_reloader
         import waitress
         break
     except Import_Error as error:
@@ -18,7 +19,7 @@ while True:
 
 db = Arg_Reader.read()
 
-print(f'{db.config.title} version:{db.config.version}')
+print(f'{title} version:{version}')
 
 
 if db.version is not None:
@@ -27,7 +28,7 @@ else:
     @run_with_reloader
     def run_server():
         u, p = db.dev_username, db.dev_password
-        waitress.serve(api(title=db.config.title, version=db.config.version,
+        waitress.serve(api(title=title, version=version,
                            dev_username=u, dev_password=p),
                        host=db.host, port=db.port, expose_tracebacks=False)
 
