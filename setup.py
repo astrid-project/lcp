@@ -43,10 +43,10 @@ def rst(filename):
 
 
 
-def pip(filename):
+def pip(dirname):
     '''Parse pip requirements file and transform it to setuptools requirements.'''
     requirements = []
-    for line in io.open(os.path.join('{0}', 'requirements.txt'.format(filename))):
+    for line in io.open(os.path.join(dirname, 'requirements.txt')):
         line = line.strip()
         if not line or '://' in line or line.startswith('#'):
             continue
