@@ -16,6 +16,7 @@
 			"codeclimate",
 			"coloredlogs",
 			"datetime",
+			"deps",
 			"dicttoxml",
 			"dind",
 			"dynmon",

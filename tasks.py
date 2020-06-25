@@ -69,40 +69,6 @@ def build_args(*args):
 
 
 @task
-def clean(ctx):
-    '''Clean-up all build artifacts'''
-    header(clean.__doc__)
-    with ctx.cd(ROOT):
-        for pattern in CLEAN_PATTERNS:
-            info('Removing {0}', pattern)
-            ctx.run('rm -rf {0}'.format(pattern))
-
-
-@task
-def deps(ctx):
-    '''Install or update development dependencies'''
-    header(deps.__doc__)
-    with ctx.cd(ROOT):
-        ctx.run("""pip3 install -r requirements.txt
-                                -r docs/requirements.txt
-                                -r test/requirements.txt
-                                -r dev/requirements.txt""",
-                pty=True)
-
-
-@task
-def test(ctx, profile=False):
-    '''Run tests suite'''
-    header(test.__doc__)
-    kwargs = build_args(
-        '--benchmark-skip',
-        '--profile' if profile else None,
-    )
-    with ctx.cd(ROOT):
-        ctx.run('pytest {0}'.format(kwargs), pty=True)
-
-
-@task
 def benchmark(ctx, max_time=2, save=False, compare=False, histogram=False, profile=False, tox=False):
     '''Run benchmarks'''
     header(benchmark.__doc__)
@@ -124,6 +90,16 @@ def benchmark(ctx, max_time=2, save=False, compare=False, histogram=False, profi
 
 
 @task
+def clean(ctx):
+    '''Clean-up all build artifacts'''
+    header(clean.__doc__)
+    with ctx.cd(ROOT):
+        for pattern in CLEAN_PATTERNS:
+            info('Removing {0}', pattern)
+            ctx.run('rm -rf {0}'.format(pattern))
+
+
+@task
 def cover(ctx, html=False):
     '''Run tests suite with coverage'''
     header(cover.__doc__)
@@ -134,10 +110,23 @@ def cover(ctx, html=False):
 
 
 @task
-def tox(ctx):
-    '''Run tests against Python versions'''
-    header(tox.__doc__)
-    ctx.run('tox', pty=True)
+def deps(ctx):
+    '''Install or update development dependencies'''
+    header(deps.__doc__)
+    with ctx.cd(ROOT):
+        ctx.run("pip3 install -r requirements.txt \
+                              -r docs/requirements.txt \
+                              -r tests/requirements.txt \
+                              -r dev/requirements.txt",
+                pty=True)
+
+
+@task
+def doc(ctx):
+    '''Build the documentation'''
+    header(doc.__doc__)
+    with ctx.cd(os.path.join(ROOT, 'docs')):
+        ctx.run('make html', pty=True)
 
 
 @task
@@ -146,7 +135,7 @@ def qa(ctx):
     header(qa.__doc__)
     with ctx.cd(ROOT):
         info('Python Static Analysis')
-        flake8_results = ctx.run('flake8 flask_restplus tests',
+        flake8_results = ctx.run('flake8 . tests',
                                  pty=True, warn=True)
         if flake8_results.failed:
             error('There is some lints to fix')
@@ -167,14 +156,40 @@ def qa(ctx):
 
 
 @task
-def doc(ctx):
-    '''Build the documentation'''
-    header(doc.__doc__)
-    with ctx.cd(os.path.join(ROOT, 'docs')):
-        ctx.run('make html', pty=True)
+def rst2md(ctx, filename):
+    '''Convert restructuredText file to Markdown using Pandoc'''
+    header(rst2md.__doc__)
+    with ctx.cd(ROOT):
+        info(f'Filename: {filename}')
+        ctx.run(f'pandoc {filename}.rst -f rst -t markdown  -o {filename}.md')
 
 
-@task(clean, deps, test, doc, qa, default=True)
+@task
+def rst2md_default(ctx):
+    rst2md(ctx, filename='README')
+    rst2md(ctx, filename='CHANGELOG')
+
+
+@task
+def test(ctx, profile=False):
+    '''Run tests suite'''
+    header(test.__doc__)
+    kwargs = build_args(
+        '--benchmark-skip',
+        '--profile' if profile else None,
+    )
+    with ctx.cd(ROOT):
+        ctx.run('pytest {0}'.format(kwargs), pty=True)
+
+
+@task
+def tox(ctx):
+    '''Run tests against Python versions'''
+    header(tox.__doc__)
+    ctx.run('tox', pty=True)
+
+
+@task(clean, deps, doc, qa, rst2md_default, test, default=True)
 def all(ctx):
     '''Run tests, reports and packaging'''
     pass
