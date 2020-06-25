@@ -1,3 +1,5 @@
+from pathlib import Path
+
 __all__ = [
     'docstring'
 ]
@@ -10,7 +12,8 @@ def docstring(source):
     """
 
     def decorator(self, **params):
-        with open(f'./docstring/{source}', 'r') as file:
+        path = Path(__file__).parent / f'../docstring/{source}'
+        with path.open('r') as file:
             self.__doc__ = file.read().format(**params)
         return self
     return decorator

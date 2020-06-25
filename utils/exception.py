@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import os
 import sys
 
@@ -22,7 +24,8 @@ def reload_import(error):
     error_data = str(error).split()
     if ['cannot', 'import'] == error_data[0:2]:
         name = error_data[2]
-        with open('requirements.txt', 'r') as req_file:
+        path = Path(__file__).parent / '../requirements.txt'
+        with path.open('r') as req_file:
             for mod in req_file:
                 if mod == name.replace('_', '-'):
                     os.system('pip3 install -r requirements.txt')

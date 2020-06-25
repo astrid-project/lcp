@@ -1,5 +1,6 @@
 from configparser import BasicInterpolation as Basic_Interpolation, ConfigParser as Config_Parser
 from os import path
+from pathlib import Path
 from utils.log import Log
 
 __all__ = [
@@ -8,9 +9,13 @@ __all__ = [
 
 
 class Config_Reader:
+    path = Path(__file__).parent / '../config.ini'
+
     def __init__(self):
         self.cr = Config_Parser(interpolation=Config_Reader.Env_Interpolation())
-        self.cr.read('config.ini')
+
+    def read(self):
+        self.cr.read(self.path.resolve())
 
         self.lcp_host = self.cr.get('local-control-plane', 'host')
         self.lcp_port = self.cr.get('local-control-plane', 'port')
@@ -32,7 +37,7 @@ class Config_Reader:
         self.cr.set('local-control-plane', 'port', db.port)
         self.cr.set('context-broker', 'endpoint', db.cb_endpoint)
 
-        with open('config.ini', 'w') as f:
+        with self.path.open('w') as f:
             self.cr.write(f)
 
     class Env_Interpolation(Basic_Interpolation):
