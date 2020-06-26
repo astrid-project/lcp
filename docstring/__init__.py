@@ -11,9 +11,9 @@ def docstring(source):
     :returns: decorator
     """
 
-    def decorator(self, **params):
+    def decorator(self):
         path = Path(__file__).parent / f'../docstring/{source}'
         with path.open('r') as file:
-            self.__doc__ = file.read().format(**params)
+            self.__doc__ = file.read()
         return self
     return decorator
