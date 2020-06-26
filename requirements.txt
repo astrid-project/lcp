@@ -1,5 +1,5 @@
 apispec==3.3.1
-colorama
+colorama==0.4.3
 coloredlogs
 dicttoxml
 falcon
