@@ -17,4 +17,4 @@ ttldict==0.3.0
 verboselogs==1.7
 waitress==1.4.4
 werkzeug==1.0.1
-xmltodict
+xmltodict==0.12.0
