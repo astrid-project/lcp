@@ -8,7 +8,7 @@ falcon-auth==1.1.0
 jproperties==2.0.0
 msgpack==1.0.0
 pint==0.13
-psutil
+psutil==5.7.0
 pyyaml>=5.0
 requests
 swagger-ui-py
