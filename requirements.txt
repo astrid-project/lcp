@@ -14,7 +14,7 @@ requests==2.24.0
 swagger-ui-py==0.3.0
 toolz==0.10.0
 ttldict==0.3.0
-verboselogs
+verboselogs==1.7
 waitress
 werkzeug
 xmltodict
