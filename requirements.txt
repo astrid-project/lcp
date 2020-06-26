@@ -15,6 +15,6 @@ swagger-ui-py==0.3.0
 toolz==0.10.0
 ttldict==0.3.0
 verboselogs==1.7
-waitress
+waitress==1.4.4
 werkzeug
 xmltodict
