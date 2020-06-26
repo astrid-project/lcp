@@ -11,7 +11,7 @@ pint==0.13
 psutil==5.7.0
 pyyaml>=5.0
 requests==2.24.0
-swagger-ui-py
+swagger-ui-py==0.3.0
 toolz
 ttldict
 verboselogs
