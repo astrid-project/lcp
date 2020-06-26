@@ -166,8 +166,8 @@ def rst2md(ctx, filename):
 
 @task
 def rst2md_default(ctx):
-    rst2md(ctx, filename='README')
-    rst2md(ctx, filename='CHANGELOG')
+    for filename in ['README', 'CHANGELOG', 'AUTHORS']:
+        rst2md(ctx, filename=filename)
 
 
 @task
