@@ -6,7 +6,7 @@ falcon==2.0.0
 falcon-apispec==0.4.0
 falcon-auth==1.1.0
 jproperties==2.0.0
-msgpack
+msgpack==1.0.0
 pint
 psutil
 pyyaml>=5.0
