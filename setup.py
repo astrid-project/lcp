@@ -80,7 +80,7 @@ setup(
     dev_require=dev_require,
     license='MIT',
     zip_safe=False,
-    keywords='lcp rest api swagger openapi',
+    keywords='lcp rest api openapi control-plane data-plane programmability behaviour swagger agents settings runtime elasticsearch logstash beats python golang java',
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Programming Language :: Python',

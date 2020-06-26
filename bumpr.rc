@@ -1,0 +1,32 @@
+[bumpr]
+file = about.py
+vcs = git
+commit = true
+tag = true
+push = true
+tests = tox
+publish =
+    python setup.py sdist bdist_wheel upload
+clean =
+    inv clean
+files =
+    README.rst
+
+[bump]
+unsuffix = true
+
+[prepare]
+part = patch
+suffix = dev
+
+[changelog]
+file = CHANGELOG.rst
+bump = {version} ({date:%Y-%m-%d})
+prepare = Current
+
+[readthedoc]
+id = lcp
+
+[replace]
+dev = ?branch=master
+stable = ?tag={version}
