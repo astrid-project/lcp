@@ -88,8 +88,8 @@ class Code_Resource(Base_Resource):
     @ docstring(source='code/post.yaml')
     def on_delete(self, req, resp, id=None):
         req_data = req.media or {}
-        resp_data, valid = CodeRequestSchema(many=is_list(req_data),
-                                             partial=True, method=HTTP_Method.DELETE).validate(data=req.media, id=id)
+        resp_data, valid = Code_Request_Schema(many=is_list(req_data),
+                                               partial=True, method=HTTP_Method.DELETE).validate(data=req.media, id=id)
         if valid:
             req_data_wrap = wrap(req_data)
             if len(req_data_wrap) > 0:

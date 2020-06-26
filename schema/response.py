@@ -15,7 +15,8 @@ __all__ = [
     'Ok_Response_Schema',
     'Reset_Content_Response_Schema',
     'Unauthorized_Response_Schema',
-    'Unprocessable_Entity_Response_Schema'
+    'Unprocessable_Entity_Response_Schema',
+    'Unsupported_Media_Type_Response_Schema'
 ]
 
 RESPONSE_STATUS = [
@@ -29,8 +30,9 @@ RESPONSE_STATUS = [
     Not_Modified_Response.status(),
     Ok_Response.status(),
     Reset_Content_Response.status(),
-    Unauthorized_Response.status*(),
-    Unprocessable_Entity_Response.status()
+    Unauthorized_Response.status(),
+    Unprocessable_Entity_Response.status(),
+    Unsupported_Media_Type_Response.status()
 ]
 
 RESPONSE_CODES = [
@@ -45,7 +47,8 @@ RESPONSE_CODES = [
     Ok_Response.code,
     Reset_Content_Response.code,
     Unauthorized_Response.code,
-    Unprocessable_Entity_Response.code
+    Unprocessable_Entity_Response.code,
+    Unsupported_Media_Type_Response.code
 ]
 
 
@@ -75,6 +78,7 @@ class Base_Response_Schema(Schema):
                    example=RESPONSE_CODES[0],
                    description='HTTP Status Code.',
                    validate=validate.OneOf(RESPONSE_CODES))
+
 
 class Bad_Request_Response_Schema(Base_Response_Schema):
     status = Constant(constant=Bad_Request_Response.status())
@@ -146,3 +150,9 @@ class Unprocessable_Entity_Response_Schema(Base_Response_Schema):
     status = Constant(Unprocessable_Entity_Response.status())
     error = Constant(Unprocessable_Entity_Response.error)
     code = Constant(Unprocessable_Entity_Response.code)
+
+
+class Unsupported_Media_Type_Response_Schema(Base_Response_Schema):
+    status = Constant(Unsupported_Media_Type_Response.status())
+    error = Constant(Unsupported_Media_Type_Response.error)
+    code = Constant(Unsupported_Media_Type_Response.code)

@@ -10,11 +10,11 @@ FORMAT = '%Y/%m/%d %H:%M:%S'
 
 
 def datetime_from_str(date_time_str, format=FORMAT):
-    """Get a datatime object from the string.
+    """Get a datetime object from the string.
 
     :params date_time_str: datetime in string
     :params format: datetime format
-    :returns datetime object
+    :returns: datetime object
     """
     return datetime.strptime(date_time_str, format)
 

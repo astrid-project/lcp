@@ -22,33 +22,27 @@ class Arg_Reader:
                                  description=f'{title}: {description}')
         add = cls.ap.add_argument
 
+
         add('--host', '-o', type=str,
-            help='Hostname/IP of the REST Server', default=cls.cr.cb_host)
+            help='Hostname/IP of the REST Server', default=cls.cr.lcp_host)
         add('--port', '-p', type=int,
-            help='Tcr Port of the REST Server', default=cls.cr.cb_port)
+            help='TCP Port of the REST Server', default=cls.cr.lcp_port)
 
-        add('--hb-timeout', '-b', type=str,
-            help='Timeout (with unit, e.g.: 10s) for heartbeat with LCP', default=cls.cr.hb_timeout)
-        add('--hb-period', '-r', type=str,
-            help='Period (with unit, e.g.: 1min) for the heartbeat with the LCP', default=cls.cr.hb_period)
-        add('--hb-auth-expiration', '-x', type=str,
-            help='Period (with unit, e.g.: 1min) for auth expiration used in the heartbeat with the LCP',
-            default=cls.cr.hb_auth_expiration)
+        add('--auth-max-ttl', '-t', type=str,
+            help='Max authentication db TTL', default=cls.cr.auth_max_ttl)
 
-        add('--es-endpoint', '-e', type=str,
-            help='Elasticsearch server hostname/IP:port',
-            default=cls.cr.es_endpoint)
-        add('--es-timeout', '-s', type=str,
-            help='Timeout (with unit, e.g.: 10s) for the connection to Elasticsearch',
-            default=cls.cr.es_timeout)
-        add('--es-retry_period', '-y', type=str,
-            help='Period (with unit, e.g.: 1min) to retry the connection to Elasticsearch',
-            default=cls.cr.es_retry_period)
+        add('--polycube-host', '-s', type=str,
+            help='Hostname/IP of Polycube', default=cls.cr.polycube_host)
+        add('--polycube-port', '-c', type=int,
+            help='Port of Polycube', default=cls.cr.polycube_port)
+        add('--polycube-timeout', '-m', type=str, help='Timeout for Polycube connection',
+            default=cls.cr.polycube_timeout)
 
         add('--dev-username', '-u', type=str,
             help='Authorized username', default=cls.cr.dev_username)
         add('--dev-password', '-a', type=str,
             help='Authorized password', default=cls.cr.dev_password)
+
         add('--log-level', '-l', choices=Log.get_levels(),
             help='Log level', default=cls.cr.log_level)
 
@@ -56,7 +50,6 @@ class Arg_Reader:
             help='Write options to config.ini', action='store_true')
         add('--version', '-v', help='Show version',
             action='store_const', const=version)
-
         return cls.ap
 
     @classmethod
@@ -65,8 +58,7 @@ class Arg_Reader:
 
         cls.db = cls.ap.parse_args()
         cls.db.config = cls.cr
-        for field in ('hb_timeout', 'hb_period', 'hb_auth_expiration',
-                      'es_timeout', 'es_retry_period'):
+        for field in ('auth_max_ttl', 'polycube_timeout'):
             setattr(cls.db, field, get_seconds(getattr(cls.db, field)))
 
         if cls.db.write_config:

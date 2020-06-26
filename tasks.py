@@ -122,9 +122,9 @@ def deps(ctx):
 
 
 @task
-def doc(ctx):
+def docs(ctx):
     '''Build the documentation'''
-    header(doc.__doc__)
+    header(docs.__doc__)
     with ctx.cd(os.path.join(ROOT, 'docs')):
         ctx.run('make html', pty=True)
 
@@ -171,9 +171,9 @@ def rst2md_default(ctx):
 
 
 @task
-def test(ctx, profile=False):
+def tests(ctx, profile=False):
     '''Run tests suite'''
-    header(test.__doc__)
+    header(tests.__doc__)
     kwargs = build_args(
         '--benchmark-skip',
         '--profile' if profile else None,
@@ -189,7 +189,7 @@ def tox(ctx):
     ctx.run('tox', pty=True)
 
 
-@task(clean, deps, doc, qa, rst2md_default, test, default=True)
+@task(clean, deps, docs, qa, rst2md_default, tests, default=True)
 def all(ctx):
     '''Run tests, reports and packaging'''
     pass

@@ -12,11 +12,42 @@ parameters:
 tags: [code]
 responses:
   200:
-    description: Code injection executed.
-    schema: Code_Response_Schema
+    description: All injected code correctly updated.
+    schema:
+      type: array
+      items: Ok_Response_Schema
+  204:
+    description: No content to update codes based on the request.
+    schema: No_Content_Response_Schema
+  304:
+    description: Update for one or more codes not necessary.
+    schema:
+      type: array
+      items:
+        oneOf:
+          - Ok_Response_Schema
+          - Not_Modified_Response
   400:
-    description: Bad Request.
-    schema: Code_Response_Schema
+    description: Request not valid.
+    schema: Bad_Request_Response_Schema
   401:
-    description: Unauthorized.
-    schema: Code_Response_Schema
+    description: Authentication failed.
+    schema: Unauthorized_Response_Schema
+  406:
+    description: Request validation failed.
+    schema: Not_Acceptable_Response_Schema
+  415:
+    description: Media type not supported.
+    schema: Unsupported_Media_Type_Response_Schema
+  422:
+    description: Not possible to update one or more codes based on the request.
+    schema:
+      type: array
+      items:
+        oneOf:
+          - Ok_Response_Schema
+          - Not_Modified_Response
+          - Unprocessable_Entity_Response_Schema
+  500:
+    description: Server not available to satisfy the request.
+    schema: Internal_Server_Error_Response_Schema

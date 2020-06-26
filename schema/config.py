@@ -5,7 +5,9 @@ from utils.datetime import FORMAT
 
 _all__ = [
     'Config_Request_Schema',
-    'Config_Response_Schema'
+    'Config_Action_Response_Schema',
+    'Config_Parameter_Response_Schema',
+    'Config_Resource_Response_Schema'
 ]
 
 PARAMETER_SCHEMAS = ['json', 'properties', 'xml', 'yaml']
@@ -63,6 +65,10 @@ class Config_Request_Schema(Base_Schema):
 
 class Config_Response_Schema(Base_Schema):
     """Response for config endpoint."""
+    id = Str(required=True,
+             description='Id of the configuration.')
+    timestamp = Date_Time(format=FORMAT, required=True,
+                          description='Timestamp when the configuration is done.')
     type = Str(enum=RESPONSE_TYPES, example=RESPONSE_TYPES[0],
                description='Type of the response.',
                validate=validate.OneOf(RESPONSE_TYPES))

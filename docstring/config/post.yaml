@@ -12,13 +12,31 @@ parameters:
       items: Config_Request_Schema
 responses:
   200:
-    description: Configuration changes executed.
+    description: Configuration changed correctly.
+    schema:
+      oneOf:
+        - type: array
+          items: Created_Response
+  204:
+    description: No content to configure based on the request.
+    schema: No_Content_Response_Schema
+  400:
+    description: Request not valid.
+    schema: Bad_Request_Response_Schema
+  401:
+    description: Authentication failed.
+    schema: Unauthorized_Response_Schema
+  406:
+    description: Request validation failed.
+    schema: Not_Acceptable_Response_Schema
+  422:
+    description: Not possible to change one or more configurations.
     schema:
       type: array
-      items: Config_Response_Schema
-  400:
-    description: Bad request.
-    schema: Config_Response_Schema
-  401:
-    description: Unauthorized.
-    schema: Config_Response_Schema
+      items:
+        oneOf:
+          - Created_Response_Schema
+          - Unprocessable_Entity_Response_Schema
+  500:
+    description: Server not available to satisfy the request.
+    schema: Internal_Server_Error_Response_Schema

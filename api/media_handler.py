@@ -6,9 +6,9 @@ from yaml import FullLoader as Full_Loader
 from yaml.parser import ParserError as Parser_Error, ScannerError as Scanner_Error
 from xml.parsers.expat import ExpatError as Expat_Error
 
+import xml
 import xmltodict as xml_to_dict
 import yaml
-import xml
 
 __all__ = [
     'XML_Handler',

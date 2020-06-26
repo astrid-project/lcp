@@ -17,6 +17,7 @@
 			"coloredlogs",
 			"datetime",
 			"deps",
+			"dict",
 			"dicttoxml",
 			"dind",
 			"dynmon",

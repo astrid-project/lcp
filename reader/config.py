@@ -52,6 +52,6 @@ class Config_Reader:
             :param option: option value
             :param value: current value
             :param defaults: default values
-            :returns value with expanded variables
+            :returns: value with expanded variables
             """
             return path.expandvars(value)

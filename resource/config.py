@@ -3,7 +3,7 @@ from lib.http import HTTP_Method
 from lib.parser import *
 from lib.response import *
 from resource.base import Base_Resource
-from schema.config import Config_Request_Schema, Config_Response_Schema
+from schema.config import *
 from utils.datetime import datetime_to_str
 from utils.json import loads
 from utils.sequence import is_list, table_to_dict, wrap
@@ -44,13 +44,20 @@ class Config_Resource(Base_Resource):
                         for data in wrap(cfg_list):
                             if cfg == 'actions':
                                 output = self.__actions(data)
+                                schema = Config_Action_Response_Schema
                             elif cfg == 'parameters':
                                 output = self.__parameters(data)
+                                schema = Config_Parameter_Response_Schema
                             elif cfg == 'resources':
                                 output = self.__resources(data)
+                                schema = Config_Resource_Response_Schema
                             output.update(id=data.get('id', None),
                                           timestamp=datetime_to_str())
-                            Content_Response(output).add(resp)
+                            resp_data, valid = schema(many=False, method=HTTP_Method.POST).validate(data=output)
+                            if valid:
+                                Content_Response(output).add(resp)
+                            else:
+                                resp_data.add(resp)
             else:
                 msg = f'No content to apply configurations with the {{request}}'
                 No_Content_Response(msg, request=req_data).apply(resp)

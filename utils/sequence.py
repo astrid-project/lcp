@@ -7,6 +7,7 @@ __all__ = [
     'is_list',
     'iterate',
     'subset',
+    'table_to_dict',
     'wrap'
 ]
 
@@ -34,10 +35,10 @@ def is_list(obj):
 
 
 def iterate(source, *keys):
-    """Iterate a nested dict based on list of keys
+    """Iterate a nested dict based on list of keys.
 
     :param source: nested dict
-    :param *keys: list of keys
+    :param keys: list of keys
     :returns: value
     """
     d = source

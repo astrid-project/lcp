@@ -1,0 +1,8 @@
+pyenchant
+sphinx
+sphinx_issues
+sphinx-autobuild
+sphinx-bootstrap-theme
+sphinxcontrib-autoprogram
+sphinxcontrib.httpdomain
+sphinxcontrib.spelling

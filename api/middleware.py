@@ -6,12 +6,12 @@ from utils.hash import hash
 from utils.log import Log
 
 __all__ = [
-    'Basic_Auth_Backend_Extended',
+    'Basic_Auth_Backend_Middleware',
     'Negotiation_Middleware'
 ]
 
 
-class Basic_Auth_Backend_Extended(Basic_Auth_Backend):
+class Basic_Auth_Backend_Middleware(Basic_Auth_Backend):
     def __init__(self, dev_username, dev_password):
         super().__init__(self.__auth)
         self.dev_username = dev_username
