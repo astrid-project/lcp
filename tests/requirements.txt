@@ -2,5 +2,5 @@ bandit==1.6.2
 flake8==3.8.3
 locust==1.0.3
 pycodestyle==2.6.0
-pydocstyle
+pydocstyle==5.0.2
 pytest
