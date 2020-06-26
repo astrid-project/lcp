@@ -3,7 +3,7 @@ colorama==0.4.3
 coloredlogs==14.0
 dicttoxml==1.7.4
 falcon==2.0.0
-falcon-apispec
+falcon-apispec==0.4.0
 falcon-auth
 jproperties
 msgpack
