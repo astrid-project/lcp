@@ -27,6 +27,7 @@ PYPI_RST_FILTERS = (
     (r':commit:`(.+?)`', r'`#\1 <https://github.com/astrid-project/lcp/commit/\1>`_'),
     # Drop unrecognised currentmodule
     (r'\.\. currentmodule:: .*', ''),
+
     (r'\.\. image:: .*', ''),
     (r'\.\. include:: .*', ''),
     (r':target: .*', ''),
