@@ -1,11 +1,10 @@
 from __future__ import unicode_literals, absolute_import
+from datetime import datetime
+from functools import partial
+from invoke import task
 
 import os
 import sys
-
-from datetime import datetime
-
-from invoke import task
 
 ROOT = os.path.dirname(__file__)
 
@@ -122,6 +121,15 @@ def deps(ctx):
 
 
 @task
+def pypi(ctx):
+    '''Build package for pypi'''
+    header(pypi.__doc__)
+    with ctx.cd(ROOT):
+        ctx.run('python3 setup.py sdist')
+        ctx.run('twine upload dist/*')
+
+
+@task
 def docs(ctx):
     '''Build the documentation'''
     header(docs.__doc__)
@@ -155,19 +163,39 @@ def qa(ctx):
     success('Quality check OK')
 
 
-@task
-def rst2md(ctx, filename):
-    '''Convert restructuredText file to Markdown using Pandoc'''
-    header(rst2md.__doc__)
-    with ctx.cd(ROOT):
-        info(f'Filename: {filename}')
-        ctx.run(f'pandoc {filename}.rst -f rst -t markdown  -o {filename}.md')
+def __rst_doc(label):
+    def decorator(self):
+        self.__doc__ = f'''Convert restructuredText file to {label} using Pandoc'''
+        return self
+
+    return decorator
 
 
-@task
-def rst2md_default(ctx):
-    for filename in ['README', 'CHANGELOG', 'AUTHORS']:
-        rst2md(ctx, filename=filename)
+def __rst_convert(caller, ctx, file, format, ext):
+    header(caller.__doc__)
+    for f in file:
+        with ctx.cd(ROOT):
+            info(f'rst2{ext}: {f}.rst -> {f}.{ext}')
+            ctx.run(
+                f'pandoc -s --highlight-style pygments --toc -c pandoc.css -A footer.html -f rst -t {format} {f}.rst -o {f}.{ext}')
+
+
+@task(iterable=['file'])
+@__rst_doc('HTML')
+def rst2html(ctx, file):
+    __rst_convert(rst2html, ctx, file, format='html', ext='html')
+
+
+@task(iterable=['file'])
+@__rst_doc('Markdown')
+def rst2md(ctx, file):
+    __rst_convert(rst2md, ctx, file, format='markdown', ext='md')
+
+
+@task(iterable=['file'])
+@__rst_doc('PDF')
+def rst2pdf(ctx, file):
+    __rst_convert(rst2pdf, ctx, file, format='beamer', ext='pdf')
 
 
 @task
@@ -189,7 +217,21 @@ def tox(ctx):
     ctx.run('tox', pty=True)
 
 
-@task(clean, deps, docs, qa, rst2md_default, tests, default=True)
+RST_FILES = [
+    'AUTHORS',
+    'CHANGELOG',
+    'CONTRIBUTING',
+    'README'
+]
+
+RST_FILE_ARGS = [f'--file={file}' for file in RST_FILES]
+
+
+@task(clean, deps, docs, qa,
+      partial(rst2md, *RST_FILE_ARGS),
+      partial(rst2html, *RST_FILE_ARGS),
+      partial(rst2pdf, *RST_FILE_ARGS),
+      tests, default=True)
 def all(ctx):
-    '''Run tests, reports and packaging'''
+    '''Run conversions, tests, reports and packaging'''
     pass

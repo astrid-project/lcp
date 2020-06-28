@@ -1,4 +1,3 @@
 include README.rst CHANGELOG.rst MANIFEST.in LICENSE
-recursive-include . *
-
-global-exclude *.pyc
+exclude .gitignore .history .git docs
+recursive-exclude *.pyc __pycache__

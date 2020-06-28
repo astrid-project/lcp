@@ -2,37 +2,40 @@ Local Control Plane
 ===================
 
 .. image:: https://img.shields.io/github/license/astrid-project/lcp
-    :target: https://github.com/astrid-project/lcp/-/blob/master/LICENSE
-    :alt: MIT License
+   :target: https://github.com/astrid-project/lcp/-/blob/master/LICENSE
+   :alt: MIT License
 
 .. image:: https://img.shields.io/github/languages/code-size/astrid-project/lcp?color=red&logo=github
-    :target: https://github.com/astrid-project/lcp
-    :alt: GitHub Code Size
+   :target: https://github.com/astrid-project/lcp
+   :alt: GitHub Code Size
 
 .. image:: https://img.shields.io/github/repo-size/astrid-project/lcp?color=red&logo=github
-    :target: https://github.com/astrid-project/lcp
-    :alt: GitHub Repository Size
+   :target: https://github.com/astrid-project/lcp
+   :alt: GitHub Repository Size
 
 .. image:: https://img.shields.io/github/v/tag/astrid-project/lcp?label=release&logo=github
-    :target: https://github.com/astrid-project/lcp/releases
-    :alt: GitJHub Release
+   :target: https://github.com/astrid-project/lcp/releases
+   :alt: GitJHub Release
 
 .. image:: https://img.shields.io/cii/summary/4096
-    :target: https://bestpractices.coreinfrastructure.org/en/projects/4096
-    :alt: CII Progress
+   :target: https://bestpractices.coreinfrastructure.org/en/projects/4096
+   :alt: CII Progress
 
 .. image:: https://readthedocs.org/projects/lcp/badge/?version=latest
-    :target: https://lcp.readthedocs.io
-    :alt: Readthedocs
+   :target: https://lcp.readthedocs.io
+   :alt: Readthedocs
 
 .. image:: https://pyup.io/repos/github/astrid-project/lcp/shield.svg
-    :target: https://pyup.io/repos/github/astrid-project/lcp/
-    :alt: PyUP
+   :target: https://pyup.io/repos/github/astrid-project/lcp/
+   :alt: PyUP
 
 .. image:: https://pyup.io/repos/github/astrid-project/lcp/python-3-shield.svg
-     :target: https://pyup.io/repos/github/astrid-project/lcp/
-     :alt: Python 3
+   :target: https://pyup.io/repos/github/astrid-project/lcp/
+   :alt: Python 3
 
+.. image:: https://travis-ci.org/astrid-project/lcp.svg?branch=master
+   :target: https://travis-ci.org/astrid-project/lcp
+   :alt: Travis CI
 
 In each local agent, the control plane is responsible for programmability, i.e., changing the behaviour of the data plane at run-time.
 

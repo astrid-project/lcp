@@ -57,14 +57,18 @@ An Invoke ``tasks.py`` is provided to simplify the common tasks:
     $ inv -l
     Available tasks:
 
-      all      Run tests, reports and packaging
-      clean    Clean-up all build artifacts
-      cover    Run tests suite with coverage
-      dist     Package for distribution
-      doc      Build the documentation
-      qa       Run a quality report
-      test     Run tests suite
-      tox      Run tests against Python versions
+      all              Run conversions, tests, reports and packaging
+      benchmark        Run benchmarks
+      clean            Clean-up all build artifacts
+      cover            Run tests suite with coverage
+      deps             Install or update development dependencies
+      docs             Build the documentation
+      qa               Run a quality report
+      rst2html         Convert restructuredText file to HTML using Pandoc
+      rst2md           Convert restructuredText file to Markdown using Pandoc
+      rst2pdf          Convert restructuredText file to PDF using Pandoc
+      tests            Run tests suite
+      tox              Run tests against Python versions
 
 To ensure everything is fine before submission, use ``tox``.
 It will run the test suite on all the supported Python version
