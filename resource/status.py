@@ -3,6 +3,7 @@ from docstring import docstring
 from falcon.errors import HTTPUnauthorized as HTTP_Unauthorized
 from lib.http import HTTP_Method
 from lib.response import *
+from schema.response import *
 from marshmallow.schema import Schema
 from reader.arg import Arg_Reader
 from schema.status import *

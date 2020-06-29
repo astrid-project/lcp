@@ -67,7 +67,12 @@ def build_args(*args):
     return ' '.join(a for a in args if a)
 
 
-@task
+@task(help=dict(max_time='set max time for the benchmark',
+                save='enable autosave',
+                compare='enable compare option',
+                histogram='enable histogram option',
+                profile='enable profiling',
+                tox='run the command using tox'))
 def benchmark(ctx, max_time=2, save=False, compare=False, histogram=False, profile=False, tox=False):
     '''Run benchmarks'''
     header(benchmark.__doc__)
@@ -98,7 +103,7 @@ def clean(ctx):
             ctx.run('rm -rf {0}'.format(pattern))
 
 
-@task
+@task(help=dict(html='enable HTML report'))
 def cover(ctx, html=False):
     '''Run tests suite with coverage'''
     header(cover.__doc__)
@@ -173,33 +178,50 @@ def __rst_doc(label):
 
 def __rst_convert(caller, ctx, file, format, ext):
     header(caller.__doc__)
-    for f in file:
-        with ctx.cd(ROOT):
+    with ctx.cd(ROOT):
+        for f in file:
             info(f'rst2{ext}: {f}.rst -> {f}.{ext}')
             ctx.run(
                 f'pandoc -s --highlight-style pygments --toc -c pandoc.css -A footer.html -f rst -t {format} {f}.rst -o {f}.{ext}')
 
 
-@task(iterable=['file'])
+@task(iterable=['file'], help=dict(file='path to the file to convert without .rst extension'))
 @__rst_doc('HTML')
 def rst2html(ctx, file):
     __rst_convert(rst2html, ctx, file, format='html', ext='html')
 
 
-@task(iterable=['file'])
+RST_FILES = [
+    'AUTHORS',
+    'CHANGELOG',
+    'CONTRIBUTING',
+    'README'
+]
+
+
+@task
+def rst2htmls(ctx):
+    '''Convert rst files: {files} to HTML'''
+    rst2html(ctx, file=RST_FILES)
+
+
+rst2htmls.__doc__ = rst2htmls.__doc__.format(files=', '.join(RST_FILES))
+
+
+@task(iterable=['file'], help=dict(file='path to the file to convert without .rst extension'))
 @__rst_doc('Markdown')
 def rst2md(ctx, file):
     __rst_convert(rst2md, ctx, file, format='markdown', ext='md')
 
 
-@task(iterable=['file'])
+@task(iterable=['file'], help=dict(file='path to the file to convert without .rst extension'))
 @__rst_doc('PDF')
 def rst2pdf(ctx, file):
     __rst_convert(rst2pdf, ctx, file, format='beamer', ext='pdf')
 
 
 @task
-def tests(ctx, profile=False):
+def tests(ctx, profile=False, help=dict(profile='enable profiling')):
     '''Run tests suite'''
     header(tests.__doc__)
     kwargs = build_args(
@@ -217,21 +239,7 @@ def tox(ctx):
     ctx.run('tox', pty=True)
 
 
-RST_FILES = [
-    'AUTHORS',
-    'CHANGELOG',
-    'CONTRIBUTING',
-    'README'
-]
-
-RST_FILE_ARGS = [f'--file={file}' for file in RST_FILES]
-
-
-@task(clean, deps, docs, qa,
-      partial(rst2md, *RST_FILE_ARGS),
-      partial(rst2html, *RST_FILE_ARGS),
-      partial(rst2pdf, *RST_FILE_ARGS),
-      tests, default=True)
+@task(clean, deps, docs, qa, rst2htmls, tests, default=True)
 def all(ctx):
     '''Run conversions, tests, reports and packaging'''
     pass

@@ -32,7 +32,7 @@
             "schema": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/Code_Request_"
+                "$ref": "#/definitions/Code_Request"
               }
             }
           }
@@ -42,21 +42,54 @@
         ],
         "responses": {
           "200": {
-            "description": "Code injection executed.",
+            "description": "Codes inject correctly.",
             "schema": {
-              "$ref": "#/definitions/Code_Response_"
+              "oneOf": [
+                {
+                  "type": "array",
+                  "items": "Created_Response"
+                }
+              ]
+            }
+          },
+          "204": {
+            "description": "No content to inject codes based on the request.",
+            "schema": {
+              "$ref": "#/definitions/No_Content_Response"
             }
           },
           "400": {
-            "description": "Bad Request.",
+            "description": "Request not valid.",
             "schema": {
-              "$ref": "#/definitions/Code_Response_"
+              "$ref": "#/definitions/Bad_Request_Response"
             }
           },
           "401": {
-            "description": "Unauthorized.",
+            "description": "Authentication failed.",
             "schema": {
-              "$ref": "#/definitions/Code_Response_"
+              "$ref": "#/definitions/Unauthorized_Response"
+            }
+          },
+          "406": {
+            "description": "Request validation failed.",
+            "schema": {
+              "$ref": "#/definitions/Not_Acceptable_Response"
+            }
+          },
+          "422": {
+            "description": "Not possible to inject one or more codes.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "oneOf": [
+                  "Created_Response_Schema",
+                  "Unprocessable_Entity_Response_Schema"
+                ]
+              }
+            },
+            "500": {
+              "description": "Server not available to satisfy the request.",
+              "schema": "Internal_Server_Error_Response_Schema"
             }
           }
         }
@@ -72,7 +105,7 @@
             "schema": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/Code_Request_"
+                "$ref": "#/definitions/Code_Request"
               }
             }
           }
@@ -82,21 +115,54 @@
         ],
         "responses": {
           "200": {
-            "description": "Code injection executed.",
+            "description": "Codes inject correctly.",
             "schema": {
-              "$ref": "#/definitions/Code_Response_"
+              "oneOf": [
+                {
+                  "type": "array",
+                  "items": "Created_Response"
+                }
+              ]
+            }
+          },
+          "204": {
+            "description": "No content to inject codes based on the request.",
+            "schema": {
+              "$ref": "#/definitions/No_Content_Response"
             }
           },
           "400": {
-            "description": "Bad Request.",
+            "description": "Request not valid.",
             "schema": {
-              "$ref": "#/definitions/Code_Response_"
+              "$ref": "#/definitions/Bad_Request_Response"
             }
           },
           "401": {
-            "description": "Unauthorized.",
+            "description": "Authentication failed.",
             "schema": {
-              "$ref": "#/definitions/Code_Response_"
+              "$ref": "#/definitions/Unauthorized_Response"
+            }
+          },
+          "406": {
+            "description": "Request validation failed.",
+            "schema": {
+              "$ref": "#/definitions/Not_Acceptable_Response"
+            }
+          },
+          "422": {
+            "description": "Not possible to inject one or more codes.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "oneOf": [
+                  "Created_Response_Schema",
+                  "Unprocessable_Entity_Response_Schema"
+                ]
+              }
+            },
+            "500": {
+              "description": "Server not available to satisfy the request.",
+              "schema": "Internal_Server_Error_Response_Schema"
             }
           }
         }
@@ -112,7 +178,7 @@
             "schema": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/Code_Request_"
+                "$ref": "#/definitions/Code_Request"
               }
             }
           }
@@ -122,21 +188,73 @@
         ],
         "responses": {
           "200": {
-            "description": "Code injection executed.",
+            "description": "All injected code correctly updated.",
             "schema": {
-              "$ref": "#/definitions/Code_Response_"
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Ok_Response"
+              }
+            }
+          },
+          "204": {
+            "description": "No content to update codes based on the request.",
+            "schema": {
+              "$ref": "#/definitions/No_Content_Response"
+            }
+          },
+          "304": {
+            "description": "Update for one or more codes not necessary.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "oneOf": [
+                  "Ok_Response_Schema",
+                  "Not_Modified_Response"
+                ]
+              }
             }
           },
           "400": {
-            "description": "Bad Request.",
+            "description": "Request not valid.",
             "schema": {
-              "$ref": "#/definitions/Code_Response_"
+              "$ref": "#/definitions/Bad_Request_Response"
             }
           },
           "401": {
-            "description": "Unauthorized.",
+            "description": "Authentication failed.",
             "schema": {
-              "$ref": "#/definitions/Code_Response_"
+              "$ref": "#/definitions/Unauthorized_Response"
+            }
+          },
+          "406": {
+            "description": "Request validation failed.",
+            "schema": {
+              "$ref": "#/definitions/Not_Acceptable_Response"
+            }
+          },
+          "415": {
+            "description": "Media type not supported.",
+            "schema": {
+              "$ref": "#/definitions/Unsupported_Media_Type_Response"
+            }
+          },
+          "422": {
+            "description": "Not possible to update one or more codes based on the request.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "oneOf": [
+                  "Ok_Response_Schema",
+                  "Not_Modified_Response",
+                  "Unprocessable_Entity_Response_Schema"
+                ]
+              }
+            }
+          },
+          "500": {
+            "description": "Server not available to satisfy the request.",
+            "schema": {
+              "$ref": "#/definitions/Internal_Server_Error_Response"
             }
           }
         }
@@ -157,31 +275,63 @@
             "schema": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/Config_Request_"
+                "$ref": "#/definitions/Config_Request"
               }
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "Configuration changes executed.",
+            "description": "Configuration changed correctly.",
             "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/Config_Response_"
-              }
+              "oneOf": [
+                {
+                  "type": "array",
+                  "items": "Created_Response"
+                }
+              ]
+            }
+          },
+          "204": {
+            "description": "No content to configure based on the request.",
+            "schema": {
+              "$ref": "#/definitions/No_Content_Response"
             }
           },
           "400": {
-            "description": "Bad request.",
+            "description": "Request not valid.",
             "schema": {
-              "$ref": "#/definitions/Config_Response_"
+              "$ref": "#/definitions/Bad_Request_Response"
             }
           },
           "401": {
-            "description": "Unauthorized.",
+            "description": "Authentication failed.",
             "schema": {
-              "$ref": "#/definitions/Config_Response_"
+              "$ref": "#/definitions/Unauthorized_Response"
+            }
+          },
+          "406": {
+            "description": "Request validation failed.",
+            "schema": {
+              "$ref": "#/definitions/Not_Acceptable_Response"
+            }
+          },
+          "422": {
+            "description": "Not possible to change one or more configurations.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "oneOf": [
+                  "Created_Response_Schema",
+                  "Unprocessable_Entity_Response_Schema"
+                ]
+              }
+            }
+          },
+          "500": {
+            "description": "Server not available to satisfy the request.",
+            "schema": {
+              "$ref": "#/definitions/Internal_Server_Error_Response"
             }
           }
         }
@@ -198,13 +348,31 @@
           "200": {
             "description": "Status data of the LCP.",
             "schema": {
-              "$ref": "#/definitions/Status_Response_"
+              "$ref": "#/definitions/Status_Response"
+            }
+          },
+          "400": {
+            "description": "Request not valid.",
+            "schema": {
+              "$ref": "#/definitions/Bad_Request_Response"
             }
           },
           "401": {
-            "description": "Unauthorized.",
+            "description": "Authentication failed.",
             "schema": {
-              "$ref": "#/definitions/Code_Response_"
+              "$ref": "#/definitions/Unauthorized_Response"
+            }
+          },
+          "406": {
+            "description": "Request validation failed.",
+            "schema": {
+              "$ref": "#/definitions/Not_Acceptable_Response"
+            }
+          },
+          "500": {
+            "description": "Server not available to satisfy the request.",
+            "schema": {
+              "$ref": "#/definitions/Internal_Server_Error_Response"
             }
           }
         }
@@ -217,15 +385,33 @@
         ],
         "responses": {
           "200": {
-            "description": "Status data of the LCP.",
+            "description": "Heartbeat with CB-Manager correctly executed.",
             "schema": {
-              "$ref": "#/definitions/Status_Response_"
+              "$ref": "#/definitions/Status_Response"
+            }
+          },
+          "400": {
+            "description": "Request not valid.",
+            "schema": {
+              "$ref": "#/definitions/Bad_Request_Response"
             }
           },
           "401": {
-            "description": "Unauthorized.",
+            "description": "Authentication failed.",
             "schema": {
-              "$ref": "#/definitions/Code_Response_"
+              "$ref": "#/definitions/Unauthorized_Response"
+            }
+          },
+          "406": {
+            "description": "Request validation failed.",
+            "schema": {
+              "$ref": "#/definitions/Not_Acceptable_Response"
+            }
+          },
+          "500": {
+            "description": "Server not available to satisfy the request.",
+            "schema": {
+              "$ref": "#/definitions/Internal_Server_Error_Response"
             }
           }
         }
@@ -234,11 +420,11 @@
   },
   "info": {
     "title": "Local Control Plane",
-    "version": "7b358d78660d0b524f43218a0fda414fa7f3c239@master"
+    "version": "1.0.0"
   },
   "swagger": "2.0",
   "definitions": {
-    "Code_Request_": {
+    "Code_Request": {
       "type": "object",
       "properties": {
         "name": {
@@ -256,45 +442,245 @@
         "source"
       ]
     },
-    "Code_Result_Response_": {
+    "Exception_Response": {
       "type": "object",
       "properties": {
-        "warning": {
-          "type": "string",
-          "example": "Useless properties: id",
-          "description": "Warning message."
-        }
-      }
-    },
-    "Code_Response_": {
-      "type": "object",
-      "properties": {
-        "results": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/Code_Result_Response_"
-          }
+        "line": {
+          "type": "integer",
+          "format": "int32",
+          "example": 80,
+          "description": "Line where the exception is raised."
         },
-        "when": {
+        "reason": {
           "type": "string",
-          "format": "date-time",
-          "example": "2020/02/13 15:27:06",
-          "description": "Datetime of the configuration changes."
+          "example": "Connection timeout",
+          "description": "Exception reason."
+        },
+        "filename": {
+          "type": "string",
+          "example": "lib/connection.py",
+          "description": "Filename where the exception is raised."
         }
       },
       "required": [
-        "results",
-        "when"
+        "filename",
+        "line",
+        "reason"
       ]
     },
-    "Config_Parameter_Request_": {
+    "No_Content_Response": {
       "type": "object",
       "properties": {
-        "value": {
+        "message": {
           "type": "string",
-          "example": "10s",
-          "description": "Parameter new value."
+          "example": "Request not valid: two ids provided.",
+          "description": "Human readable message that describes the status of the operation."
         },
+        "exception": {
+          "description": "Message of the occurred exception.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/Exception_Response"
+            }
+          ]
+        },
+        "status": {
+          "default": "No Content"
+        },
+        "error": {
+          "default": false
+        },
+        "code": {
+          "default": 204
+        }
+      },
+      "required": [
+        "message"
+      ]
+    },
+    "Bad_Request_Response": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Request not valid: two ids provided.",
+          "description": "Human readable message that describes the status of the operation."
+        },
+        "exception": {
+          "description": "Message of the occurred exception.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/Exception_Response"
+            }
+          ]
+        },
+        "status": {
+          "default": "Bad Request"
+        },
+        "error": {
+          "default": true
+        },
+        "code": {
+          "default": 400
+        }
+      },
+      "required": [
+        "message"
+      ]
+    },
+    "Unauthorized_Response": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Request not valid: two ids provided.",
+          "description": "Human readable message that describes the status of the operation."
+        },
+        "exception": {
+          "description": "Message of the occurred exception.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/Exception_Response"
+            }
+          ]
+        },
+        "status": {
+          "default": "Unauthorized"
+        },
+        "error": {
+          "default": true
+        },
+        "code": {
+          "default": 401
+        }
+      },
+      "required": [
+        "message"
+      ]
+    },
+    "Not_Acceptable_Response": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Request not valid: two ids provided.",
+          "description": "Human readable message that describes the status of the operation."
+        },
+        "exception": {
+          "description": "Message of the occurred exception.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/Exception_Response"
+            }
+          ]
+        },
+        "status": {
+          "default": "Not Acceptable"
+        },
+        "error": {
+          "default": true
+        },
+        "code": {
+          "default": 406
+        }
+      },
+      "required": [
+        "message"
+      ]
+    },
+    "Ok_Response": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Request not valid: two ids provided.",
+          "description": "Human readable message that describes the status of the operation."
+        },
+        "exception": {
+          "description": "Message of the occurred exception.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/Exception_Response"
+            }
+          ]
+        },
+        "status": {
+          "default": "OK"
+        },
+        "error": {
+          "default": false
+        },
+        "code": {
+          "default": 200
+        }
+      },
+      "required": [
+        "message"
+      ]
+    },
+    "Unsupported_Media_Type_Response": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Request not valid: two ids provided.",
+          "description": "Human readable message that describes the status of the operation."
+        },
+        "exception": {
+          "description": "Message of the occurred exception.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/Exception_Response"
+            }
+          ]
+        },
+        "status": {
+          "default": "Unsupported Media Type"
+        },
+        "error": {
+          "default": true
+        },
+        "code": {
+          "default": 415
+        }
+      },
+      "required": [
+        "message"
+      ]
+    },
+    "Internal_Server_Error_Response": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Request not valid: two ids provided.",
+          "description": "Human readable message that describes the status of the operation."
+        },
+        "exception": {
+          "description": "Message of the occurred exception.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/Exception_Response"
+            }
+          ]
+        },
+        "status": {
+          "default": "Internal Server Error"
+        },
+        "error": {
+          "default": true
+        },
+        "code": {
+          "default": 500
+        }
+      },
+      "required": [
+        "message"
+      ]
+    },
+    "Config_Parameter_Request": {
+      "type": "object",
+      "properties": {
         "path": {
           "type": "array",
           "items": {
@@ -308,11 +694,6 @@
           "example": "period",
           "description": "Id of the parameter."
         },
-        "source": {
-          "type": "string",
-          "example": "firewall.xml",
-          "description": "Source filename."
-        },
         "schema": {
           "type": "string",
           "enum": [
@@ -323,6 +704,16 @@
           ],
           "example": "yaml",
           "description": "Scheme."
+        },
+        "value": {
+          "type": "string",
+          "example": "10s",
+          "description": "Parameter new value."
+        },
+        "source": {
+          "type": "string",
+          "example": "firewall.xml",
+          "description": "Source filename."
         }
       },
       "required": [
@@ -332,35 +723,7 @@
         "value"
       ]
     },
-    "Config_Action_Request_": {
-      "type": "object",
-      "properties": {
-        "cmd": {
-          "type": "string",
-          "description": "Command."
-        },
-        "id": {
-          "type": "string",
-          "example": "start",
-          "description": "Id of the action."
-        },
-        "args": {
-          "type": "string",
-          "example": "-al",
-          "description": "Single command argument."
-        },
-        "daemon": {
-          "type": "string",
-          "example": "firewall",
-          "description": "Key used to execute the command as daemon."
-        }
-      },
-      "required": [
-        "cmd",
-        "id"
-      ]
-    },
-    "Config_Resource_Request_": {
+    "Config_Resource_Request": {
       "type": "object",
       "properties": {
         "content": {
@@ -384,53 +747,61 @@
         "path"
       ]
     },
-    "Config_Request_": {
+    "Config_Action_Request": {
+      "type": "object",
+      "properties": {
+        "daemon": {
+          "type": "string",
+          "example": "firewall",
+          "description": "Key used to execute the command as daemon."
+        },
+        "id": {
+          "type": "string",
+          "example": "start",
+          "description": "Id of the action."
+        },
+        "cmd": {
+          "type": "string",
+          "description": "Command."
+        },
+        "args": {
+          "type": "string",
+          "example": "-al",
+          "description": "Single command argument."
+        }
+      },
+      "required": [
+        "cmd",
+        "id"
+      ]
+    },
+    "Config_Request": {
       "type": "object",
       "properties": {
         "parameters": {
           "description": "List of parameters.",
           "type": "array",
           "items": {
-            "$ref": "#/definitions/Config_Parameter_Request_"
-          }
-        },
-        "actions": {
-          "description": "List of actions.",
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/Config_Action_Request_"
+            "$ref": "#/definitions/Config_Parameter_Request"
           }
         },
         "resources": {
           "description": "List of resources.",
           "type": "array",
           "items": {
-            "$ref": "#/definitions/Config_Resource_Request_"
+            "$ref": "#/definitions/Config_Resource_Request"
+          }
+        },
+        "actions": {
+          "description": "List of actions.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Config_Action_Request"
           }
         }
       }
     },
-    "Config_Response_": {
-      "type": "object",
-      "properties": {
-        "type": {
-          "type": "string",
-          "enum": [
-            "action",
-            "parameter",
-            "resource"
-          ],
-          "example": "action",
-          "description": "Type of the response."
-        },
-        "error": {
-          "type": "boolean",
-          "example": true,
-          "description": "Indicate the presence of an error."
-        }
-      }
-    },
-    "Status_Response_": {
+    "Status_Response": {
       "type": "object",
       "properties": {
         "password": {
@@ -442,6 +813,12 @@
           "example": "apache",
           "description": "ID of the execution environment."
         },
+        "started": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2019/02/14 15:23:30",
+          "description": "Timestamp when the LCP is started"
+        },
         "last_heartbeat": {
           "type": "string",
           "format": "date-time",
@@ -451,12 +828,6 @@
         "username": {
           "type": "string",
           "description": "Username for the CB to connect to this LCP."
-        },
-        "started": {
-          "type": "string",
-          "format": "date-time",
-          "example": "2019/02/14 15:23:30",
-          "description": "Timestamp when the LCP is started"
         }
       },
       "required": [

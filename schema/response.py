@@ -98,6 +98,12 @@ class Created_Response_Schema(Base_Response_Schema):
     code = Constant(Created_Response.code)
 
 
+class Internal_Server_Error_Response_Schema(Base_Response_Schema):
+    status = Constant(Internal_Server_Error_Response.status())
+    error = Constant(Internal_Server_Error_Response.error)
+    code = Constant(Internal_Server_Error_Response.code)
+
+
 class No_Content_Response_Schema(Base_Response_Schema):
     status = Constant(No_Content_Response.status())
     error = Constant(No_Content_Response.error)
