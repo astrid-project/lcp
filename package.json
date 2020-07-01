@@ -1,6 +1,6 @@
 {
     "name": "lcp",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "description": "In each local agent, the control plane is responsible for programmability, i.e., changing the behaviour of the data plane at run-time.",
     "repository": "astrid-project/lcp",
     "keywords": [
