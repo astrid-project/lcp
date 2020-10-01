@@ -5,6 +5,7 @@ dicttoxml
 falcon
 falcon-apispec
 falcon-auth
+falcon-elastic-apm
 jproperties
 msgpack
 pint

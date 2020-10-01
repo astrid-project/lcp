@@ -22,6 +22,8 @@ class Config_Reader:
 
         self.auth_max_ttl = self.cr.get('auth', 'max-ttl')
 
+        self.elastic_apm_server = self.cr.get('elastic-apm', 'server');
+
         self.polycube_host = self.cr.get('polycube', 'host')
         self.polycube_port = self.cr.get('polycube', 'port')
         self.polycube_timeout = self.cr.get('polycube', 'timeout')

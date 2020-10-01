@@ -8,6 +8,7 @@
 		"cSpell.language": "en-GB",
 		"cSpell.words": [
 			"Pandoc",
+			"Timeout",
 			"UNPROCESSABLE",
 			"apispec",
 			"astrid",
@@ -68,7 +69,7 @@
 		"editor.wordWrap": "on",
 		"editor.wrappingIndent": "deepIndent",
 		"files.insertFinalNewline": true,
-		"workbench.colorTheme": "Panda Syntax",
+		"workbench.colorTheme": "Bloody Pie",
 		"workbench.editor.tabSizing": "shrink"
 	}
 }

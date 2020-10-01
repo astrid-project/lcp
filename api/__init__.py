@@ -5,7 +5,9 @@ from api.spec import Spec
 from falcon import API
 from falcon.media import JSONHandler as JSON_Handler, MessagePackHandler as Message_Pack_Handler
 from falcon_auth import FalconAuthMiddleware as Falcon_Auth_Middleware
+from falcon_elastic_apm import ElasticApmMiddleware as Elastic_Apm_Middleware
 from functools import partial
+from reader.arg import Arg_Reader
 from resource import routes
 from swagger_ui import falcon_api_doc
 from utils.json import loads, dumps
@@ -21,7 +23,11 @@ def api(title, version, dev_username, dev_password):
     instance = API(middleware=[
         Falcon_Auth_Middleware(Basic_Auth_Backend_Middleware(dev_username, dev_password),
                                exempt_routes=['/api/doc', '/api/doc/swagger.json']),
-        Negotiation_Middleware()
+        Negotiation_Middleware() # ,
+        # Elastic_Apm_Middleware(
+        #     service_name='lcp-apm',
+        #     server_url=Arg_Reader.db.apm_server
+        # )
     ])
 
     media_handlers = {

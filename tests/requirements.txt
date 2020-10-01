@@ -1,6 +1,0 @@
-bandit
-flake8
-locust
-pycodestyle
-pydocstyle
-pytest

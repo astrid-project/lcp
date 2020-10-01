@@ -35,8 +35,12 @@ class Arg_Reader:
             help='Hostname/IP of Polycube', default=cls.cr.polycube_host)
         add('--polycube-port', '-c', type=int,
             help='Port of Polycube', default=cls.cr.polycube_port)
-        add('--polycube-timeout', '-m', type=str, help='Timeout for Polycube connection',
+        add('--polycube-timeout', '-e', type=str, help='Timeout for Polycube connection',
             default=cls.cr.polycube_timeout)
+
+        add('--apm-server', '-m', type=str,
+            help='Elastic APM hostname/IP:port',
+            default=cls.cr.elastic_apm_server)
 
         add('--dev-username', '-u', type=str,
             help='Authorized username', default=cls.cr.dev_username)

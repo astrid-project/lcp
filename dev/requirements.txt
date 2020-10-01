@@ -1,7 +1,0 @@
-bumpr
-invoke
-keyrings.cryptfile
-pandoc
-readme-renderer
-tox
-twine
