@@ -11,23 +11,6 @@ Compatibility
 |LCP| requires Python 3.5+.
 
 
-Installation
-============
-
-
-You can install |LCP| with pip:
-
-.. code-block:: console
-
-    $ pip install lcp
-
-or with easy_install:
-
-.. code-block:: console
-
-    $ easy_install lcp
-
-
 Documentation
 =============
 
