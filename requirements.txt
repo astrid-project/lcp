@@ -7,6 +7,7 @@ falcon-apispec
 falcon-auth
 falcon-elastic-apm
 jproperties
+marshmallow
 msgpack
 pint
 psutil
