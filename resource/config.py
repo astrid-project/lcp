@@ -73,7 +73,7 @@ class Config_Resource(Base_Resource):
         if cmd.startswith('@') and cmd in ('@stop', '@restart'):
             output.update(self.__run_daemon(cmd=cmd, daemon=daemon))
         else:
-            run = ' '.join([cmd] + data.get('args', []))
+            run = ' '.join([cmd] + wrap(data.get('args', [])))
             start = time.time()
             proc = self.__run_cmd(cmd=run, daemon=daemon, output=output)
             output.update(error=proc.returncode != 0, executed=run,
