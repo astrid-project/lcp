@@ -295,7 +295,7 @@ definitions:
     type: object
 info:
   title: Local Control Plane
-  version: 1.1.0
+  version: 1.0.1
 paths:
   /code/{id}:
     delete:
