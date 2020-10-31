@@ -76,7 +76,7 @@ class Status_Resource(object):
 
             self.log.notice(f'hearbeating from CB at {now}')
 
-            data = dict(**self.data, username=username, password=password)
+            data = {**self.data, 'username': username, 'password': password}
             resp_data, valid = Status_Response_Schema(method=HTTP_Method.POST) \
                 .validate(data=data)
             if valid:

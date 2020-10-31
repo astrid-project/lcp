@@ -13,7 +13,7 @@ __all__ = [
 
 
 def expand(elements, **kwrds):
-    return dict(**elements, **kwrds)
+    return {**elements, **kwrds}
 
 
 def format(elements, data):
