@@ -29,7 +29,7 @@ class Polycube:
     def get(self, cube):
         self.log.info(f'Get info of cube {cube}')
         try:
-            resp_req = get_req(f'{self.endpoint}/dynmon/{cube}',
+            resp_req = get_req(f'{self.endpoint}/dm/{cube}',
                                timeout=self.timeout)
             self.__manager(resp_req)
             return loads(resp_req.content)
@@ -42,7 +42,7 @@ class Polycube:
             self.log.info(f'Create cube {cube}.')
             attached_info = {}
             try:
-                resp_req = put_req(f'{self.endpoint}/dynmon/{cube}',
+                resp_req = put_req(f'{self.endpoint}/dm/{cube}',
                                    json=dict(dataplane=dict(name=cube,
                                                             code=code, metrics=metrics)),
                                    timeout=self.timeout)
@@ -63,7 +63,7 @@ class Polycube:
         if self.get(cube) is not None:
             self.log.info(f'Delete cube {cube}.')
             try:
-                resp_req = delete_req(f'{self.endpoint}/dynmon/{cube}',
+                resp_req = delete_req(f'{self.endpoint}/dm/{cube}',
                                       timeout=self.timeout)
                 self.__manager(resp_req)
 
@@ -90,7 +90,7 @@ class Polycube:
                 elif attached_iface != interface:
                     attached_info = self.__detach(cube, attached_iface)
                     detached_info = self.__attach(cube, interface)
-                resp_req = put_req(f'{self.endpoint}/dynmon/{cube}/dataplane',
+                resp_req = put_req(f'{self.endpoint}/dm/{cube}/dataplane',
                                    json=dict(name=cube, code=code,
                                              metrics=metrics),
                                    timeout=self.timeout)
