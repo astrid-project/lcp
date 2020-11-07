@@ -18,5 +18,4 @@ toolz
 ttldict
 verboselogs
 waitress
-werkzeug
 xmltodict

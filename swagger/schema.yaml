@@ -135,7 +135,6 @@ definitions:
       line:
         description: Line where the exception is raised.
         example: 80
-        format: int32
         type: integer
       reason:
         description: Exception reason.
