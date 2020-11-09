@@ -296,6 +296,162 @@ info:
   title: Local Control Plane
   version: 1.0.1
 paths:
+  /code:
+    delete:
+      description: Inject code at run-time in the local environment.
+      parameters:
+      - in: body
+        name: payload
+        required: true
+        schema:
+          items:
+            $ref: '#/definitions/Code_Request'
+          type: array
+      responses:
+        '200':
+          description: Codes inject correctly.
+          schema:
+            oneOf:
+            - items: Created_Response
+              type: array
+        '204':
+          description: No content to inject codes based on the request.
+          schema:
+            $ref: '#/definitions/No_Content_Response'
+        '400':
+          description: Request not valid.
+          schema:
+            $ref: '#/definitions/Bad_Request_Response'
+        '401':
+          description: Authentication failed.
+          schema:
+            $ref: '#/definitions/Unauthorized_Response'
+        '406':
+          description: Request validation failed.
+          schema:
+            $ref: '#/definitions/Not_Acceptable_Response'
+        '422':
+          description: Not possible to inject one or more codes.
+          schema:
+            items:
+              oneOf:
+              - Created_Response_Schema
+              - Unprocessable_Entity_Response_Schema
+            type: array
+          500:
+            description: Server not available to satisfy the request.
+            schema: Internal_Server_Error_Response_Schema
+      summary: Code injection
+      tags:
+      - code
+    post:
+      description: Inject code at run-time in the local environment.
+      parameters:
+      - in: body
+        name: payload
+        required: true
+        schema:
+          items:
+            $ref: '#/definitions/Code_Request'
+          type: array
+      responses:
+        '200':
+          description: Codes inject correctly.
+          schema:
+            oneOf:
+            - items: Created_Response
+              type: array
+        '204':
+          description: No content to inject codes based on the request.
+          schema:
+            $ref: '#/definitions/No_Content_Response'
+        '400':
+          description: Request not valid.
+          schema:
+            $ref: '#/definitions/Bad_Request_Response'
+        '401':
+          description: Authentication failed.
+          schema:
+            $ref: '#/definitions/Unauthorized_Response'
+        '406':
+          description: Request validation failed.
+          schema:
+            $ref: '#/definitions/Not_Acceptable_Response'
+        '422':
+          description: Not possible to inject one or more codes.
+          schema:
+            items:
+              oneOf:
+              - Created_Response_Schema
+              - Unprocessable_Entity_Response_Schema
+            type: array
+          500:
+            description: Server not available to satisfy the request.
+            schema: Internal_Server_Error_Response_Schema
+      summary: Code injection
+      tags:
+      - code
+    put:
+      description: Update the injected code at run-time in the local environment.
+      parameters:
+      - in: body
+        name: payload
+        required: true
+        schema:
+          items:
+            $ref: '#/definitions/Code_Request'
+          type: array
+      responses:
+        '200':
+          description: All injected code correctly updated.
+          schema:
+            items:
+              $ref: '#/definitions/Ok_Response'
+            type: array
+        '204':
+          description: No content to update codes based on the request.
+          schema:
+            $ref: '#/definitions/No_Content_Response'
+        '304':
+          description: Update for one or more codes not necessary.
+          schema:
+            items:
+              oneOf:
+              - Ok_Response_Schema
+              - Not_Modified_Response
+            type: array
+        '400':
+          description: Request not valid.
+          schema:
+            $ref: '#/definitions/Bad_Request_Response'
+        '401':
+          description: Authentication failed.
+          schema:
+            $ref: '#/definitions/Unauthorized_Response'
+        '406':
+          description: Request validation failed.
+          schema:
+            $ref: '#/definitions/Not_Acceptable_Response'
+        '415':
+          description: Media type not supported.
+          schema:
+            $ref: '#/definitions/Unsupported_Media_Type_Response'
+        '422':
+          description: Not possible to update one or more codes based on the request.
+          schema:
+            items:
+              oneOf:
+              - Ok_Response_Schema
+              - Not_Modified_Response
+              - Unprocessable_Entity_Response_Schema
+            type: array
+        '500':
+          description: Server not available to satisfy the request.
+          schema:
+            $ref: '#/definitions/Internal_Server_Error_Response'
+      summary: Update injected code
+      tags:
+      - code
   /code/{id}:
     delete:
       description: Inject code at run-time in the local environment.
