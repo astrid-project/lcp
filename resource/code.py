@@ -17,7 +17,7 @@ __all__ = [
 
 class Code_Resource(Base_Resource):
     tag = {'name': 'code', 'description': 'Code injection at run-time.'}
-    routes = '/code', '/code/{id}',
+    routes = '/code/{id}',
     cubes = []
 
     def __init__(self):
