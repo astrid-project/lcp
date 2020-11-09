@@ -23,16 +23,16 @@ definitions:
     type: object
   Code_Request:
     properties:
-      name:
-        description: Code name.
-        example: firewall
-        type: string
-      source:
+      code:
         description: Code source
         type: string
+      id:
+        description: Code id.
+        example: firewall
+        type: string
     required:
-    - name
-    - source
+    - code
+    - id
     type: object
   Config_Action_Request:
     properties:

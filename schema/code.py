@@ -7,10 +7,11 @@ __all__ = [
 ]
 
 
+# FIXME add missing required fields
 class Code_Request_Schema(Base_Schema):
     """Request for code endpoint."""
 
-    name = Str(required=True, example='firewall',
-               description='Code name.')
-    source = Str(required=True,
+    id = Str(required=True, example='firewall',
+               description='Code id.')
+    code = Str(required=True,
                  description='Code source')

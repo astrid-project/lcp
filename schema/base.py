@@ -15,10 +15,22 @@ class Base_Schema(Schema):
         self.method = method
         self.check_unique_id = check_unique_id
 
-    def validate(self, data):
+    def validate(self, data, response_type=Ok_Response, id=None):
         try:
+            if id is not None:
+                if is_list(data):
+                    msg = 'When the id is present in the request uri only one record can be managed.'
+                    raise Validation_Error(dict(id=msg))
+                elif id in data:
+                    msg = 'Present in the request uri.'
+                    raise Validation_Error(dict(id=msg))
+                else:
+                    data.update(id=id)
+            if self.check_unique_id and is_list(data) and not Unique_List.apply('id')(data):
+                msg = 'Same id present multiple times in the request.'
+                raise Validation_Error(dict(id=msg))
             self.load(data)
-            return Ok_Response(data), True
+            return response_type(data), True
         except Validation_Error as val_err:
             def __norm(block):
                 for field in block.keys():

@@ -17,7 +17,7 @@ __all__ = [
 
 class Code_Resource(Base_Resource):
     tag = {'name': 'code', 'description': 'Code injection at run-time.'}
-    routes = '/code/{id}',
+    routes = '/code', '/code/{id}',
     cubes = []
 
     def __init__(self):
@@ -26,7 +26,8 @@ class Code_Resource(Base_Resource):
     @docstring(source='code/post.yaml')
     def on_post(self, req, resp, id=None):
         req_data = req.media or {}
-        resp_data, valid = Code_Request_Schema(many=is_list(req_data),
+        print(req_data)
+        resp_data, valid = Code_Request_Schema(many=is_list(req_data), unknown='INCLUDE',
                                                method=HTTP_Method.POST).validate(data=req.media, id=id)
         if valid:
             req_data_wrap = wrap(req_data)
