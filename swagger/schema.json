@@ -445,15 +445,15 @@
     "Exception_Response": {
       "type": "object",
       "properties": {
-        "reason": {
-          "type": "string",
-          "example": "Connection timeout",
-          "description": "Exception reason."
-        },
         "filename": {
           "type": "string",
           "example": "lib/connection.py",
           "description": "Filename where the exception is raised."
+        },
+        "reason": {
+          "type": "string",
+          "example": "Connection timeout",
+          "description": "Exception reason."
         },
         "line": {
           "type": "integer",
@@ -470,6 +470,9 @@
     "No_Content_Response": {
       "type": "object",
       "properties": {
+        "error": {
+          "default": false
+        },
         "exception": {
           "description": "Message of the occurred exception.",
           "allOf": [
@@ -481,16 +484,13 @@
         "code": {
           "default": 204
         },
+        "status": {
+          "default": "No Content"
+        },
         "message": {
           "type": "string",
           "example": "Request not valid: two ids provided.",
           "description": "Human readable message that describes the status of the operation."
-        },
-        "error": {
-          "default": false
-        },
-        "status": {
-          "default": "No Content"
         }
       },
       "required": [
@@ -500,6 +500,9 @@
     "Bad_Request_Response": {
       "type": "object",
       "properties": {
+        "error": {
+          "default": true
+        },
         "exception": {
           "description": "Message of the occurred exception.",
           "allOf": [
@@ -511,16 +514,13 @@
         "code": {
           "default": 400
         },
+        "status": {
+          "default": "Bad Request"
+        },
         "message": {
           "type": "string",
           "example": "Request not valid: two ids provided.",
           "description": "Human readable message that describes the status of the operation."
-        },
-        "error": {
-          "default": true
-        },
-        "status": {
-          "default": "Bad Request"
         }
       },
       "required": [
@@ -530,6 +530,9 @@
     "Unauthorized_Response": {
       "type": "object",
       "properties": {
+        "error": {
+          "default": true
+        },
         "exception": {
           "description": "Message of the occurred exception.",
           "allOf": [
@@ -541,16 +544,13 @@
         "code": {
           "default": 401
         },
+        "status": {
+          "default": "Unauthorized"
+        },
         "message": {
           "type": "string",
           "example": "Request not valid: two ids provided.",
           "description": "Human readable message that describes the status of the operation."
-        },
-        "error": {
-          "default": true
-        },
-        "status": {
-          "default": "Unauthorized"
         }
       },
       "required": [
@@ -560,6 +560,9 @@
     "Not_Acceptable_Response": {
       "type": "object",
       "properties": {
+        "error": {
+          "default": true
+        },
         "exception": {
           "description": "Message of the occurred exception.",
           "allOf": [
@@ -571,16 +574,13 @@
         "code": {
           "default": 406
         },
+        "status": {
+          "default": "Not Acceptable"
+        },
         "message": {
           "type": "string",
           "example": "Request not valid: two ids provided.",
           "description": "Human readable message that describes the status of the operation."
-        },
-        "error": {
-          "default": true
-        },
-        "status": {
-          "default": "Not Acceptable"
         }
       },
       "required": [
@@ -590,6 +590,9 @@
     "Ok_Response": {
       "type": "object",
       "properties": {
+        "error": {
+          "default": false
+        },
         "exception": {
           "description": "Message of the occurred exception.",
           "allOf": [
@@ -601,16 +604,13 @@
         "code": {
           "default": 200
         },
+        "status": {
+          "default": "OK"
+        },
         "message": {
           "type": "string",
           "example": "Request not valid: two ids provided.",
           "description": "Human readable message that describes the status of the operation."
-        },
-        "error": {
-          "default": false
-        },
-        "status": {
-          "default": "OK"
         }
       },
       "required": [
@@ -620,6 +620,9 @@
     "Unsupported_Media_Type_Response": {
       "type": "object",
       "properties": {
+        "error": {
+          "default": true
+        },
         "exception": {
           "description": "Message of the occurred exception.",
           "allOf": [
@@ -631,16 +634,13 @@
         "code": {
           "default": 415
         },
+        "status": {
+          "default": "Unsupported Media Type"
+        },
         "message": {
           "type": "string",
           "example": "Request not valid: two ids provided.",
           "description": "Human readable message that describes the status of the operation."
-        },
-        "error": {
-          "default": true
-        },
-        "status": {
-          "default": "Unsupported Media Type"
         }
       },
       "required": [
@@ -650,6 +650,9 @@
     "Internal_Server_Error_Response": {
       "type": "object",
       "properties": {
+        "error": {
+          "default": true
+        },
         "exception": {
           "description": "Message of the occurred exception.",
           "allOf": [
@@ -661,49 +664,55 @@
         "code": {
           "default": 500
         },
+        "status": {
+          "default": "Internal Server Error"
+        },
         "message": {
           "type": "string",
           "example": "Request not valid: two ids provided.",
           "description": "Human readable message that describes the status of the operation."
-        },
-        "error": {
-          "default": true
-        },
-        "status": {
-          "default": "Internal Server Error"
         }
       },
       "required": [
         "message"
       ]
     },
-    "Config_Resource_Request": {
+    "Config_Action_Request": {
       "type": "object",
       "properties": {
+        "cmd": {
+          "type": "string",
+          "description": "Command."
+        },
+        "args": {
+          "type": "string",
+          "example": "-al",
+          "description": "Single command argument."
+        },
+        "daemon": {
+          "type": "string",
+          "example": "firewall",
+          "description": "Key used to execute the command as daemon."
+        },
         "id": {
           "type": "string",
-          "example": "filebeat-config",
-          "description": "Id of the resource."
-        },
-        "content": {
-          "type": "string",
-          "description": "Resource content."
-        },
-        "path": {
-          "type": "string",
-          "example": "firewall.xml",
-          "description": "File path"
+          "example": "start",
+          "description": "Id of the action."
         }
       },
       "required": [
-        "content",
-        "id",
-        "path"
+        "cmd",
+        "id"
       ]
     },
     "Config_Parameter_Request": {
       "type": "object",
       "properties": {
+        "value": {
+          "type": "string",
+          "example": "10s",
+          "description": "Parameter new value."
+        },
         "schema": {
           "type": "string",
           "enum": [
@@ -728,11 +737,6 @@
             "description": "Key path."
           }
         },
-        "value": {
-          "type": "string",
-          "example": "10s",
-          "description": "Parameter new value."
-        },
         "id": {
           "type": "string",
           "example": "period",
@@ -746,42 +750,38 @@
         "value"
       ]
     },
-    "Config_Action_Request": {
+    "Config_Resource_Request": {
       "type": "object",
       "properties": {
+        "path": {
+          "type": "string",
+          "example": "firewall.xml",
+          "description": "File path"
+        },
         "id": {
           "type": "string",
-          "example": "start",
-          "description": "Id of the action."
+          "example": "filebeat-config",
+          "description": "Id of the resource."
         },
-        "args": {
+        "content": {
           "type": "string",
-          "example": "-al",
-          "description": "Single command argument."
-        },
-        "cmd": {
-          "type": "string",
-          "description": "Command."
-        },
-        "daemon": {
-          "type": "string",
-          "example": "firewall",
-          "description": "Key used to execute the command as daemon."
+          "description": "Resource content."
         }
       },
       "required": [
-        "cmd",
-        "id"
+        "content",
+        "id",
+        "path"
       ]
     },
     "Config_Request": {
       "type": "object",
       "properties": {
-        "resources": {
-          "description": "List of resources.",
+        "actions": {
+          "description": "List of actions.",
           "type": "array",
           "items": {
-            "$ref": "#/definitions/Config_Resource_Request"
+            "$ref": "#/definitions/Config_Action_Request"
           }
         },
         "parameters": {
@@ -791,11 +791,11 @@
             "$ref": "#/definitions/Config_Parameter_Request"
           }
         },
-        "actions": {
-          "description": "List of actions.",
+        "resources": {
+          "description": "List of resources.",
           "type": "array",
           "items": {
-            "$ref": "#/definitions/Config_Action_Request"
+            "$ref": "#/definitions/Config_Resource_Request"
           }
         }
       }
@@ -803,6 +803,10 @@
     "Status_Response": {
       "type": "object",
       "properties": {
+        "username": {
+          "type": "string",
+          "description": "Username for the CB to connect to this LCP."
+        },
         "password": {
           "type": "string",
           "description": "Password for the CB to connect to this LCP."
@@ -813,20 +817,16 @@
           "example": "2019/02/14 15:23:30",
           "description": "Timestamp when the LCP is started"
         },
-        "id": {
-          "type": "string",
-          "example": "apache",
-          "description": "ID of the execution environment."
-        },
-        "username": {
-          "type": "string",
-          "description": "Username for the CB to connect to this LCP."
-        },
         "last_heartbeat": {
           "type": "string",
           "format": "date-time",
           "example": "2019/02/14 15:23:33",
           "description": "Timestamp of the expiration of the API access configuration."
+        },
+        "id": {
+          "type": "string",
+          "example": "apache",
+          "description": "ID of the execution environment."
         }
       },
       "required": [
