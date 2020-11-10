@@ -26,7 +26,6 @@ class Code_Resource(Base_Resource):
     @docstring(source='code/post.yaml')
     def on_post(self, req, resp, id=None):
         req_data = req.media or {}
-        print(req_data)
         resp_data, valid = Code_Request_Schema(many=is_list(req_data), unknown='INCLUDE',
                                                method=HTTP_Method.POST).validate(data=req.media, id=id)
         if valid:
@@ -45,11 +44,11 @@ class Code_Resource(Base_Resource):
                         else:
                             msg = f'Not possible to inject code with the id={id}'
                             resp_data = Unprocessable_Entity_Response(msg)
-                        resp_data.update(pc)
+                        resp_data.update(**pc)
                     else:
                         msg = f'Not possible to inject code with the id={id}'
                         resp_data = Unprocessable_Entity_Response(msg)
-                    resp_data.add(resp)
+                    resp_data.apply(resp)
             else:
                 msg = f'No content to create code with the {{request}}'
                 No_Content_Response(msg, request=req_data).apply(resp)
@@ -76,11 +75,11 @@ class Code_Resource(Base_Resource):
                         else:
                             msg = f'Not possible to update code with the id={id}'
                             resp_data = Unprocessable_Entity_Response(msg)
-                        resp_data.update(pc)
+                        resp_data.update(**pc)
                     else:
                         msg = f'Not possible to update code with the id={id}'
                         resp_data = Unprocessable_Entity_Response(msg)
-                    resp_data.add(resp)
+                    resp_data.apply(resp)
             else:
                 msg = f'No content to update code with the {{request}}'
                 No_Content_Response(msg, request=req_data).apply(resp)
@@ -106,11 +105,11 @@ class Code_Resource(Base_Resource):
                         else:
                             msg = f'Not possible to delete code with the id={id}'
                             resp_data = Unprocessable_Entity_Response(msg)
-                        resp_data.append(pc)
+                        resp_data.update(**pc)
                     else:
                         msg = f'Not possible to update code with the id={id}'
                         resp_data = Unprocessable_Entity_Response(msg)
-                    resp_data.add(resp)
+                    resp_data.apply(resp)
             else:
                 msg = f'No content to delete code with the {{request}}'
                 No_Content_Response(msg, request=req_data).apply(resp)

@@ -107,7 +107,13 @@ class Polycube:
             return dict(error=True, description=f'Cube [cube] not found.', data=data)
 
     def __from_resp(self, resp):
-        return loads(resp.content) if resp.content else {}
+        if resp.content:
+            if isinstance(resp.content, dict):
+                return loads(resp.content)
+            else:
+                return dict(error=resp.status_code >= 400, message=resp.content)
+        else:
+            return dict(error=resp.status_code >= 400)
 
     def __detach(self, cube, interface):
         resp_req = post_req(f'{self.endpoint}/detach',
