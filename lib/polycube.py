@@ -29,7 +29,7 @@ class Polycube:
     def get(self, cube):
         self.log.info(f'Get info of cube {cube}')
         try:
-            resp_req = get_req(f'{self.endpoint}/dm/{cube}',
+            resp_req = get_req(f'{self.endpoint}/dynmon/{cube}',
                                timeout=self.timeout)
             self.__manager(resp_req)
             return loads(resp_req.content)
@@ -42,39 +42,38 @@ class Polycube:
             self.log.info(f'Create cube {cube}.')
             attached_info = {}
             try:
-                resp_req = put_req(f'{self.endpoint}/dm/{cube}',
-                                   json=dict(dataplane=dict(name=cube,
-                                                            code=code, metrics=metrics)),
+                resp_req = put_req(f'{self.endpoint}/dynmon/{cube}',
+                                   json={ 'dataplane-config': self.__dataplane_config(cube, code, metrics) },
                                    timeout=self.timeout)
                 attached_info = self.__attach(cube, interface)
-                return dict(status='created', description='Cube [cube] created',
+                return dict(status='created',
                             attached_info=attached_info, detached_info={},
-                            data=data, polycube_response=self.__from_resp(resp_req))
+                            data=data, **self.__from_resp(resp_req))
             except Exception as e:
                 self.log.exception(e)
-                return dict(status='error', description='Cube [cube] not created',
+                return dict(status='error',
                             interface=attached_info, detached_info={},
-                            data=data, polycube_response=self.__from_resp(resp_req))
+                            data=data, **self.__from_resp(resp_req))
         else:
-            return dict(error=True, description='Cube [cube] found.', data=data)
+            return dict(error=True, description=f'Cube {cube} found.', data=data)
 
     def delete(self, cube):
         data = dict(cube=cube)
         if self.get(cube) is not None:
             self.log.info(f'Delete cube {cube}.')
             try:
-                resp_req = delete_req(f'{self.endpoint}/dm/{cube}',
+                resp_req = delete_req(f'{self.endpoint}/dynmon/{cube}',
                                       timeout=self.timeout)
                 self.__manager(resp_req)
 
-                return dict(status='deleted', description=f'Cube {cube} deleted',
-                            data=data, polycube_response=self.__from_resp(resp_req))
+                return dict(status='deleted',
+                            data=data, **self.__from_resp(resp_req))
             except Exception as e:
                 self.log.exception(e)
-                return dict(error=True, description=f'Cube [cube] not deleted.',
-                            data=data, polycube_response=self.__from_resp(resp_req))
+                return dict(error=True,
+                            data=data, **self.__from_resp(resp_req))
         else:
-            return dict(error=True, description=f'Cube [cube] not found.', data=data)
+            return dict(error=True, description=f'Cube {cube} not found.', data=data)
 
     def update(self, cube, code, interface, metrics):
         data = dict(name=cube, code=code, interface=interface, metrics=metrics)
@@ -90,28 +89,36 @@ class Polycube:
                 elif attached_iface != interface:
                     attached_info = self.__detach(cube, attached_iface)
                     detached_info = self.__attach(cube, interface)
-                resp_req = put_req(f'{self.endpoint}/dm/{cube}/dataplane',
-                                   json=dict(name=cube, code=code,
-                                             metrics=metrics),
+                resp_req = put_req(f'{self.endpoint}/dynmon/{cube}/dataplane-config',
+                                   json=self.__dataplane_config(cube, code, metrics),
                                    timeout=self.timeout)
                 self.__manager(resp_req)
-                return dict(status='updated', description='Cube [cube] updated',
-                            attached_info=attached_info, detached_info=detached_info,
-                            data=data, polycube_response=self.__from_resp(resp_req))
+                return dict(status='updated', attached_info=attached_info, detached_info=detached_info,
+                            data=data, **self.__from_resp(resp_req))
             except Exception as e:
                 self.log.exception(e)
-                return dict(status='error', description='Cube [cube] not updated',
-                            attached_info=attached_info, detached_info=detached_info,
-                            data=data, polycube_response=self.__from_resp(resp_req))
+                return dict(status='error', attached_info=attached_info, detached_info=detached_info,
+                            data=data, **self.__from_resp(resp_req))
         else:
-            return dict(error=True, description=f'Cube [cube] not found.', data=data)
+            return dict(error=True, description=f'Cube {cube} not found.', data=data)
+
+    @staticmethod
+    def __dataplane_config(cube, code, metrics):
+        return {
+            'ingress-path': {
+                'name': cube,
+                'code': code,
+                'metric-configs': metrics
+            },
+            'egress-path': {}
+        }
 
     def __from_resp(self, resp):
         if resp.content:
-            if isinstance(resp.content, dict):
+            try:
                 return loads(resp.content)
-            else:
-                return dict(error=resp.status_code >= 400, message=resp.content)
+            except Exception:
+                return dict(error=resp.status_code >= 400, message=resp.content.decode("utf-8"))
         else:
             return dict(error=resp.status_code >= 400)
 
@@ -119,17 +126,15 @@ class Polycube:
         resp_req = post_req(f'{self.endpoint}/detach',
                             json=dict(cube=cube, port=interface), timeout=self.timeout)
         self.__manager(resp_req)
-        return dict(status='detached', description='Cube [cube] detached from interface [interface]',
-                    data=dict(cube=cube, interface=interface),
-                    polycube_response=self.resp_from_resp(resp_req))
+        return dict(status='detached', data=dict(cube=cube, interface=interface),
+                    **self.resp_from_resp(resp_req))
 
     def __attach(self, cube, interface):
         resp_req = post_req(f'{self.endpoint}/attach',
                             json=dict(cube=cube, port=interface), timeout=self.timeout)
         self.__manager(resp_req)
-        return dict(status='attached', description='Cube [cube] attached to interface [interface]',
-                    data=dict(cube=cube, interface=interface),
-                    polycube_response=self.resp_from_resp(resp_req))
+        return dict(status='attached', data=dict(cube=cube, interface=interface),
+                    **self.resp_from_resp(resp_req))
 
     def __manager(self, resp_req):
         try:

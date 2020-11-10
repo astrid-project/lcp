@@ -38,7 +38,7 @@ class Code_Resource(Base_Resource):
                         pc = self.polycube.create(cube=id, code=code,
                                                   interface=interface, metrics=metrics)
                         if not pc.get('error', False):
-                            self.cubes.append(id)
+                            # self.cubes.append(id) # FIXME
                             msg = f'Code with the id={id} correctly injected'
                             resp_data = Created_Response(msg)
                         else:
@@ -99,7 +99,7 @@ class Code_Resource(Base_Resource):
                     if id is not None:
                         pc = self.polycube.delete(cube=id)
                         if not pc.get('error', False):
-                            self.cubes.remove(id)
+                            # self.cubes.remove(id) # FIXME
                             msg = f'Code with the id={id} correctly deleted'
                             resp_data = Reset_Content_Response(msg)
                         else:
