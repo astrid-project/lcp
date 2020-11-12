@@ -13,5 +13,5 @@ class Code_Request_Schema(Base_Schema):
 
     id = Str(required=True, example='firewall',
                description='Code id.')
-    code = Str(required=True,
+    code = Str(required=True, many=True,
                  description='Code source')

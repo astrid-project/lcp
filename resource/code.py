@@ -18,7 +18,6 @@ __all__ = [
 class Code_Resource(Base_Resource):
     tag = {'name': 'code', 'description': 'Code injection at run-time.'}
     routes = '/code', '/code/{id}',
-    cubes = []
 
     def __init__(self):
         self.polycube = Polycube()
@@ -34,11 +33,11 @@ class Code_Resource(Base_Resource):
                 for data in req_data_wrap:
                     id, code, interface, metrics = item_getter('id', 'code',
                                                                'interface', 'metrics')(data)
+                    code = '\r\n'.join(wrap(code))
                     if all([id, code, interface]):
                         pc = self.polycube.create(cube=id, code=code,
                                                   interface=interface, metrics=metrics)
                         if not pc.get('error', False):
-                            # self.cubes.append(id) # FIXME
                             msg = f'Code with the id={id} correctly injected'
                             resp_data = Created_Response(msg)
                         else:
@@ -66,6 +65,7 @@ class Code_Resource(Base_Resource):
                 for data in req_data_wrap:
                     id, code, interface, metrics = item_getter('id', 'code',
                                                                'interface', 'metrics')(data)
+                    code = '\r\n'.join(wrap(code))
                     if all([id, code, interface]):
                         pc = self.polycube.update(cube=id, code=code,
                                                   interface=interface, metrics=metrics)
@@ -99,7 +99,6 @@ class Code_Resource(Base_Resource):
                     if id is not None:
                         pc = self.polycube.delete(cube=id)
                         if not pc.get('error', False):
-                            # self.cubes.remove(id) # FIXME
                             msg = f'Code with the id={id} correctly deleted'
                             resp_data = Reset_Content_Response(msg)
                         else:
