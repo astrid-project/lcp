@@ -9,3 +9,7 @@
 - Force actions expects "args" to be an array.
 - Avoid multiple values for keyword argument during dict merge.
 - Added marshmallow in requirements.txt.
+
+## 1.0.2
+
+- Improved execution of action as daemon.

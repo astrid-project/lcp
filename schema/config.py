@@ -24,8 +24,8 @@ class Config_Action_Request_Schema(Base_Schema):
               description='Command.')
     args = Str(many=True, example='-al',
                description='Single command argument.')
-    daemon = Str(example='firewall',
-                 description='Key used to execute the command as daemon.')
+    daemon = Boolean(default=False, example=True,
+                 description='Execute the command as daemon.')
 
 
 class Config_Parameter_Request_Schema(Base_Schema):
@@ -85,8 +85,8 @@ class Config_Action_Response_Schema(Config_Response_Schema):
     stderr = Raw(many=True,
                  description='Standard error output of the execution.')
     duration = Float(description='Execution time of the action (in seconds')
-    daemon = Str(example='firewall',
-                 description='Key used to execute the command as daemon.')
+    daemon = Boolean(default=False, example=True,
+                 description='Execute the command as daemon.')
     return_code = Integer(required=True, example=0,
                           description='Exit code of the execution (0: no error).')
 

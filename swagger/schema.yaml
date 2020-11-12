@@ -44,9 +44,9 @@ definitions:
         description: Command.
         type: string
       daemon:
-        description: Key used to execute the command as daemon.
-        example: firewall
-        type: string
+        description: Execute the command as daemon.
+        example: true
+        type: boolean
       id:
         description: Id of the action.
         example: start

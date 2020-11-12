@@ -24,7 +24,6 @@ __all__ = [
 
 
 class Config_Resource(Base_Resource):
-    daemon_pids = {}
     tag = dict(name='config', description='Configuration at run-time.')
     routes = '/config',
     parsers = dict(json=json_parser,
@@ -67,15 +66,14 @@ class Config_Resource(Base_Resource):
 
     def __actions(self, data):
         cmd = data.get('cmd', None)
-        daemon = data.get('daemon', None)
+        daemon = data.get('daemon', False)
         output = dict(type='action')
-        # TODO validate daemon if cmd @stop, @restart
-        if cmd.startswith('@') and cmd in ('@stop', '@restart'):
-            output.update(self.__run_daemon(cmd=cmd, daemon=daemon))
+        run = ' '.join([cmd] + wrap(data.get('args', [])))
+        start = time.time()
+        proc = self.__run_cmd(cmd=run, daemon=daemon, output=output)
+        if daemon:
+            output.update(error=False, executed=run, return_code=0)
         else:
-            run = ' '.join([cmd] + wrap(data.get('args', [])))
-            start = time.time()
-            proc = self.__run_cmd(cmd=run, daemon=daemon, output=output)
             output.update(error=proc.returncode != 0, executed=run,
                           return_code=proc.returncode, duration=time.time() - start)
             self.__set_std(proc.stdout, output, 'stdout')
@@ -136,27 +134,5 @@ class Config_Resource(Base_Resource):
             return sp.run(cmd, check=False, shell=True,
                           stdout=sp.PIPE, stderr=sp.PIPE, universal_newlines=True)
         else:
-            # FIXME DETACHED_PROCESS is linux not work
             output.update(daemon=daemon)
-            return sp.Popen(cmd, shell=True, stdout=sp.PIPE, stderr=sp.PIPE,
-                            creationflags=sp.DETACHED_PROCESS, start_new_session=True)
-
-    def __run_daemon(self, cmd, daemon):
-        if cmd == '@stop':
-            daemon_pid = self.daemon_pids.pop(daemon, None)
-            sig = signal.SIGTERM
-        else:
-            daemon_pid = self.daemon_pids.get(daemon, None)
-            sig = signal.SIGHUP  # FIXME in Windows not work!
-        if daemon_pid is None:
-            return dict(error=True,
-                        description=f'Daemon {daemon} not found')
-        else:
-            try:
-                send_tree(daemon_pid, sig=sig)
-                return dict(type=type, cmd=cmd,
-                            daemon=daemon, pid=daemon_pid)
-            except Exception as e:
-                self.log.exception(e)
-                return dict(error=True, exception=extract_info(e),
-                            description=f'{cmd.replace("@", "").title()} {daemon} not possible')
+            return sp.Popen(cmd, shell=True, stdout=sp.PIPE, stderr=sp.PIPE, start_new_session=True)

@@ -64,13 +64,16 @@ def subset(elements, *keys, negation=False):
 def table_to_dict(data):
     keys = data.pop(0).split()
     output = []
-    for dr in data:
-        vals = dr.split()
-        item = {}
-        for k, v in zip(keys, vals):
-            item[k] = v
-        if len(item) > 0:
-            output.append(item)
+    if len(data) > 0:
+       for dr in data:
+            vals = dr.split()
+            item = {}
+            for k, v in zip(keys, vals):
+                item[k] = v
+            if len(item) > 0:
+                output.append(item)
+    else:
+        return keys
     return output
 
 def wrap(data):
