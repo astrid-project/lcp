@@ -25,7 +25,9 @@ definitions:
     properties:
       code:
         description: Code source
-        type: string
+        items:
+          type: string
+        type: array
       id:
         description: Code id.
         example: firewall

@@ -667,14 +667,17 @@
     "Code_Request": {
       "type": "object",
       "properties": {
-        "code": {
-          "type": "string",
-          "description": "Code source"
-        },
         "id": {
           "type": "string",
           "example": "firewall",
           "description": "Code id."
+        },
+        "code": {
+          "type": "array",
+          "description": "Code source",
+          "items": {
+            "type": "string"
+          }
         }
       },
       "required": [
@@ -710,8 +713,8 @@
     "No_Content_Response": {
       "type": "object",
       "properties": {
-        "code": {
-          "default": 204
+        "status": {
+          "default": "No Content"
         },
         "exception": {
           "description": "Message of the occurred exception.",
@@ -721,8 +724,8 @@
             }
           ]
         },
-        "status": {
-          "default": "No Content"
+        "code": {
+          "default": 204
         },
         "error": {
           "default": false
@@ -740,8 +743,8 @@
     "Bad_Request_Response": {
       "type": "object",
       "properties": {
-        "code": {
-          "default": 400
+        "status": {
+          "default": "Bad Request"
         },
         "exception": {
           "description": "Message of the occurred exception.",
@@ -751,8 +754,8 @@
             }
           ]
         },
-        "status": {
-          "default": "Bad Request"
+        "code": {
+          "default": 400
         },
         "error": {
           "default": true
@@ -770,8 +773,8 @@
     "Unauthorized_Response": {
       "type": "object",
       "properties": {
-        "code": {
-          "default": 401
+        "status": {
+          "default": "Unauthorized"
         },
         "exception": {
           "description": "Message of the occurred exception.",
@@ -781,8 +784,8 @@
             }
           ]
         },
-        "status": {
-          "default": "Unauthorized"
+        "code": {
+          "default": 401
         },
         "error": {
           "default": true
@@ -800,8 +803,8 @@
     "Not_Acceptable_Response": {
       "type": "object",
       "properties": {
-        "code": {
-          "default": 406
+        "status": {
+          "default": "Not Acceptable"
         },
         "exception": {
           "description": "Message of the occurred exception.",
@@ -811,8 +814,8 @@
             }
           ]
         },
-        "status": {
-          "default": "Not Acceptable"
+        "code": {
+          "default": 406
         },
         "error": {
           "default": true
@@ -830,8 +833,8 @@
     "Ok_Response": {
       "type": "object",
       "properties": {
-        "code": {
-          "default": 200
+        "status": {
+          "default": "OK"
         },
         "exception": {
           "description": "Message of the occurred exception.",
@@ -841,8 +844,8 @@
             }
           ]
         },
-        "status": {
-          "default": "OK"
+        "code": {
+          "default": 200
         },
         "error": {
           "default": false
@@ -860,8 +863,8 @@
     "Unsupported_Media_Type_Response": {
       "type": "object",
       "properties": {
-        "code": {
-          "default": 415
+        "status": {
+          "default": "Unsupported Media Type"
         },
         "exception": {
           "description": "Message of the occurred exception.",
@@ -871,8 +874,8 @@
             }
           ]
         },
-        "status": {
-          "default": "Unsupported Media Type"
+        "code": {
+          "default": 415
         },
         "error": {
           "default": true
@@ -890,8 +893,8 @@
     "Internal_Server_Error_Response": {
       "type": "object",
       "properties": {
-        "code": {
-          "default": 500
+        "status": {
+          "default": "Internal Server Error"
         },
         "exception": {
           "description": "Message of the occurred exception.",
@@ -901,8 +904,8 @@
             }
           ]
         },
-        "status": {
-          "default": "Internal Server Error"
+        "code": {
+          "default": 500
         },
         "error": {
           "default": true
@@ -917,73 +920,13 @@
         "message"
       ]
     },
-    "Config_Action_Request": {
-      "type": "object",
-      "properties": {
-        "cmd": {
-          "type": "string",
-          "description": "Command."
-        },
-        "daemon": {
-          "type": "boolean",
-          "example": true,
-          "description": "Execute the command as daemon."
-        },
-        "args": {
-          "type": "string",
-          "example": "-al",
-          "description": "Single command argument."
-        },
-        "id": {
-          "type": "string",
-          "example": "start",
-          "description": "Id of the action."
-        }
-      },
-      "required": [
-        "cmd",
-        "id"
-      ]
-    },
-    "Config_Resource_Request": {
-      "type": "object",
-      "properties": {
-        "content": {
-          "type": "string",
-          "description": "Resource content."
-        },
-        "path": {
-          "type": "string",
-          "example": "firewall.xml",
-          "description": "File path"
-        },
-        "id": {
-          "type": "string",
-          "example": "filebeat-config",
-          "description": "Id of the resource."
-        }
-      },
-      "required": [
-        "content",
-        "id",
-        "path"
-      ]
-    },
     "Config_Parameter_Request": {
       "type": "object",
       "properties": {
-        "path": {
-          "type": "array",
-          "items": {
-            "type": "string",
-            "example": "period",
-            "description": "Key path."
-          }
-        },
-        "source": {
+        "id": {
           "type": "string",
-          "example": "firewall.xml",
-          "description": "Source filename."
+          "example": "period",
+          "description": "Id of the parameter."
         },
         "schema": {
           "type": "string",
@@ -996,15 +939,23 @@
           "example": "yaml",
           "description": "Scheme."
         },
-        "id": {
-          "type": "string",
-          "example": "period",
-          "description": "Id of the parameter."
+        "path": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "example": "period",
+            "description": "Key path."
+          }
         },
         "value": {
           "type": "string",
           "example": "10s",
           "description": "Parameter new value."
+        },
+        "source": {
+          "type": "string",
+          "example": "firewall.xml",
+          "description": "Source filename."
         }
       },
       "required": [
@@ -1014,9 +965,68 @@
         "value"
       ]
     },
+    "Config_Action_Request": {
+      "type": "object",
+      "properties": {
+        "args": {
+          "type": "string",
+          "example": "-al",
+          "description": "Single command argument."
+        },
+        "daemon": {
+          "type": "boolean",
+          "example": true,
+          "description": "Execute the command as daemon."
+        },
+        "id": {
+          "type": "string",
+          "example": "start",
+          "description": "Id of the action."
+        },
+        "cmd": {
+          "type": "string",
+          "description": "Command."
+        }
+      },
+      "required": [
+        "cmd",
+        "id"
+      ]
+    },
+    "Config_Resource_Request": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string",
+          "example": "firewall.xml",
+          "description": "File path"
+        },
+        "id": {
+          "type": "string",
+          "example": "filebeat-config",
+          "description": "Id of the resource."
+        },
+        "content": {
+          "type": "string",
+          "description": "Resource content."
+        }
+      },
+      "required": [
+        "content",
+        "id",
+        "path"
+      ]
+    },
     "Config_Request": {
       "type": "object",
       "properties": {
+        "parameters": {
+          "description": "List of parameters.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Config_Parameter_Request"
+          }
+        },
         "actions": {
           "description": "List of actions.",
           "type": "array",
@@ -1030,33 +1040,20 @@
           "items": {
             "$ref": "#/definitions/Config_Resource_Request"
           }
-        },
-        "parameters": {
-          "description": "List of parameters.",
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/Config_Parameter_Request"
-          }
         }
       }
     },
     "Status_Response": {
       "type": "object",
       "properties": {
-        "id": {
-          "type": "string",
-          "example": "apache",
-          "description": "ID of the execution environment."
-        },
         "password": {
           "type": "string",
           "description": "Password for the CB to connect to this LCP."
         },
-        "started": {
+        "id": {
           "type": "string",
-          "format": "date-time",
-          "example": "2019/02/14 15:23:30",
-          "description": "Timestamp when the LCP is started"
+          "example": "apache",
+          "description": "ID of the execution environment."
         },
         "username": {
           "type": "string",
@@ -1067,6 +1064,12 @@
           "format": "date-time",
           "example": "2019/02/14 15:23:33",
           "description": "Timestamp of the expiration of the API access configuration."
+        },
+        "started": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2019/02/14 15:23:30",
+          "description": "Timestamp when the LCP is started"
         }
       },
       "required": [
