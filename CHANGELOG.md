@@ -13,3 +13,4 @@
 ## 1.0.2
 
 - Improved execution of action as daemon.
+- Accept list of strings for eBPF-Program code.

@@ -33,9 +33,8 @@ class Code_Resource(Base_Resource):
                 for data in req_data_wrap:
                     id, code, interface, metrics = item_getter('id', 'code',
                                                                'interface', 'metrics')(data)
-                    code = '\r\n'.join(wrap(code))
                     if all([id, code, interface]):
-                        pc = self.polycube.create(cube=id, code=code,
+                        pc = self.polycube.create(cube=id, code='\n'.join(code),
                                                   interface=interface, metrics=metrics)
                         if not pc.get('error', False):
                             msg = f'Code with the id={id} correctly injected'
@@ -65,9 +64,8 @@ class Code_Resource(Base_Resource):
                 for data in req_data_wrap:
                     id, code, interface, metrics = item_getter('id', 'code',
                                                                'interface', 'metrics')(data)
-                    code = '\r\n'.join(wrap(code))
                     if all([id, code, interface]):
-                        pc = self.polycube.update(cube=id, code=code,
+                        pc = self.polycube.update(cube=id, code='\n'.join(code),
                                                   interface=interface, metrics=metrics)
                         if not pc.get('error', False):
                             msg = f'Code with the id={id} correctly updated'
