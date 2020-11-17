@@ -7,7 +7,7 @@ Download from `GitHub <https://github.com/astrid-project/lcp>`_.
 
 .. code-block:: console
 
-    git clone https://github.com/astrid-porject/lcp.git
+    git clone https://github.com/astrid-project/lcp.git
     cd lcp
     pip install -r requirements.txt
 
