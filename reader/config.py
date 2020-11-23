@@ -17,24 +17,23 @@ class Config_Reader:
     def read(self):
         self.cr.read(self.path.resolve())
 
-        self.lcp_host = self.cr.get('local-control-plane', 'host')
-        self.lcp_port = self.cr.get('local-control-plane', 'port')
+        self.lcp_host = self.cr.get('local-control-plane', 'host', fallback='0.0.0.0')
+        self.lcp_port = self.cr.get('local-control-plane', 'port', fallback=4000)
 
-        self.auth_max_ttl = self.cr.get('auth', 'max-ttl')
+        self.auth_max_ttl = self.cr.get('auth', 'max-ttl', fallback='10min')
 
-        self.elastic_apm = self.cr.has_section('elastic-apm')
         self.elastic_apm_server = self.cr.get('elastic-apm', 'server', fallback='http://localhost:8200');
 
         self.polycube_host = self.cr.get('polycube', 'host', fallback='localhost')
         self.polycube_port = self.cr.get('polycube', 'port', fallback=9000)
         self.polycube_timeout = self.cr.get('polycube', 'timeout', fallback='20s')
 
-        self.dev_username = self.cr.get('dev', 'username')
-        self.dev_password = self.cr.get('dev', 'password')
+        self.dev_username = self.cr.get('dev', 'username', fallback='lcp')
+        self.dev_password = self.cr.get('dev', 'password', fallback='9c804f2550e31d8f98ac9b460cfe7fbfc676c5e4452a261a2899a1ea168c0a50') # astrid in sha256
 
-        self.log_level = self.cr.get('log', 'level')
+        self.log_level = self.cr.get('log', 'level', fallback='INFO')
 
-        Log.init(default=self.log_level, levels=self.cr.items('log'))
+        Log.init(default=self.log_level, levels=self.cr.items('log') if self.cr.has_section('log') else [])
 
     def write(self, db):
         self.cr.set('local-control-plane', 'port', db.port)
