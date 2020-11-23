@@ -39,7 +39,7 @@ def property_parser(schema, source, path, value):
         try:
             old_value, _ = content[k]
         except Exception as e:
-            Log.get('property-parser').exception(e)
+            Log.get('property-parser').exception(f'Parsing property {k}', e)
             old_value = None
         if old_value != value:
             content[k] = value

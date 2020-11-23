@@ -22,7 +22,7 @@ class Basic_Auth_Backend_Middleware(Basic_Auth_Backend):
         try:
             return super().authenticate(req, resp, resource)
         except HTTP_Unauthorized as e:
-            self.log.exception(e)
+            self.log.exception('Unauthorized request', e)
             Unauthorized_Response().apply(resp)
 
     def __auth(self, username, password):

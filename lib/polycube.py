@@ -23,8 +23,8 @@ class Polycube:
             resp_req = get_req(self.endpoint,
                                timeout=Arg_Reader.db.polycube_timeout)
             self.__manager(resp_req)
-        except Connection_Error as e:
-            self.log.exception(e)
+        except (Connection_Error, HTTP_Error) as e:
+            self.log.exception(f'Connection with polycube at {self.host}:{self.port} not possible', e)
 
     def get(self, cube):
         self.log.info(f'Get info of cube {cube}')
@@ -50,7 +50,7 @@ class Polycube:
                             attached_info=attached_info, detached_info={},
                             data=data, **self.__from_resp(resp_req))
             except Exception as e:
-                self.log.exception(e)
+                self.log.exception(f'Cube {cube} not created', e)
                 return dict(status='error',
                             interface=attached_info, detached_info={},
                             data=data, **self.__from_resp(resp_req))
@@ -69,7 +69,7 @@ class Polycube:
                 return dict(status='deleted',
                             data=data, **self.__from_resp(resp_req))
             except Exception as e:
-                self.log.exception(e)
+                self.log.exception(f'Cube {cube} not deleted', e)
                 return dict(error=True,
                             data=data, **self.__from_resp(resp_req))
         else:
@@ -96,7 +96,7 @@ class Polycube:
                 return dict(status='updated', attached_info=attached_info, detached_info=detached_info,
                             data=data, **self.__from_resp(resp_req))
             except Exception as e:
-                self.log.exception(e)
+                self.log.exception(f'Cube {cube} not updated', e)
                 return dict(status='error', attached_info=attached_info, detached_info=detached_info,
                             data=data, **self.__from_resp(resp_req))
         else:
@@ -140,16 +140,16 @@ class Polycube:
         try:
             resp_req.raise_for_status()
         except Connection_Error as e:
-            self.log.exception(e)
+            msg = f'Connection to Polycube at {self.endpoint} not possible'
+            self.log.exception(msg, e)
             if resp_req.content:
-                self.log.error(f'response: {resp_req.content}')
-            raise HTTP_Service_Unavailable(title='Connection error',
-                                           description=f'Connection to Polycube at {self.endpoint} not possible.')
+                self.log.error(f'Response: {resp_req.content}')
+            raise HTTP_Service_Unavailable(title='Connection error', description=msg)
         except Timeout_Error as e:
-            self.log.exception(e)
-            if resp_req.content:
-                self.log.error(f'response: {resp_req.content}')
             to = Arg_Reader.db.polycube_timeout
+            msg = f'Timely response not received from polycube at {self.endpoint} in {to} seconds.'
+            self.log.exception(msg, e)
+            if resp_req.content:
+                self.log.error(f'Response: {resp_req.content}')
             raise HTTP_Gateway_Timeout(
-                title='Polycube Unavailable',
-                description=f'Timely response not received from polycube at {self.endpoint} in {to} seconds.')
+                title='Polycube Unavailable', description=msg)

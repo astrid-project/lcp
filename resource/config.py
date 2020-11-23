@@ -35,7 +35,7 @@ class Config_Resource(Base_Resource):
     def on_post(self, req, resp):
         req_data = req.media or {}
         resp_data, valid = Config_Request_Schema(many=is_list(req_data),
-                                               method=HTTP_Method.POST).validate(data=req_data)
+                                                 method=HTTP_Method.POST).validate(data=req_data)
         if valid:
             req_data_wrap = wrap(req_data)
             if len(req_data_wrap) > 0:
@@ -53,7 +53,8 @@ class Config_Resource(Base_Resource):
                                 schema = Config_Resource_Response_Schema
                             output.update(id=data.get('id', None),
                                           timestamp=datetime_to_str())
-                            resp_data, valid = schema(many=False, method=HTTP_Method.POST).validate(data=output)
+                            resp_data, valid = schema(
+                                many=False, method=HTTP_Method.POST).validate(data=output)
                             if valid:
                                 Content_Response(output).add(resp)
                             else:
@@ -91,13 +92,15 @@ class Config_Resource(Base_Resource):
             output.update(self.parsers.get(schema)
                           (schema, source, path, value))
         except File_Not_Found_Error as e:
-            self.log.exception(e)
+            msg = f'Source {source} not found'
+            self.log.exception(msg, e)
             output.update(error=True, data=data,
-                          description=f'Source {source} not found', exception=extract_info(e))
+                          description=msg, exception=extract_info(e))
         except Exception as e:
-            self.log.exception(e)
+            msg = f'Source {source} not accessible'
+            self.log.exception(msg, e)
             output.update(error=True, data=data,
-                          description=f'Source {source} not accessible', exception=extract_info(e))
+                          description=msg, exception=extract_info(e))
         return output
 
     def __resources(self, data):
@@ -110,13 +113,15 @@ class Config_Resource(Base_Resource):
                 file.write(content)
                 output.update(path=path, content=content)
         except FileNotFoundError as e:
-            self.log.exception(e)
+            msg = f'Path {path} not found'
+            self.log.exception(msg, e)
             output.update(error=True, data=data,
-                          description=f'Path [path] not found', exception=extract_info(e))
+                          description=msg, exception=extract_info(e))
         except Exception as e:
-            self.log.exception(e)
+            msg = f'Path {path} not accessible'
+            self.log.exception(msg, e)
             output.update(error=True, data=data,
-                          description=f'Path [path] not accessible', exception=extract_info(e))
+                          description=msg, exception=extract_info(e))
         return output
 
     def __set_std(self, data, output, key):

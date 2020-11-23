@@ -22,11 +22,12 @@ class Config_Reader:
 
         self.auth_max_ttl = self.cr.get('auth', 'max-ttl')
 
-        self.elastic_apm_server = self.cr.get('elastic-apm', 'server');
+        self.elastic_apm = self.cr.has_section('elastic-apm')
+        self.elastic_apm_server = self.cr.get('elastic-apm', 'server', fallback='http://localhost:8200');
 
-        self.polycube_host = self.cr.get('polycube', 'host')
-        self.polycube_port = self.cr.get('polycube', 'port')
-        self.polycube_timeout = self.cr.get('polycube', 'timeout')
+        self.polycube_host = self.cr.get('polycube', 'host', fallback='localhost')
+        self.polycube_port = self.cr.get('polycube', 'port', fallback=9000)
+        self.polycube_timeout = self.cr.get('polycube', 'timeout', fallback='20s')
 
         self.dev_username = self.cr.get('dev', 'username')
         self.dev_password = self.cr.get('dev', 'password')

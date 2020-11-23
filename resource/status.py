@@ -74,7 +74,7 @@ class Status_Resource(object):
             password = generate_password()
             self.auth_db[username] = hash(password)
 
-            self.log.notice(f'hearbeating from CB at {now}')
+            self.log.notice(f'Hearbeating from CB at {now}')
 
             data = {**self.data, 'username': username, 'password': password}
             resp_data, valid = Status_Response_Schema(method=HTTP_Method.POST) \

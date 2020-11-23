@@ -47,8 +47,9 @@ class Log:
         level = cls.levels.get(name, cls.default)
         logger = logging.get_logger(name)
 
-        def __exception(exception):
-            logger.error(to_str(exception))
+        def __exception(message, exception):
+            logger.error(message)
+            logger.debug(to_str(exception))
         logger.exception = __exception
 
         logger.setLevel(level)
