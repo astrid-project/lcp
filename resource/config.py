@@ -126,13 +126,7 @@ class Config_Resource(Base_Resource):
 
     def __set_std(self, data, output, key):
         if data:
-            try:
-                data = data.replace('Size of the terminal is too small, output could be missaligned.', '') \
-                           .replace(' id', ' n') \
-                           .replace('Default Policy', 'Default-Policy')  # FIXME avoid code for specific program combability
-                output[key] = loads(data)
-            except Exception:
-                output[key] = table_to_dict(data.splitlines())
+            output[key] = data.splitlines()
 
     def __run_cmd(self, cmd, daemon, output):
         if not daemon:
