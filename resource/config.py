@@ -54,7 +54,7 @@ class Config_Resource(Base_Resource):
                                 schema = Config_Resource_Response_Schema
                             output.update(**data, timestamp=datetime_to_str())
                             resp_data, valid = schema(
-                                many=False, method=HTTP_Method.POST).validate(data=output)
+                                many=False, method=HTTP_Method.POST, unknown='INCLUDE').validate(data=output)
                             if valid:
                                 Content_Response(output).add(resp)
                             else:
@@ -76,7 +76,7 @@ class Config_Resource(Base_Resource):
         if daemon:
             output.update(error=False, executed=run, return_code=0)
         else:
-            output.update(error=proc.returncode != 0, executed=run,
+            output.update(error=proc.returncode != 0, executed=run, data=data,
                           return_code=proc.returncode, duration=time.time() - start)
             self.__set_std(proc.stdout, output, 'stdout', output_format)
             self.__set_std(proc.stderr, output, 'stderr', output_format)
