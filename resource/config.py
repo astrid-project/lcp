@@ -42,6 +42,7 @@ class Config_Resource(Base_Resource):
                 for config in req_data_wrap:
                     for cfg, cfg_list in config.items():
                         for data in wrap(cfg_list):
+                            output = {}
                             if cfg == 'actions':
                                 output = self.__actions(data)
                                 schema = Config_Action_Response_Schema
@@ -51,8 +52,7 @@ class Config_Resource(Base_Resource):
                             elif cfg == 'resources':
                                 output = self.__resources(data)
                                 schema = Config_Resource_Response_Schema
-                            output.update(id=data.get('id', None),
-                                          timestamp=datetime_to_str())
+                            output.update(**data, timestamp=datetime_to_str())
                             resp_data, valid = schema(
                                 many=False, method=HTTP_Method.POST).validate(data=output)
                             if valid:
@@ -68,6 +68,7 @@ class Config_Resource(Base_Resource):
     def __actions(self, data):
         cmd = data.get('cmd', None)
         daemon = data.get('daemon', False)
+        output_format = data.get('output_format', 'plain')
         output = dict(type='action')
         run = ' '.join([cmd] + wrap(data.get('args', [])))
         start = time.time()
@@ -77,8 +78,8 @@ class Config_Resource(Base_Resource):
         else:
             output.update(error=proc.returncode != 0, executed=run,
                           return_code=proc.returncode, duration=time.time() - start)
-            self.__set_std(proc.stdout, output, 'stdout')
-            self.__set_std(proc.stderr, output, 'stderr')
+            self.__set_std(proc.stdout, output, 'stdout', output_format)
+            self.__set_std(proc.stderr, output, 'stderr', output_format)
         return output
 
     def __parameters(self, data):
@@ -124,9 +125,20 @@ class Config_Resource(Base_Resource):
                           description=msg, exception=extract_info(e))
         return output
 
-    def __set_std(self, data, output, key):
+    def __set_std(self, data, output, key, output_format):
         if data:
-            output[key] = data.splitlines()
+            if output_format == 'plain':
+                output[key] = data
+            elif output_format == 'lines':
+                output[key] = data.splitlines()
+            else:
+                try:
+                    output[key] = loads(data)
+                except Exception as e:
+                    msg = f'Not valid JSON for {key}'
+                    self.log.exception(msg,e)
+                    output.update(description=msg, exception=extract_info(e))
+                    output[key] = data
 
     def __run_cmd(self, cmd, daemon, output):
         if not daemon:

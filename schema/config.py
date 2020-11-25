@@ -10,6 +10,7 @@ _all__ = [
     'Config_Resource_Response_Schema'
 ]
 
+OUTPUT_FORMATS = ['plain', 'lines', 'json']
 PARAMETER_SCHEMAS = ['json', 'properties', 'xml', 'yaml']
 RESPONSE_TYPES = ['action', 'parameter', 'resource']
 
@@ -25,7 +26,9 @@ class Config_Action_Request_Schema(Base_Schema):
     args = Str(many=True, example='-al',
                description='Single command argument.')
     daemon = Boolean(default=False, example=True,
-                 description='Execute the command as daemon.')
+                     description='Execute the command as daemon.')
+    output_format = Str(enum=OUTPUT_FORMATS, default=OUTPUT_FORMATS[0],
+                        example=OUTPUT_FORMATS[1], description='Format of the output of the command.')
 
 
 class Config_Parameter_Request_Schema(Base_Schema):
@@ -86,7 +89,7 @@ class Config_Action_Response_Schema(Config_Response_Schema):
                  description='Standard error output of the execution.')
     duration = Float(description='Execution time of the action (in seconds')
     daemon = Boolean(default=False, example=True,
-                 description='Execute the command as daemon.')
+                     description='Execute the command as daemon.')
     return_code = Integer(required=True, example=0,
                           description='Exit code of the execution (0: no error).')
 

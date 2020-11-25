@@ -14,4 +14,4 @@
 
 - Improved execution of action as daemon.
 - Accept list of strings for eBPF-Program code.
-- Stdout and stderr response as list of lines.
+- Stdout and stderr response format: plain, lines, and JSON.
