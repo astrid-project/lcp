@@ -28,7 +28,7 @@ def json_parser(schema, source, path, value):
                 json.dump(content, file, sort_keys=True, indent=3)
                 return dict(value=dict(new=value, old=old_value))
         else:
-            return dict(value=value, note=NO_CHANGE_NEEDED)
+            return dict(note=NO_CHANGE_NEEDED)
 
 
 def property_parser(schema, source, path, value):
@@ -75,4 +75,4 @@ def yaml_parser(schema, source, path, value):
                 yaml.dump(content, file, sort_keys=True, indent=3)
                 return dict(value=dict(new=value, old=old_value))
         else:
-            return dict(value=value, note=NO_CHANGE_NEEDED)
+            return dict(note=NO_CHANGE_NEEDED)

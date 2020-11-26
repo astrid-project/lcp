@@ -82,8 +82,6 @@ class Config_Response_Schema(Base_Schema):
 
 class Config_Action_Response_Schema(Config_Response_Schema):
     """Action part in a single item of the config response."""
-    executed = Str(required=True, example='ls -al',
-                   description='Command executed.')
     stdout = Raw(description='Standard output of the execution.')
     stderr = Raw(description='Standard error output of the execution.')
     duration = Float(description='Execution time of the action (in seconds')

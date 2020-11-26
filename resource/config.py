@@ -74,7 +74,6 @@ class Config_Resource(Base_Resource):
         run = ' '.join([cmd] + wrap(data.get('args', [])))
         start = time.time()
         proc = self.__run_cmd(cmd=run, daemon=daemon, output=output)
-        output.update(executed=run)
         if daemon:
             output.update(error=False, return_code=0)
         else:
