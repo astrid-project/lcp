@@ -7,12 +7,10 @@ from schema.config import *
 from schema.response import *
 from utils.datetime import datetime_to_str
 from utils.json import loads
-from utils.sequence import is_list, table_to_dict, wrap
-from utils.signal import send_tree
+from utils.sequence import is_list, wrap
 from os.path import expanduser as expand_user
 from utils.exception import extract_info
 
-import signal
 import subprocess as sp
 import time
 
@@ -52,7 +50,10 @@ class Config_Resource(Base_Resource):
                             elif cfg == 'resources':
                                 output = self.__resources(data)
                                 schema = Config_Resource_Response_Schema
-                            output.update(**data, timestamp=datetime_to_str())
+                            output_data = data.copy()
+                            id = output_data.pop('id', None)
+                            output.update(id=id,
+                                          data=output_data, timestamp=datetime_to_str())
                             resp_data, valid = schema(
                                 many=False, method=HTTP_Method.POST, unknown='INCLUDE').validate(data=output)
                             if valid:
@@ -73,10 +74,11 @@ class Config_Resource(Base_Resource):
         run = ' '.join([cmd] + wrap(data.get('args', [])))
         start = time.time()
         proc = self.__run_cmd(cmd=run, daemon=daemon, output=output)
+        output.update(executed=run)
         if daemon:
-            output.update(error=False, executed=run, return_code=0)
+            output.update(error=False, return_code=0)
         else:
-            output.update(error=proc.returncode != 0, executed=run, data=data,
+            output.update(error=proc.returncode != 0,
                           return_code=proc.returncode, duration=time.time() - start)
             self.__set_std(proc.stdout, output, 'stdout', output_format)
             self.__set_std(proc.stderr, output, 'stderr', output_format)
@@ -85,7 +87,7 @@ class Config_Resource(Base_Resource):
     def __parameters(self, data):
         schema = data.get('schema', None)
         source = data.get('source', None)
-        path = wrap(data.get('path', None))
+        path = wrap(data.get('path', []))
         value = data.get('value', None)
         output = dict(type='parameter')
         try:
@@ -95,13 +97,13 @@ class Config_Resource(Base_Resource):
         except File_Not_Found_Error as e:
             msg = f'Source {source} not found'
             self.log.exception(msg, e)
-            output.update(error=True, data=data,
-                          description=msg, exception=extract_info(e))
+            output.update(error=True, description=msg,
+                          exception=extract_info(e))
         except Exception as e:
             msg = f'Source {source} not accessible'
             self.log.exception(msg, e)
-            output.update(error=True, data=data,
-                          description=msg, exception=extract_info(e))
+            output.update(error=True, description=msg,
+                          exception=extract_info(e))
         return output
 
     def __resources(self, data):
@@ -112,17 +114,16 @@ class Config_Resource(Base_Resource):
             fix_path = expand_user(path)
             with open(fix_path, "w") as file:
                 file.write(content)
-                output.update(path=path, content=content)
         except FileNotFoundError as e:
             msg = f'Path {path} not found'
             self.log.exception(msg, e)
-            output.update(error=True, data=data,
-                          description=msg, exception=extract_info(e))
+            output.update(error=True, description=msg,
+                          exception=extract_info(e))
         except Exception as e:
             msg = f'Path {path} not accessible'
             self.log.exception(msg, e)
-            output.update(error=True, data=data,
-                          description=msg, exception=extract_info(e))
+            output.update(error=True, description=msg,
+                          exception=extract_info(e))
         return output
 
     def __set_std(self, data, output, key, output_format):
@@ -136,7 +137,7 @@ class Config_Resource(Base_Resource):
                     output[key] = loads(data)
                 except Exception as e:
                     msg = f'Not valid JSON for {key}'
-                    self.log.exception(msg,e)
+                    self.log.exception(msg, e)
                     output.update(description=msg, exception=extract_info(e))
                     output[key] = data
 
@@ -145,5 +146,4 @@ class Config_Resource(Base_Resource):
             return sp.run(cmd, check=False, shell=True,
                           stdout=sp.PIPE, stderr=sp.PIPE, universal_newlines=True)
         else:
-            output.update(daemon=daemon)
             return sp.Popen(cmd, shell=True, stdout=sp.PIPE, stderr=sp.PIPE, start_new_session=True)

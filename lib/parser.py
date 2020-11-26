@@ -26,9 +26,9 @@ def json_parser(schema, source, path, value):
             d[path[-1]] = value
             with open(source, 'w') as file:
                 json.dump(content, file, sort_keys=True, indent=3)
-                return dict(schema=schema, source=source, path=path, value=dict(new=value, old=old_value))
+                return dict(value=dict(new=value, old=old_value))
         else:
-            return dict(schema=schema, source=source, path=path, value=value, note=NO_CHANGE_NEEDED)
+            return dict(value=value, note=NO_CHANGE_NEEDED)
 
 
 def property_parser(schema, source, path, value):
@@ -45,9 +45,9 @@ def property_parser(schema, source, path, value):
             content[k] = value
             with open(source, 'wb') as file:
                 content.store(file, encoding='utf-8')
-                return dict(schema=schema, source=source, path=path, value=dict(new=value, old=old_value))
+                return dict(value=dict(new=value, old=old_value))
         else:
-            return dict(schema=schema, source=source, path=path, value=value, note=NO_CHANGE_NEEDED)
+            return dict(note=NO_CHANGE_NEEDED)
 
 
 def xml_parser(schema, source, path, value):
@@ -59,9 +59,9 @@ def xml_parser(schema, source, path, value):
             d[path[-1]] = value
             with open(source, 'w') as file:
                 xml_to_dict.unparse(content, output=file, pretty=True)
-                return dict(schema=schema, source=source, path=path, value=dict(new=value, old=old_value))
+                return dict(value=dict(new=value, old=old_value))
         else:
-            return dict(schema=schema, source=source, path=path, value=value, note=NO_CHANGE_NEEDED)
+            return dict(note=NO_CHANGE_NEEDED)
 
 
 def yaml_parser(schema, source, path, value):
@@ -73,6 +73,6 @@ def yaml_parser(schema, source, path, value):
             d[path[-1]] = value
             with open(source, 'w') as file:
                 yaml.dump(content, file, sort_keys=True, indent=3)
-                return dict(schema=schema, source=source, path=path, value=dict(new=value, old=old_value))
+                return dict(value=dict(new=value, old=old_value))
         else:
-            return dict(schema=schema, source=source, path=path, value=value, note=NO_CHANGE_NEEDED)
+            return dict(value=value, note=NO_CHANGE_NEEDED)
