@@ -6,7 +6,7 @@ __all__ = [
     'datetime_to_str'
 ]
 
-FORMAT = '%Y/%m/%dT%H:%M:%S%z'
+FORMAT = '%Y/%m/%dT%H:%M:%S'
 
 
 def datetime_from_str(date_time_str, format=FORMAT):
@@ -27,5 +27,5 @@ def datetime_to_str(date_time=None, format=FORMAT):
     :returns: datetime string in the given format
     """
     if date_time is None:
-        date_time = datetime.now()
+        date_time = datetime.utcnow()
     return date_time.strftime(format)
