@@ -47,12 +47,13 @@ class Base_Response(object):
         return self.__data()
 
     def __log(self):
-        e = self.data.get('exception', None)
-        msg = self.data.get('message', None)
-        if e is not None:
-            self.log.exception(e, msg)
-        else:
-            getattr(self.log, self.log_level)(msg)
+        if self.log_level is not None:
+            e = self.data.get('exception', None)
+            msg = self.data.get('message', None)
+            if e is not None:
+                self.log.exception(e, msg)
+            else:
+                getattr(self.log, self.log_level)(msg)
 
     @classmethod
     def status(cls):
@@ -72,7 +73,7 @@ class Base_Response(object):
                 resp.media = []
             resp.media.append(self.__data())
             resp_code = int(resp.status.split()[0])
-            if self.code is not None and HTTP_Status.lt(resp_code, self.code):
+            if self.code is not None and HTTP_Status.gt(resp_code, self.code):
                 resp.status = f'{self.code} {self.status()}'
 
     def update(self, **kwargs):
@@ -159,6 +160,8 @@ class Ok_Response(Base_Response):
 
 
 class Content_Response(Ok_Response):
+    log_level = None
+
     def __init__(self, content):
         self.data = content
 
@@ -174,7 +177,6 @@ class Internal_Server_Error_Response(Base_Response):
 
     def __init__(self, message, **kwargs):
         super().__init__(message, **kwargs)
-
 
 
 class Reset_Content_Response(Base_Response):
