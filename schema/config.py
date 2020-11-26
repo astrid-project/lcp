@@ -42,7 +42,7 @@ class Config_Parameter_Request_Schema(Base_Schema):
                  description='Source filename.')
     path = List(Str(required=True, example='period',
                     description='Key path.'))
-    value = Str(required=True, example='10s',
+    value = Raw(required=True, example='10s',
                 description='Parameter new value.')
 
 
@@ -91,9 +91,9 @@ class Config_Action_Response_Schema(Config_Response_Schema):
 
 class Config_Parameter_Value_Response_Schema(Base_Schema):
     """Parameter value part in a single item of the config response."""
-    new = Str(required=True, example='5s',
+    new = Raw(required=True, example='5s',
               description='New value.')
-    old = Str(required=True, example='10s',
+    old = Raw(required=True, example='10s',
               description='Old value')
 
 
