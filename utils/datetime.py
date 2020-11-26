@@ -6,7 +6,7 @@ __all__ = [
     'datetime_to_str'
 ]
 
-FORMAT = '%Y/%m/%dT%H:%M:%S'
+FORMAT = '%Y/%m/%dT%H:%M:%S%z'
 
 
 def datetime_from_str(date_time_str, format=FORMAT):
