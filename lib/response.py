@@ -2,8 +2,7 @@ from lib.http import HTTP_Status
 from utils.exception import extract_info
 from utils.log import Log
 from utils.sequence import expand, is_list
-
-import falcon
+from utils.stack import info
 
 __all__ = [
     'Bad_Request_Response',
@@ -49,7 +48,9 @@ class Base_Response(object):
     def __log(self):
         if self.log_level is not None:
             e = self.data.get('exception', None)
-            msg = self.data.get('message', None)
+            i = info(level=3)
+            self.log.notice(f'@{i.filename}:{i.lineno}')
+            msg = self.data.get("message", "No message")
             if e is not None:
                 self.log.exception(e, msg)
             else:

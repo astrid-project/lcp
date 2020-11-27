@@ -58,11 +58,11 @@ class Config_Resource_Request_Schema(Base_Schema):
 
 class Config_Request_Schema(Base_Schema):
     """Request for config endpoint."""
-    actions = Nested(Config_Action_Request_Schema, many=True,
+    actions = Nested(Config_Action_Request_Schema, many=True, unknown='INCLUDE',
                      description='List of actions.')
-    parameters = Nested(Config_Parameter_Request_Schema, many=True,
+    parameters = Nested(Config_Parameter_Request_Schema, many=True, unknown='INCLUDE',
                         description='List of parameters.')
-    resources = Nested(Config_Resource_Request_Schema, many=True,
+    resources = Nested(Config_Resource_Request_Schema, many=True, unknown='INCLUDE',
                        description='List of resources.')
 
 
