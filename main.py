@@ -19,6 +19,6 @@ if db.version is not None:
     print(db.version)
 else:
     u, p = db.dev_username, db.dev_password
-    waitress.serve(api(title=title, version=version, ident=ident,
+    waitress.serve(api(title=title, version=version,
                         dev_username=u, dev_password=p),
-                   host=db.host, port=db.port, expose_tracebacks=False)
+                   host=db.host, port=db.port, expose_tracebacks=False, ident=ident)
