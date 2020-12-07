@@ -127,6 +127,7 @@ class Config_Resource(Base_Resource):
 
     def __set_std(self, data, output, key, output_format):
         if data:
+            data = data.strip()
             if output_format == 'plain':
                 output[key] = data
             elif output_format == 'lines':
