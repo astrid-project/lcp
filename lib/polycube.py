@@ -53,7 +53,7 @@ class Polycube:
                 self.log.exception(f'Cube {cube} not created', e)
                 return dict(status='error',
                             interface=attached_info, detached_info={},
-                            data=data, **self.__from_resp(resp_req))
+                            data=data, **self.__from_resp(resp_req, error=True))
         else:
             return dict(error=True, description=f'Cube {cube} found.', data=data)
 
@@ -71,7 +71,7 @@ class Polycube:
             except Exception as e:
                 self.log.exception(f'Cube {cube} not deleted', e)
                 return dict(error=True,
-                            data=data, **self.__from_resp(resp_req))
+                            data=data, **self.__from_resp(resp_req, error=True))
         else:
             return dict(error=True, description=f'Cube {cube} not found.', data=data)
 
@@ -98,7 +98,7 @@ class Polycube:
             except Exception as e:
                 self.log.exception(f'Cube {cube} not updated', e)
                 return dict(status='error', attached_info=attached_info, detached_info=detached_info,
-                            data=data, **self.__from_resp(resp_req))
+                            data=data, **self.__from_resp(resp_req, error=True))
         else:
             return dict(error=True, description=f'Cube {cube} not found.', data=data)
 
@@ -113,28 +113,28 @@ class Polycube:
             'egress-path': {}
         }
 
-    def __from_resp(self, resp):
+    def __from_resp(self, resp, error=None):
         if resp.content:
             try:
                 return loads(resp.content)
             except Exception:
-                return dict(error=resp.status_code >= 400, message=resp.content.decode("utf-8"))
+                return dict(error=error if error is not None else resp.status_code >= 400, message=resp.content.decode("utf-8"))
         else:
-            return dict(error=resp.status_code >= 400)
+            return dict(error=error if error is not None else resp.status_code >= 400)
 
     def __detach(self, cube, interface):
         resp_req = post_req(f'{self.endpoint}/detach',
                             json=dict(cube=cube, port=interface), timeout=self.timeout)
         self.__manager(resp_req)
         return dict(status='detached', data=dict(cube=cube, interface=interface),
-                    **self.resp_from_resp(resp_req))
+                    **self.__from_resp(resp_req))
 
     def __attach(self, cube, interface):
         resp_req = post_req(f'{self.endpoint}/attach',
                             json=dict(cube=cube, port=interface), timeout=self.timeout)
         self.__manager(resp_req)
         return dict(status='attached', data=dict(cube=cube, interface=interface),
-                    **self.resp_from_resp(resp_req))
+                    **self.__from_resp(resp_req))
 
     def __manager(self, resp_req):
         try:
