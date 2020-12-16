@@ -53,6 +53,14 @@ definitions:
         description: Id of the action.
         example: start
         type: string
+      output_format:
+        description: Format of the output of the command.
+        enum:
+        - plain
+        - lines
+        - json
+        example: lines
+        type: string
     required:
     - cmd
     - id
@@ -85,7 +93,6 @@ definitions:
       value:
         description: Parameter new value.
         example: 10s
-        type: string
     required:
     - id
     - schema
@@ -137,7 +144,6 @@ definitions:
       line:
         description: Line where the exception is raised.
         example: 80
-        format: int32
         type: integer
       reason:
         description: Exception reason.
@@ -297,7 +303,7 @@ definitions:
     type: object
 info:
   title: Local Control Plane
-  version: 1.0.1
+  version: 1.0.3
 paths:
   /code:
     delete:
