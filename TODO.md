@@ -11,12 +11,16 @@ In each local agent, the control plane is responsible for programmability, i.e.,
 
 ---
 
-### Todo
+## Todo
+
 - [ ] check error when code != 0
 - [ ] add top file signature
-- [ ] add md support for readthedocs
+- [ ] add markdown support for readthedocs
+- [ ] add CONTRIBUTING.md
+- [ ] add CHANGELOG, TODO and CONTRIBUTING in docs
 
-### In Progress
+## In Progress
+
 - [ ] Improve documentation
 
 ### Done ✓
