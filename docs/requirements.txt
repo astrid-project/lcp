@@ -2,8 +2,8 @@ pyenchant
 sphinx
 sphinx_copybutton
 sphinx_issues
-sphinx_ansible_theme
 sphinx-autobuild
+sphinx-theme-pd
 sphinxcontrib-autoprogram
 sphinxcontrib.httpdomain
 sphinxcontrib.spelling

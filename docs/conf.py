@@ -10,7 +10,7 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
-import sphinx_ansible_theme
+import sphinx_theme_pd
 import os
 import sys
 sys.path.insert(0, os.path.abspath('..'))
@@ -58,7 +58,8 @@ exclude_patterns = []
 
 html_logo = '../logo.png'
 html_favicon = '../logo.ico'
-html_theme = 'sphinx_ansible_theme'
+html_theme = 'sphinx_theme_pd'
+html_theme_path = [sphinx_theme_pd.get_html_theme_path()]
 
 issues_github_path = "astrid-project/lcp"
 
