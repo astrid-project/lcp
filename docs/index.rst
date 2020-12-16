@@ -10,21 +10,6 @@ Compatibility
 
 |LCP| requires Python 3.5+.
 
-
-Documentation
-=============
-
-This part of the documentation will show you how to get started in using |LCP|.
-
-.. toctree::
-   :maxdepth: 2
-   :numbered:
-
-   installation
-   running
-   glossary
-
-
 API Reference
 -------------
 
