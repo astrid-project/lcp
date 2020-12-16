@@ -54,9 +54,6 @@ exclude_patterns = []
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
-#
-
-html_logo = '../logo.png'
 html_favicon = '../logo.ico'
 html_theme = 'sphinx_rtd_theme'
 
