@@ -3,7 +3,7 @@ sphinx
 sphinx_copybutton
 sphinx_issues
 sphinx-autobuild
-sphinx-theme-pd
+sphinx-rtd-theme
 sphinxcontrib-autoprogram
 sphinxcontrib.httpdomain
 sphinxcontrib.spelling
