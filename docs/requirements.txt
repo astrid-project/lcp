@@ -1,11 +1,10 @@
 pyenchant
 recommonmark
-shutil
 sphinx
-sphinx_copybutton
-sphinx_issues
 sphinx-autobuild
+sphinx-copybutton
+sphinx-issues
 sphinx-rtd-theme
 sphinxcontrib-autoprogram
-sphinxcontrib.httpdomain
-sphinxcontrib.spelling
+sphinxcontrib-httpdomain
+sphinxcontrib-spelling

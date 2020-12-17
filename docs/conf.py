@@ -43,6 +43,7 @@ extensions = [
     'sphinxcontrib.autoprogram',
     'sphinxcontrib.httpdomain',
     'sphinxcontrib.spelling',
+    "sphinx.ext.mathjax"
 ]
 
 # Copy needed files from parent directory.
