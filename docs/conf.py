@@ -45,6 +45,7 @@ extensions = [
     'sphinxcontrib.spelling',
 ]
 
+# Copy needed files from parent directory.
 for filename in ['LICENSE', 'CONTRIBUTING.md', 'CHANGELOG.md']:
     copyfile(f'../{filename}', f'./{filename}')
 
