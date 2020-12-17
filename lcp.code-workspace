@@ -54,6 +54,7 @@
 			"pycodestyle",
 			"pydocstyle",
 			"pytest",
+			"recommonmark",
 			"reloader",
 			"resp",
 			"ruamel",
@@ -78,7 +79,7 @@
 		"editor.wordWrap": "on",
 		"editor.wrappingIndent": "deepIndent",
 		"files.insertFinalNewline": true,
-		"workbench.colorTheme": "Bloody Pie",
-		"workbench.editor.tabSizing": "shrink"
+		"workbench.editor.tabSizing": "shrink",
+		"workbench.colorTheme": "Atom One Dark"
 	}
 }

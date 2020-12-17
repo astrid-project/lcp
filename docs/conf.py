@@ -13,6 +13,7 @@
 import sphinx_rtd_theme
 import os
 import sys
+from shutil import copyfile
 sys.path.insert(0, os.path.abspath('..'))
 
 
@@ -31,6 +32,7 @@ master_doc = 'index'
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
+    'recommonmark',
     'sphinx_copybutton',
     'sphinx_issues',
     'sphinx.ext.autodoc',
@@ -41,6 +43,9 @@ extensions = [
     'sphinxcontrib.spelling',
 ]
 
+for filename in ['LICENSE', 'CONTRIBUTING.md', 'CHANGELOG.md']:
+    copyfile(f'../{filename}', f'./{filename}')
+
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
 
@@ -49,6 +54,10 @@ templates_path = ['_templates']
 # This pattern also affects html_static_path and html_extra_path.
 exclude_patterns = []
 
+source_suffix = {
+    '.rst': 'restructuredtext',
+    '.md': 'markdown',
+}
 
 # -- Options for HTML output -------------------------------------------------
 

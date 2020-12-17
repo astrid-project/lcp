@@ -1,4 +1,6 @@
 pyenchant
+recommonmark
+shutil
 sphinx
 sphinx_copybutton
 sphinx_issues

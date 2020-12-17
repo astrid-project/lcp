@@ -27,7 +27,8 @@ class Basic_Auth_Backend_Middleware(Basic_Auth_Backend):
 
     def __auth(self, username, password):
         auth_data = [(self.dev_username, self.dev_password)]
-        auth_data.extend(zip(Status_Resource.auth_db.keys(), Status_Resource.auth_db.values()))
+        auth_data.extend(zip(Status_Resource.auth_db.keys(),
+                             Status_Resource.auth_db.values()))
         if (username, hash(password)) in auth_data:
             return dict(username=username)
         else:
