@@ -13,7 +13,9 @@
 import sphinx_rtd_theme
 import os
 import sys
+
 from shutil import copyfile
+
 sys.path.insert(0, os.path.abspath('..'))
 
 
