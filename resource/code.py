@@ -1,14 +1,14 @@
+from operator import itemgetter as item_getter
+from resource.base import Base_Resource
+
 from docstring import docstring
 from lib.http import HTTP_Method
 from lib.polycube import Polycube
 from lib.response import *
-from operator import itemgetter as item_getter
-from resource.base import Base_Resource
 from schema.code import *
 from schema.response import *
-from utils.sequence import is_list, wrap
 from utils.datetime import datetime_to_str
-
+from utils.sequence import is_list, wrap
 
 __all__ = [
     'Code_Resource'
@@ -34,7 +34,9 @@ class Code_Resource(Base_Resource):
                     id, code, interface, metrics = item_getter('id', 'code',
                                                                'interface', 'metrics')(data)
                     if all([id, code, interface]):
-                        pc = self.polycube.create(cube=id, code='\n'.join(code),
+                        if is_list(code):
+                            code = '\n'.join(code)
+                        pc = self.polycube.create(cube=id, code=code,
                                                   interface=interface, metrics=metrics)
                         if not pc.get('error', False):
                             msg = f'Code with the id={id} correctly injected'
@@ -65,7 +67,9 @@ class Code_Resource(Base_Resource):
                     id, code, interface, metrics = item_getter('id', 'code',
                                                                'interface', 'metrics')(data)
                     if all([id, code, interface]):
-                        pc = self.polycube.update(cube=id, code='\n'.join(code),
+                        if is_list(code):
+                            code = '\n'.join(code)
+                        pc = self.polycube.update(cube=id, code=code,
                                                   interface=interface, metrics=metrics)
                         if not pc.get('error', False):
                             msg = f'Code with the id={id} correctly updated'
