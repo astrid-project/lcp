@@ -1,3 +1,4 @@
 {
-    "restructuredtext.confPath": ""
+    "python.linting.enabled": true,
+    "restructuredtext.confPath": "docs\\conf.py"
 }
