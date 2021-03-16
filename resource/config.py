@@ -1,18 +1,18 @@
+import subprocess as sp
+import time
+from os.path import expanduser as expand_user
+from resource.base import Base_Resource
+
 from docstring import docstring
 from lib.http import HTTP_Method
 from lib.parser import *
 from lib.response import *
-from resource.base import Base_Resource
 from schema.config import *
 from schema.response import *
 from utils.datetime import datetime_to_str
+from utils.exception import extract_info
 from utils.json import loads
 from utils.sequence import is_list, wrap
-from os.path import expanduser as expand_user
-from utils.exception import extract_info
-
-import subprocess as sp
-import time
 
 File_Not_Found_Error = FileNotFoundError
 
@@ -113,6 +113,7 @@ class Config_Resource(Base_Resource):
             fix_path = expand_user(path)
             with open(fix_path, "w") as file:
                 file.write(content)
+            output.update(path=path, content=content)
         except FileNotFoundError as e:
             msg = f'Path {path} not found'
             self.log.exception(msg, e)

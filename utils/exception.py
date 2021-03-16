@@ -1,7 +1,6 @@
-from pathlib import Path
-
 import os
 import sys
+from pathlib import Path
 
 __all__ = [
     'extract_info',

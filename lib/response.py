@@ -52,7 +52,7 @@ class Base_Response(object):
             self.log.notice(f'@{i.filename}:{i.lineno}')
             msg = self.data.get("message", "No message")
             if e is not None:
-                self.log.exception(e, msg)
+                self.log.exception(msg, e)
             else:
                 getattr(self.log, self.log_level)(msg)
 
