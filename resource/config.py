@@ -50,16 +50,19 @@ class Config_Resource(Base_Resource):
                             elif cfg == 'resources':
                                 output = self.__resources(data)
                                 schema = Config_Resource_Response_Schema
-                            output_data = data.copy()
-                            id = output_data.pop('id', None)
-                            output.update(id=id,
-                                          data=output_data, timestamp=datetime_to_str())
-                            resp_data, valid = schema(
-                                many=False, method=HTTP_Method.POST, unknown='INCLUDE').validate(data=output)
-                            if valid:
-                                Content_Response(output).add(resp)
+                            if isinstance(output, Base_Response):
+                                output.add(resp)
                             else:
-                                resp_data.add(resp)
+                                output_data = data.copy()
+                                id = output_data.pop('id', None)
+                                output.update(id=id,
+                                            data=output_data, timestamp=datetime_to_str())
+                                resp_data, valid = schema(
+                                    many=False, method=HTTP_Method.POST, unknown='INCLUDE').validate(data=output)
+                                if valid:
+                                    Content_Response(output).add(resp)
+                                else:
+                                    resp_data.add(resp)
             else:
                 msg = f'No content to apply configurations with the {{request}}'
                 No_Content_Response(msg, request=req_data).apply(resp)
@@ -93,17 +96,15 @@ class Config_Resource(Base_Resource):
             source = expand_user(source)
             output.update(self.parsers.get(schema)
                           (schema, source, path, value))
+            return output
         except File_Not_Found_Error as e:
             msg = f'Source {source} not found'
             self.log.exception(msg, e)
-            output.update(error=True, description=msg,
-                          exception=extract_info(e))
+            return Not_Found_Response(msg, e, type='parameter', data=data)
         except Exception as e:
             msg = f'Source {source} not accessible'
             self.log.exception(msg, e)
-            output.update(error=True, description=msg,
-                          exception=extract_info(e))
-        return output
+            return Bad_Request_Response(e, message=msg, type='parameter', data=data)
 
     def __resources(self, data):
         path = data.get('path', None)
@@ -114,17 +115,15 @@ class Config_Resource(Base_Resource):
             with open(fix_path, "w") as file:
                 file.write(content)
             output.update(path=path, content=content)
+            return output
         except FileNotFoundError as e:
             msg = f'Path {path} not found'
             self.log.exception(msg, e)
-            output.update(error=True, description=msg,
-                          exception=extract_info(e))
+            return Not_Found_Response(msg, e, type='resource', data=data)
         except Exception as e:
             msg = f'Path {path} not accessible'
             self.log.exception(msg, e)
-            output.update(error=True, description=msg,
-                          exception=extract_info(e))
-        return output
+            return Bad_Request_Response(e, message=msg, type='resource', data=data)
 
     def __set_std(self, data, output, key, output_format):
         if data:
