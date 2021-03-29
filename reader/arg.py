@@ -31,7 +31,7 @@ class Arg_Reader:
         add('--polycube-port', '-c', type=int, help='Port of Polycube', default=cls.cr.polycube_port)
         add('--polycube-timeout', '-e', type=str, help='Timeout for Polycube connection', default=cls.cr.polycube_timeout)
 
-        add('--apm-enabled', '-n', help='Elastic APM hostname/IP:port', action='store_true')
+        add('--apm-enabled', '-n', help='Enable Elastic APM integration', action='store_true')
         add('--apm-server', '-m', type=str, help='Elastic APM hostname/IP:port', default=cls.cr.elastic_apm_server)
 
         add('--log-level', '-l', choices=Log.get_levels(), help='Log level', default=cls.cr.log_level)
