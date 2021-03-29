@@ -1,10 +1,5 @@
 from string import Formatter as String_Formatter
 
-__all__ = [
-    'format',
-    'is_str'
-]
-
 
 class Formatter(String_Formatter):
     def convert_field(self, value, conversion):

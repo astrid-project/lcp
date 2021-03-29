@@ -9,9 +9,6 @@ Glossary
     API
         Application Program Interface
 
-    BA
-        Basic Authentication
-
     BPF
         Berkeley Packet Filter
 
@@ -89,9 +86,6 @@ Glossary
 
     TCP
         Transmission Control Protocol
-
-    TTL
-        Time To Live
 
     VNF
         Virtual Network Function

@@ -5,10 +5,10 @@ from resource.base import Base_Resource
 
 from docstring import docstring
 from lib.http import HTTP_Method
-from lib.parser import *
-from lib.response import *
-from schema.config import *
-from schema.response import *
+from lib.parser import json_parser, property_parser, xml_parser, yaml_parser
+from lib.response import Bad_Request_Response, Base_Response, Content_Response, No_Content_Response, Not_Found_Response
+from schema.config import (Config_Action_Response_Schema, Config_Parameter_Response_Schema, Config_Request_Schema,
+                           Config_Resource_Response_Schema)
 from utils.datetime import datetime_to_str
 from utils.exception import extract_info
 from utils.json import loads
@@ -16,24 +16,16 @@ from utils.sequence import is_list, wrap
 
 File_Not_Found_Error = FileNotFoundError
 
-__all__ = [
-    'Config_Resource'
-]
-
 
 class Config_Resource(Base_Resource):
     tag = dict(name='config', description='Configuration at run-time.')
     routes = '/config',
-    parsers = dict(json=json_parser,
-                   properties=property_parser,
-                   xml=xml_parser,
-                   yaml=yaml_parser)
+    parsers = dict(json=json_parser, properties=property_parser, xml=xml_parser, yaml=yaml_parser)
 
     @docstring(source='config/post.yaml')
     def on_post(self, req, resp):
         req_data = req.media or {}
-        resp_data, valid = Config_Request_Schema(many=is_list(req_data),
-                                                 method=HTTP_Method.POST).validate(data=req_data)
+        resp_data, valid = Config_Request_Schema(many=is_list(req_data), method=HTTP_Method.POST).validate(data=req_data)
         if valid:
             req_data_wrap = wrap(req_data)
             if len(req_data_wrap) > 0:
@@ -55,16 +47,14 @@ class Config_Resource(Base_Resource):
                             else:
                                 output_data = data.copy()
                                 id = output_data.pop('id', None)
-                                output.update(id=id,
-                                            data=output_data, timestamp=datetime_to_str())
-                                resp_data, valid = schema(
-                                    many=False, method=HTTP_Method.POST, unknown='INCLUDE').validate(data=output)
+                                output.update(id=id, data=output_data, timestamp=datetime_to_str())
+                                resp_data, valid = schema(many=False, method=HTTP_Method.POST, unknown='INCLUDE').validate(data=output)
                                 if valid:
                                     Content_Response(output).add(resp)
                                 else:
                                     resp_data.add(resp)
             else:
-                msg = f'No content to apply configurations with the {{request}}'
+                msg = 'No content to apply configurations with the {{request}}'
                 No_Content_Response(msg, request=req_data).apply(resp)
         else:
             resp_data.apply(resp)
@@ -80,8 +70,7 @@ class Config_Resource(Base_Resource):
         if daemon:
             output.update(error=False, return_code=0)
         else:
-            output.update(error=proc.returncode != 0,
-                          return_code=proc.returncode, duration=time.time() - start)
+            output.update(error=proc.returncode != 0, return_code=proc.returncode, duration=time.time() - start)
             self.__set_std(proc.stdout, output, 'stdout', output_format)
             self.__set_std(proc.stderr, output, 'stderr', output_format)
         return output
@@ -94,8 +83,7 @@ class Config_Resource(Base_Resource):
         output = dict(type='parameter')
         try:
             source = expand_user(source)
-            output.update(self.parsers.get(schema)
-                          (schema, source, path, value))
+            output.update(self.parsers.get(schema)(schema, source, path, value))
             return output
         except File_Not_Found_Error as e:
             msg = f'Source {source} not found'
@@ -143,7 +131,6 @@ class Config_Resource(Base_Resource):
 
     def __run_cmd(self, cmd, daemon, output):
         if not daemon:
-            return sp.run(cmd, check=False, shell=True,
-                          stdout=sp.PIPE, stderr=sp.PIPE, universal_newlines=True)
+            return sp.run(cmd, check=False, shell=True, stdout=sp.PIPE, stderr=sp.PIPE, universal_newlines=True)
         else:
             return sp.Popen(cmd, shell=True, stdout=sp.PIPE, stderr=sp.PIPE, start_new_session=True)

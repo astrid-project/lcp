@@ -1,7 +1,7 @@
 .. CB-Manager documentation master file.
 
 Welcome to LCP documentation!
-====================================
+=============================
 
 In each local agent, the control plane is responsible for programmability, i.e., changing the behaviour of the data plane at run-time.
 

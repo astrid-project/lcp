@@ -1,16 +1,5 @@
 from toolz import valmap
 
-__all__ = [
-    'expand',
-    'format',
-    'is_dict',
-    'is_list',
-    'iterate',
-    'subset',
-    'table_to_dict',
-    'wrap'
-]
-
 
 def expand(elements, **kwrds):
     return {**elements, **kwrds}
@@ -65,7 +54,7 @@ def table_to_dict(data):
     keys = data.pop(0).split()
     output = []
     if len(data) > 0:
-       for dr in data:
+        for dr in data:
             vals = dr.split()
             item = {}
             for k, v in zip(keys, vals):
@@ -75,6 +64,7 @@ def table_to_dict(data):
     else:
         return keys
     return output
+
 
 def wrap(data):
     """Wrap the data if an array if it is ont a list of tuple.

@@ -1,11 +1,8 @@
-from falcon.errors import HTTPBadRequest as HTTP_Bad_Request, HTTPInternalServerError as HTTP_Internal_Server_Error, HTTPUnsupportedMediaType as HTTP_Unsupported_Media_Type
-from lib.response import *
+from falcon.errors import HTTPBadRequest as HTTP_Bad_Request
+from falcon.errors import HTTPInternalServerError as HTTP_Internal_Server_Error
+from falcon.errors import HTTPUnsupportedMediaType as HTTP_Unsupported_Media_Type
 
-__all__ = [
-    'Bad_Request_Handler',
-    'Internal_Server_Error_Handler',
-    'Unsupported_Media_Type_Handler'
-]
+from lib.response import Bad_Request_Response, Internal_Server_Error_Response, Unsupported_Media_Type_Response
 
 
 class Base_Handler(object):

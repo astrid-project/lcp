@@ -1,28 +1,23 @@
-from utils.exception import to_str
+import logging
 
 import coloredlogs
-import logging
 import verboselogs
 
-__all__ = [
-    'Log'
-]
-
+from utils.exception import to_str
 
 # FIXME DEBUG level not working
 
 
 class Log:
-    """
-    Wrapper class for coloured and verbuse logs.
-    """
+    """Wrapper class for coloured and verbuse logs."""
+
     levels = {}
     default = None
 
     @classmethod
     def init(cls, default, levels):
-        """
-        Set the default and levels and initialize the log manager.
+        """Set the default and levels and initialize the log manager.
+
         :param cls: Log class.
         :param default: default log level
         :param levels: log levels
@@ -37,8 +32,7 @@ class Log:
 
     @classmethod
     def get(cls, name):
-        """
-        Return the initialized logger with the module name.
+        """Return the initialized logger with the module name.
 
         :param cls: Log class.
         :param name: module name
@@ -57,8 +51,7 @@ class Log:
 
     @staticmethod
     def get_levels():
-        """
-        Get list of log level names.
+        """Get list of log level names.
 
         :returns: list of string
         """

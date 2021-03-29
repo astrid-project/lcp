@@ -1,10 +1,6 @@
 from http import HTTPStatus as HTTP_Status
-from utils.log import Log
 
-__all__ = [
-    'HTTP_Status',
-    'HTTP_Method'
-]
+from utils.log import Log
 
 
 class HTTP_Method(object):

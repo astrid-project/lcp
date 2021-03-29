@@ -50,16 +50,20 @@ See the [Swagger Schema](swagger/schema.yaml) for more details about the REST en
 
 The configurations are stored in the [config.ini](config.ini) file.
 
-Section             | Setting   | Default value   | Note
---------------------|-----------|-----------------|---------------------------
-local-control-plane | host      | 0.0.0.0         | IP address to accept requests.
-local-control-plane | port      | 4000            | TCP port to accept requests.
-auth                | max-ttl   | 10min           | Maximum TTL of the authorization with the CB-Manager.
-polycube            | host      | localhost       | IP address to contact the polycube installation.
-polycube            | port      | 9000            | Port address to contact the polycube installation.
-polycube            | timeout   | 20s             | Timeout for the connection to polycube.
-dev                 | username  | lcp             | Username for HTTP authentication (for developer use).
-dev                 | password  |                 | Password for HTTP authentication (for developer use).
+Section             | Setting       | Default value         | Note
+--------------------|---------------|-----------------------|---------------------------
+local-control-plane | host          | 0.0.0.0               | IP address to accept requests.
+local-control-plane | port          | 4000                  | TCP port to accept requests.
+local-control-plane | https         | false                 | Accept only HTTPS requests.
+auth                | enabled       | true                  | Enable JWT authentication.
+auth                | header-prefix | ASTRID                | Header prefix for JWT authentication.
+auth                | secret-key    | astrid-secret-key     | Secret key for JWT authentication.
+elastic-apm         | enabled       | false                 | Enable Elastic APM integration.
+elastic-apm         | server        | http://localhost:8200 | Elastic APM server.
+polycube            | host          | localhost             | IP address to contact the polycube installation.
+polycube            | port          | 9000                  | Port address to contact the polycube installation.
+polycube            | timeout       | 20s                   | Timeout for the connection to polycube.
+log                 | level         | DEBUG                 | Log level.
 
 ## Usage
 

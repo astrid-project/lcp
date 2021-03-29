@@ -1,9 +1,5 @@
 from pint import UnitRegistry as Unit_Registry
 
-__all__ = [
-    'get_seconds'
-]
-
 __ureg = Unit_Registry()
 __Q = __ureg.Quantity
 

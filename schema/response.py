@@ -1,23 +1,10 @@
-from lib.response import *
 from marshmallow import Schema, validate
 from marshmallow.fields import Bool, Constant, Integer, Nested, Str
 
-
-__all__ = [
-    'Bad_Request_Response_Schema',
-    'Conflict_Response_Schema',
-    'Content_Response_Schema',
-    'Created_Response_Schema',
-    'No_Content_Response_Schema',
-    'Not_Acceptable_Response_Schema',
-    'Not_Found_Response_Schema',
-    'Not_Modified_Response_Schema',
-    'Ok_Response_Schema',
-    'Reset_Content_Response_Schema',
-    'Unauthorized_Response_Schema',
-    'Unprocessable_Entity_Response_Schema',
-    'Unsupported_Media_Type_Response_Schema'
-]
+from lib.response import (Bad_Request_Response, Conflict_Response, Content_Response, Created_Response,
+                          Internal_Server_Error_Response, No_Content_Response, Not_Acceptable_Response,
+                          Not_Found_Response, Not_Modified_Response, Ok_Response, Reset_Content_Response,
+                          Unauthorized_Response, Unprocessable_Entity_Response, Unsupported_Media_Type_Response)
 
 RESPONSE_STATUS = [
     Bad_Request_Response.status(),
@@ -53,31 +40,22 @@ RESPONSE_CODES = [
 
 
 class Exception_Response_Schema(Schema):
-    reason = Str(required=True, example='Connection timeout',
-                 description='Exception reason.')
-    filename = Str(required=True, example='lib/connection.py',
-                   description='Filename where the exception is raised.')
-    line = Integer(required=True, example=80,
-                   description='Line where the exception is raised.')
+    reason = Str(required=True, example='Connection timeout', description='Exception reason.')
+    filename = Str(required=True, example='lib/connection.py', description='Filename where the exception is raised.')
+    line = Integer(required=True, example=80, description='Line where the exception is raised.')
 
 
 class Base_Response_Schema(Schema):
     """Response for the item creation."""
 
-    status = Str(required=True, enum=RESPONSE_STATUS,
-                 example=RESPONSE_STATUS[0],
-                 description='HTTP Status Code phrase.',
-                 validate=validate.OneOf(RESPONSE_STATUS))
-    error = Bool(default=False, example=False,
-                 description='Indicate the presence of an error')
+    status = Str(required=True, enum=RESPONSE_STATUS, example=RESPONSE_STATUS[0],
+                 description='HTTP Status Code phrase.', validate=validate.OneOf(RESPONSE_STATUS))
+    error = Bool(default=False, example=False, description='Indicate the presence of an error')
     message = Str(required=True, example='Request not valid: two ids provided.',
                   description='Human readable message that describes the status of the operation.')
-    exception = Nested(Exception_Response_Schema,
-                       description='Message of the occurred exception.')
-    code = Integer(required=True, enum=RESPONSE_CODES,
-                   example=RESPONSE_CODES[0],
-                   description='HTTP Status Code.',
-                   validate=validate.OneOf(RESPONSE_CODES))
+    exception = Nested(Exception_Response_Schema, description='Message of the occurred exception.')
+    code = Integer(required=True, enum=RESPONSE_CODES, example=RESPONSE_CODES[0],
+                   description='HTTP Status Code.', validate=validate.OneOf(RESPONSE_CODES))
 
 
 class Bad_Request_Response_Schema(Base_Response_Schema):

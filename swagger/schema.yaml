@@ -1,26 +1,6 @@
 consumes:
 - application/json
 definitions:
-  Bad_Request_Response:
-    properties:
-      code:
-        default: !!python/object/apply:http.HTTPStatus
-        - 400
-      error:
-        default: true
-      exception:
-        allOf:
-        - $ref: '#/definitions/Exception_Response'
-        description: Message of the occurred exception.
-      message:
-        description: Human readable message that describes the status of the operation.
-        example: 'Request not valid: two ids provided.'
-        type: string
-      status:
-        default: Bad Request
-    required:
-    - message
-    type: object
   Code_Request:
     properties:
       code:
@@ -135,105 +115,6 @@ definitions:
     - id
     - path
     type: object
-  Exception_Response:
-    properties:
-      filename:
-        description: Filename where the exception is raised.
-        example: lib/connection.py
-        type: string
-      line:
-        description: Line where the exception is raised.
-        example: 80
-        type: integer
-      reason:
-        description: Exception reason.
-        example: Connection timeout
-        type: string
-    required:
-    - filename
-    - line
-    - reason
-    type: object
-  Internal_Server_Error_Response:
-    properties:
-      code:
-        default: !!python/object/apply:http.HTTPStatus
-        - 500
-      error:
-        default: true
-      exception:
-        allOf:
-        - $ref: '#/definitions/Exception_Response'
-        description: Message of the occurred exception.
-      message:
-        description: Human readable message that describes the status of the operation.
-        example: 'Request not valid: two ids provided.'
-        type: string
-      status:
-        default: Internal Server Error
-    required:
-    - message
-    type: object
-  No_Content_Response:
-    properties:
-      code:
-        default: !!python/object/apply:http.HTTPStatus
-        - 204
-      error:
-        default: false
-      exception:
-        allOf:
-        - $ref: '#/definitions/Exception_Response'
-        description: Message of the occurred exception.
-      message:
-        description: Human readable message that describes the status of the operation.
-        example: 'Request not valid: two ids provided.'
-        type: string
-      status:
-        default: No Content
-    required:
-    - message
-    type: object
-  Not_Acceptable_Response:
-    properties:
-      code:
-        default: !!python/object/apply:http.HTTPStatus
-        - 406
-      error:
-        default: true
-      exception:
-        allOf:
-        - $ref: '#/definitions/Exception_Response'
-        description: Message of the occurred exception.
-      message:
-        description: Human readable message that describes the status of the operation.
-        example: 'Request not valid: two ids provided.'
-        type: string
-      status:
-        default: Not Acceptable
-    required:
-    - message
-    type: object
-  Ok_Response:
-    properties:
-      code:
-        default: !!python/object/apply:http.HTTPStatus
-        - 200
-      error:
-        default: false
-      exception:
-        allOf:
-        - $ref: '#/definitions/Exception_Response'
-        description: Message of the occurred exception.
-      message:
-        description: Human readable message that describes the status of the operation.
-        example: 'Request not valid: two ids provided.'
-        type: string
-      status:
-        default: OK
-    required:
-    - message
-    type: object
   Status_Response:
     properties:
       id:
@@ -245,65 +126,19 @@ definitions:
         example: 2019/02/14 15:23:33
         format: date-time
         type: string
-      password:
-        description: Password for the CB to connect to this LCP.
-        type: string
       started:
         description: Timestamp when the LCP is started
         example: 2019/02/14 15:23:30
         format: date-time
-        type: string
-      username:
-        description: Username for the CB to connect to this LCP.
         type: string
     required:
     - id
     - last_heartbeat
     - started
     type: object
-  Unauthorized_Response:
-    properties:
-      code:
-        default: !!python/object/apply:http.HTTPStatus
-        - 401
-      error:
-        default: true
-      exception:
-        allOf:
-        - $ref: '#/definitions/Exception_Response'
-        description: Message of the occurred exception.
-      message:
-        description: Human readable message that describes the status of the operation.
-        example: 'Request not valid: two ids provided.'
-        type: string
-      status:
-        default: Unauthorized
-    required:
-    - message
-    type: object
-  Unsupported_Media_Type_Response:
-    properties:
-      code:
-        default: !!python/object/apply:http.HTTPStatus
-        - 415
-      error:
-        default: true
-      exception:
-        allOf:
-        - $ref: '#/definitions/Exception_Response'
-        description: Message of the occurred exception.
-      message:
-        description: Human readable message that describes the status of the operation.
-        example: 'Request not valid: two ids provided.'
-        type: string
-      status:
-        default: Unsupported Media Type
-    required:
-    - message
-    type: object
 info:
   title: Local Control Plane
-  version: 1.0.3
+  version: 1.0.4
 paths:
   /code:
     delete:
@@ -326,19 +161,19 @@ paths:
         '204':
           description: No content to inject codes based on the request.
           schema:
-            $ref: '#/definitions/No_Content_Response'
+            $ref: '#/definitions/No_Content_Response_Schema'
         '400':
           description: Request not valid.
           schema:
-            $ref: '#/definitions/Bad_Request_Response'
+            $ref: '#/definitions/Bad_Request_Response_Schema'
         '401':
           description: Authentication failed.
           schema:
-            $ref: '#/definitions/Unauthorized_Response'
+            $ref: '#/definitions/Unauthorized_Response_Schema'
         '406':
           description: Request validation failed.
           schema:
-            $ref: '#/definitions/Not_Acceptable_Response'
+            $ref: '#/definitions/Not_Acceptable_Response_Schema'
         '422':
           description: Not possible to inject one or more codes.
           schema:
@@ -373,19 +208,19 @@ paths:
         '204':
           description: No content to inject codes based on the request.
           schema:
-            $ref: '#/definitions/No_Content_Response'
+            $ref: '#/definitions/No_Content_Response_Schema'
         '400':
           description: Request not valid.
           schema:
-            $ref: '#/definitions/Bad_Request_Response'
+            $ref: '#/definitions/Bad_Request_Response_Schema'
         '401':
           description: Authentication failed.
           schema:
-            $ref: '#/definitions/Unauthorized_Response'
+            $ref: '#/definitions/Unauthorized_Response_Schema'
         '406':
           description: Request validation failed.
           schema:
-            $ref: '#/definitions/Not_Acceptable_Response'
+            $ref: '#/definitions/Not_Acceptable_Response_Schema'
         '422':
           description: Not possible to inject one or more codes.
           schema:
@@ -415,12 +250,12 @@ paths:
           description: All injected code correctly updated.
           schema:
             items:
-              $ref: '#/definitions/Ok_Response'
+              $ref: '#/definitions/Ok_Response_Schema'
             type: array
         '204':
           description: No content to update codes based on the request.
           schema:
-            $ref: '#/definitions/No_Content_Response'
+            $ref: '#/definitions/No_Content_Response_Schema'
         '304':
           description: Update for one or more codes not necessary.
           schema:
@@ -432,19 +267,19 @@ paths:
         '400':
           description: Request not valid.
           schema:
-            $ref: '#/definitions/Bad_Request_Response'
+            $ref: '#/definitions/Bad_Request_Response_Schema'
         '401':
           description: Authentication failed.
           schema:
-            $ref: '#/definitions/Unauthorized_Response'
+            $ref: '#/definitions/Unauthorized_Response_Schema'
         '406':
           description: Request validation failed.
           schema:
-            $ref: '#/definitions/Not_Acceptable_Response'
+            $ref: '#/definitions/Not_Acceptable_Response_Schema'
         '415':
           description: Media type not supported.
           schema:
-            $ref: '#/definitions/Unsupported_Media_Type_Response'
+            $ref: '#/definitions/Unsupported_Media_Type_Response_Schema'
         '422':
           description: Not possible to update one or more codes based on the request.
           schema:
@@ -457,7 +292,7 @@ paths:
         '500':
           description: Server not available to satisfy the request.
           schema:
-            $ref: '#/definitions/Internal_Server_Error_Response'
+            $ref: '#/definitions/Internal_Server_Error_Response_Schema'
       summary: Update injected code
       tags:
       - code
@@ -482,19 +317,19 @@ paths:
         '204':
           description: No content to inject codes based on the request.
           schema:
-            $ref: '#/definitions/No_Content_Response'
+            $ref: '#/definitions/No_Content_Response_Schema'
         '400':
           description: Request not valid.
           schema:
-            $ref: '#/definitions/Bad_Request_Response'
+            $ref: '#/definitions/Bad_Request_Response_Schema'
         '401':
           description: Authentication failed.
           schema:
-            $ref: '#/definitions/Unauthorized_Response'
+            $ref: '#/definitions/Unauthorized_Response_Schema'
         '406':
           description: Request validation failed.
           schema:
-            $ref: '#/definitions/Not_Acceptable_Response'
+            $ref: '#/definitions/Not_Acceptable_Response_Schema'
         '422':
           description: Not possible to inject one or more codes.
           schema:
@@ -529,19 +364,19 @@ paths:
         '204':
           description: No content to inject codes based on the request.
           schema:
-            $ref: '#/definitions/No_Content_Response'
+            $ref: '#/definitions/No_Content_Response_Schema'
         '400':
           description: Request not valid.
           schema:
-            $ref: '#/definitions/Bad_Request_Response'
+            $ref: '#/definitions/Bad_Request_Response_Schema'
         '401':
           description: Authentication failed.
           schema:
-            $ref: '#/definitions/Unauthorized_Response'
+            $ref: '#/definitions/Unauthorized_Response_Schema'
         '406':
           description: Request validation failed.
           schema:
-            $ref: '#/definitions/Not_Acceptable_Response'
+            $ref: '#/definitions/Not_Acceptable_Response_Schema'
         '422':
           description: Not possible to inject one or more codes.
           schema:
@@ -571,12 +406,12 @@ paths:
           description: All injected code correctly updated.
           schema:
             items:
-              $ref: '#/definitions/Ok_Response'
+              $ref: '#/definitions/Ok_Response_Schema'
             type: array
         '204':
           description: No content to update codes based on the request.
           schema:
-            $ref: '#/definitions/No_Content_Response'
+            $ref: '#/definitions/No_Content_Response_Schema'
         '304':
           description: Update for one or more codes not necessary.
           schema:
@@ -588,19 +423,19 @@ paths:
         '400':
           description: Request not valid.
           schema:
-            $ref: '#/definitions/Bad_Request_Response'
+            $ref: '#/definitions/Bad_Request_Response_Schema'
         '401':
           description: Authentication failed.
           schema:
-            $ref: '#/definitions/Unauthorized_Response'
+            $ref: '#/definitions/Unauthorized_Response_Schema'
         '406':
           description: Request validation failed.
           schema:
-            $ref: '#/definitions/Not_Acceptable_Response'
+            $ref: '#/definitions/Not_Acceptable_Response_Schema'
         '415':
           description: Media type not supported.
           schema:
-            $ref: '#/definitions/Unsupported_Media_Type_Response'
+            $ref: '#/definitions/Unsupported_Media_Type_Response_Schema'
         '422':
           description: Not possible to update one or more codes based on the request.
           schema:
@@ -613,7 +448,7 @@ paths:
         '500':
           description: Server not available to satisfy the request.
           schema:
-            $ref: '#/definitions/Internal_Server_Error_Response'
+            $ref: '#/definitions/Internal_Server_Error_Response_Schema'
       summary: Update injected code
       tags:
       - code
@@ -638,19 +473,19 @@ paths:
         '204':
           description: No content to configure based on the request.
           schema:
-            $ref: '#/definitions/No_Content_Response'
+            $ref: '#/definitions/No_Content_Response_Schema'
         '400':
           description: Request not valid.
           schema:
-            $ref: '#/definitions/Bad_Request_Response'
+            $ref: '#/definitions/Bad_Request_Response_Schema'
         '401':
           description: Authentication failed.
           schema:
-            $ref: '#/definitions/Unauthorized_Response'
+            $ref: '#/definitions/Unauthorized_Response_Schema'
         '406':
           description: Request validation failed.
           schema:
-            $ref: '#/definitions/Not_Acceptable_Response'
+            $ref: '#/definitions/Not_Acceptable_Response_Schema'
         '422':
           description: Not possible to change one or more configurations.
           schema:
@@ -662,7 +497,7 @@ paths:
         '500':
           description: Server not available to satisfy the request.
           schema:
-            $ref: '#/definitions/Internal_Server_Error_Response'
+            $ref: '#/definitions/Internal_Server_Error_Response_Schema'
       summary: Configuration update
       tags:
       - config
@@ -677,19 +512,19 @@ paths:
         '400':
           description: Request not valid.
           schema:
-            $ref: '#/definitions/Bad_Request_Response'
+            $ref: '#/definitions/Bad_Request_Response_Schema'
         '401':
           description: Authentication failed.
           schema:
-            $ref: '#/definitions/Unauthorized_Response'
+            $ref: '#/definitions/Unauthorized_Response_Schema'
         '406':
           description: Request validation failed.
           schema:
-            $ref: '#/definitions/Not_Acceptable_Response'
+            $ref: '#/definitions/Not_Acceptable_Response_Schema'
         '500':
           description: Server not available to satisfy the request.
           schema:
-            $ref: '#/definitions/Internal_Server_Error_Response'
+            $ref: '#/definitions/Internal_Server_Error_Response_Schema'
       summary: Status info
       tags:
       - status
@@ -703,19 +538,19 @@ paths:
         '400':
           description: Request not valid.
           schema:
-            $ref: '#/definitions/Bad_Request_Response'
+            $ref: '#/definitions/Bad_Request_Response_Schema'
         '401':
           description: Authentication failed.
           schema:
-            $ref: '#/definitions/Unauthorized_Response'
+            $ref: '#/definitions/Unauthorized_Response_Schema'
         '406':
           description: Request validation failed.
           schema:
-            $ref: '#/definitions/Not_Acceptable_Response'
+            $ref: '#/definitions/Not_Acceptable_Response_Schema'
         '500':
           description: Server not available to satisfy the request.
           schema:
-            $ref: '#/definitions/Internal_Server_Error_Response'
+            $ref: '#/definitions/Internal_Server_Error_Response_Schema'
       summary: Status set.
       tags:
       - status

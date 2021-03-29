@@ -1,18 +1,11 @@
-from resource.code import *
-from resource.config import *
-from resource.status import *
+from resource.code import Code_Resource
+from resource.config import Config_Resource
+from resource.status import Status_Resource
+
 from utils.log import Log
 from utils.sequence import wrap
 
-__all__ = [
-    'routes'
-]
-
-db = (
-    Code_Resource,
-    Config_Resource,
-    Status_Resource
-)
+db = (Code_Resource, Config_Resource, Status_Resource)
 
 tags = []
 for Resource in db:

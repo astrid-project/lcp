@@ -17,3 +17,10 @@
 - Stdout and stderr response format: plain, lines, and JSON.
 
 ## 1.0.3
+
+- Minor fixes.
+
+## 1.0.4
+
+- Added option to force the use of HTTPS instead of HTTP.
+- Add JWT Authentication.

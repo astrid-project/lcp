@@ -1,9 +1,5 @@
 from utils.log import Log
 
-__all__ = [
-    'Base_Resource'
-]
-
 
 class Base_Resource(object):
     def __init__(self):

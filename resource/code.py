@@ -4,15 +4,10 @@ from resource.base import Base_Resource
 from docstring import docstring
 from lib.http import HTTP_Method
 from lib.polycube import Polycube
-from lib.response import *
-from schema.code import *
-from schema.response import *
-from utils.datetime import datetime_to_str
+from lib.response import (Created_Response, No_Content_Response, Ok_Response, Reset_Content_Response,
+                          Unprocessable_Entity_Response)
+from schema.code import Code_Request_Schema
 from utils.sequence import is_list, wrap
-
-__all__ = [
-    'Code_Resource'
-]
 
 
 class Code_Resource(Base_Resource):
@@ -50,7 +45,7 @@ class Code_Resource(Base_Resource):
                         resp_data = Unprocessable_Entity_Response(msg)
                     resp_data.apply(resp)
             else:
-                msg = f'No content to create code with the {{request}}'
+                msg = 'No content to create code with the {{request}}'
                 No_Content_Response(msg, request=req_data).apply(resp)
         else:
             resp_data.apply(resp)
@@ -83,7 +78,7 @@ class Code_Resource(Base_Resource):
                         resp_data = Unprocessable_Entity_Response(msg)
                     resp_data.apply(resp)
             else:
-                msg = f'No content to update code with the {{request}}'
+                msg = 'No content to update code with the {{request}}'
                 No_Content_Response(msg, request=req_data).apply(resp)
         else:
             resp_data.apply(resp)
@@ -91,8 +86,8 @@ class Code_Resource(Base_Resource):
     @ docstring(source='code/post.yaml')
     def on_delete(self, req, resp, id=None):
         req_data = req.media or {}
-        resp_data, valid = Code_Request_Schema(many=is_list(req_data),
-                                               partial=True, method=HTTP_Method.DELETE).validate(data=req.media, id=id)
+        resp_data, valid = Code_Request_Schema(many=is_list(req_data), partial=True,
+                                               method=HTTP_Method.DELETE).validate(data=req.media, id=id)
         if valid:
             req_data_wrap = wrap(req_data)
             if len(req_data_wrap) > 0:
@@ -112,7 +107,7 @@ class Code_Resource(Base_Resource):
                         resp_data = Unprocessable_Entity_Response(msg)
                     resp_data.apply(resp)
             else:
-                msg = f'No content to delete code with the {{request}}'
+                msg = 'No content to delete code with the {{request}}'
                 No_Content_Response(msg, request=req_data).apply(resp)
         else:
             resp_data.apply(resp)
