@@ -11,7 +11,7 @@ class Base_Response(object):
 
     def __init__(self, message, error=False, exception=None, **kwargs):
         self.log = Log.get(self.__class__.__name__)
-        self.data = dict(message=message)
+        self.data = {'message': message}
         if exception is not None:
             self.data.update(exception=extract_info(exception))
         self.data.update(kwargs)

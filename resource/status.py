@@ -7,13 +7,13 @@ from utils.log import Log
 
 
 class Status_Resource(object):
-    auth = dict(exempt_methods=['POST'])
-    tag = dict(name='status', description='Status data of the LCP.')
+    auth = {'exempt_methods': ['POST']}
+    tag = {'name': 'status', 'description': 'Status data of the LCP.'}
     routes = '/status',
 
     def __init__(self):
         """Set the data and logger."""
-        self.data = dict(id=None, started=datetime_to_str(), last_heartbeat=None)
+        self.data = {'id': None, 'started': datetime_to_str(), 'last_heartbeat': None}
         self.log = Log.get('status')
 
     @docstring(source='status/get.yaml')

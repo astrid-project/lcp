@@ -6,7 +6,7 @@ def extract_info(exception):
         reason = eval(str(exception))
     except Exception:
         reason = str(exception)
-    output = dict(reason=reason)
+    output = {'reason': reason}
     _, _, exc_tb = sys.exc_info()
     if exc_tb:
         filename = exc_tb.tb_frame.f_code.co_filename

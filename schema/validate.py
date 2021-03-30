@@ -1,5 +1,5 @@
 class In(object):
-    error_messages = dict(validator_failed='Id not found.')
+    error_messages = {'validator_failed': 'Id not found.'}
 
     @staticmethod
     def apply(src, negation=False):
@@ -12,7 +12,7 @@ class In(object):
 
 
 class Unique_List(object):
-    error_messages = dict(validator_failed='Repeated values.')
+    error_messages = {'validator_failed': 'Repeated values.'}
 
     @staticmethod
     def apply(field=None):

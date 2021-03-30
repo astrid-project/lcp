@@ -18,9 +18,9 @@ File_Not_Found_Error = FileNotFoundError
 
 
 class Config_Resource(Base_Resource):
-    tag = dict(name='config', description='Configuration at run-time.')
+    tag = {'name': 'config', 'description': 'Configuration at run-time.'}
     routes = '/config',
-    parsers = dict(json=json_parser, properties=property_parser, xml=xml_parser, yaml=yaml_parser)
+    parsers = {'json': json_parser, 'properties': property_parser, 'xml': xml_parser, 'yaml': yaml_parser}
 
     @docstring(source='config/post.yaml')
     def on_post(self, req, resp):
@@ -63,7 +63,7 @@ class Config_Resource(Base_Resource):
         cmd = data.get('cmd', None)
         daemon = data.get('daemon', False)
         output_format = data.get('output_format', 'plain')
-        output = dict(type='action')
+        output = {'type': 'action'}
         run = ' '.join([cmd] + wrap(data.get('args', [])))
         start = time.time()
         proc = self.__run_cmd(cmd=run, daemon=daemon, output=output)
@@ -80,7 +80,7 @@ class Config_Resource(Base_Resource):
         source = data.get('source', None)
         path = wrap(data.get('path', []))
         value = data.get('value', None)
-        output = dict(type='parameter')
+        output = {'type': 'parameter'}
         try:
             source = expand_user(source)
             output.update(self.parsers.get(schema)(schema, source, path, value))
@@ -97,7 +97,7 @@ class Config_Resource(Base_Resource):
     def __resources(self, data):
         path = data.get('path', None)
         content = data.get('content', None)
-        output = dict(type='resource')
+        output = {'type': 'resource'}
         try:
             fix_path = expand_user(path)
             with open(fix_path, "w") as file:
