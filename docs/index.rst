@@ -21,6 +21,7 @@ This part of the documentation will show you how to get started in using |LCP|.
    :maxdepth: 1
 
    installation
+   configuration
    running
    glossary
 
