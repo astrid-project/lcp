@@ -15,6 +15,7 @@ psutil
 pyjwt[crypto]
 pyyaml>=5.0
 requests
+rich
 swagger-ui-py
 toolz
 verboselogs

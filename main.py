@@ -6,6 +6,9 @@ dir_path = os.path.dirname(path)
 os.chdir(dir_path)
 
 import waitress  # noqa: E402
+from rich.traceback import install as traceback_install  # noqa: E402
+
+traceback_install(show_locals=False)
 
 from about import project, title, version  # noqa: E402
 from api import api  # noqa: E402
