@@ -1,0 +1,26 @@
+2021-04-01 at 12:05:27 🔖   INFO     Found additional log level customization: 💪   SUCCESS                                                💻 log.py@init:75 ⏰ 0:00:02.045167
+2021-04-01 at 12:05:27 🔖   INFO     Found additional log level customization: 👀   WARN                                                   💻 log.py@init:75 ⏰ 0:00:02.047168
+2021-04-01 at 12:05:27 🔖   INFO     Found additional log level customization: 🔖   INFO                                                   💻 log.py@init:75 ⏰ 0:00:02.048167
+2021-04-01 at 12:05:27 🔖   INFO     Found additional log level customization: ❌   ERROR                                                  💻 log.py@init:75 ⏰ 0:00:02.049169
+2021-04-01 at 12:05:27 🔖   INFO     Found additional log level customization: 🎯   NOTICE                                                 💻 log.py@init:75 ⏰ 0:00:02.050202
+2021-04-01 at 12:05:27 🔖   INFO     Found additional log level customization: 💩   SPAM                                                   💻 log.py@init:75 ⏰ 0:00:02.051167
+2021-04-01 at 12:05:27 🔖   INFO     Found additional log level customization: 📝   VERBOSE                                                💻 log.py@init:75 ⏰ 0:00:02.051167
+2021-04-01 at 12:05:27 🔖   INFO     Found additional log level customization: 💥   CRITICAL                                               💻 log.py@init:75 ⏰ 0:00:02.053166
+2021-04-01 at 12:05:27 🎯   NOTICE   JWT authentication disabled                                                                          💻 __init__.py@api:37 ⏰ 0:00:02.053166
+2021-04-01 at 12:05:27 🎯   NOTICE   HTTPS not set                                                                                        💻 __init__.py@api:43 ⏰ 0:00:02.054167
+2021-04-01 at 12:05:27 🎯   NOTICE   Elastic APM disabled                                                                                 💻 __init__.py@api:49 ⏰ 0:00:02.055166
+2021-04-01 at 12:05:28 🔖   INFO     Check connection to http://localhost:9000/polycube/v1                                                💻 polycube.py@__init__:25 ⏰ 0:00:02.304167
+2021-04-01 at 12:05:28 ❌   ERROR    Connection with polycube at localhost:9000 not possible                                              💻 polycube.py@__init__:30 ⏰ 0:00:02.313701
+Traceback (most recent call last):
+  File "C:\db-p\work\projects\astrid\gitlab_repositories\astrid-lcp\lib\polycube.py", line 28, in __init__
+    self.__manager(resp_req)
+  File "C:\db-p\work\projects\astrid\gitlab_repositories\astrid-lcp\lib\polycube.py", line 129, in __manager
+    resp_req.raise_for_status()
+  File "C:\Users\aless\AppData\Local\Programs\Python\Python38\lib\site-packages\requests\models.py", line 941, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 404 Client Error: Not Found for url: http://localhost:9000/polycube/v1
+2021-04-01 at 12:05:28 💪   SUCCESS  /code endpoint configured                                                                            💻 __init__.py@routes:22 ⏰ 0:00:02.341314
+2021-04-01 at 12:05:28 💪   SUCCESS  /code/{id} endpoint configured                                                                       💻 __init__.py@routes:22 ⏰ 0:00:02.359315
+2021-04-01 at 12:05:28 💪   SUCCESS  /config endpoint configured                                                                          💻 __init__.py@routes:22 ⏰ 0:00:02.371317
+2021-04-01 at 12:05:28 💪   SUCCESS  /status endpoint configured                                                                          💻 __init__.py@routes:22 ⏰ 0:00:02.379363
+2021-04-01 at 12:05:28 💪   SUCCESS  Accept requests at 0.0.0.0:4567                                                                      💻 main.py@<module>:34 ⏰ 0:00:02.431313

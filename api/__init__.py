@@ -28,25 +28,25 @@ def api(title, version):
     ]
 
     if Arg_Reader.db.auth:
-        log.info('HTTP authentication enabled')
+        log.notice('JWT authentication enabled')
         middlewares.append(Falcon_Auth_Middleware(JWT_Auth_Backend(user_loader=lambda token: {'user': token},
                                                   secret_key=Arg_Reader.db.auth_secret_key,
                                                   auth_header_prefix=Arg_Reader.db.auth_header_prefix),
                            exempt_routes=['/api/doc', '/api/doc/swagger.json']))
     else:
-        log.info('HTTP authentication disabled')
+        log.notice('JWT authentication disabled')
 
     if Arg_Reader.db.https:
-        log.info('Force to use HTTPS instead of HTTP')
+        log.notice('Force to use HTTPS instead of HTTP')
         middlewares.append(RequireHTTPS())
     else:
-        log.info('HTTPS not set')
+        log.notice('HTTPS not set')
 
     if Arg_Reader.db.apm_enabled:
-        log.info('Elastic APM enabled')
+        log.notice('Elastic APM enabled')
         middlewares.append(Elastic_Apm_Middleware(service_name='lcp-apm', server_url=Arg_Reader.db.apm_server))
     else:
-        log.info('Elastic APM disabled')
+        log.notice('Elastic APM disabled')
 
     instance = API(middleware=middlewares)
 

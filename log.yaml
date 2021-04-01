@@ -1,0 +1,60 @@
+sinks:
+  - klass: stdout
+    enabled: true
+    args:
+      level: "DEBUG"
+      # cspell:disable
+      format: "{level.icon:<3} <level>{level.name:<8}</level> {message}"
+      # cspell:enable
+      backtrace: false
+      diagnose: false
+  - klass: "log/lcp.log"
+    clear: true
+    args:
+      level: "DEBUG"
+      # cspell:disable
+      format: "{time:YYYY-MM-DD at HH:mm:ss} {level.icon:<3} {level.name:<8} {message:<100} {called.icon} {called.filename}@{called.function}:{called.lineno} {elapsed.icon} {elapsed.time}"
+      # cspell:enable
+      rotation: "00:00"
+      retention: "10 days"
+      compression: "zip"
+      backtrace: false
+      diagnose: false
+  - klass: "StreamHandler"
+    enabled: false
+    args:
+      level: "INFO"
+      # cspell:disable
+      format: "{time:YYYY-MM-DD at HH:mm:ss} {level.icon:<3} {level.name:<8} {message:<100} {called.icon} {called.filename}@{called.function}:{called.lineno} {elapsed.icon} {elapsed.time}"
+      # cspell:enable
+      host: "0.0.0.0"
+      port: 8765
+
+logger:
+  __default__: "DEBUG"
+
+levels:
+  - name: SUCCESS
+    icon: ":muscle:"
+  - name: WARN
+    'no': 30
+    icon: ":eyes:"
+    color: "<yellow>"
+  - name: INFO
+    icon: ":bookmark:"
+  - name: ERROR
+    icon: ":x:"
+  - name: NOTICE
+    'no': 25
+    icon: ":dart:"
+    color: <cyan>
+  - name: SPAM
+    'no': 5
+    icon: ":poop:"
+    color: <black><WHITE>
+  - name: VERBOSE
+    'no': 15
+    icon: ":memo:"
+    color: <magenta>
+  - name: CRITICAL
+    icon: ":boom:"

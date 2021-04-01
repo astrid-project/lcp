@@ -1,13 +1,14 @@
 apispec
-colorama
-coloredlogs
+bunch
 dicttoxml
+emoji
 falcon
 falcon-apispec
 falcon-auth
 falcon-elastic-apm
 falcon-require-https
 jproperties
+loguru
 marshmallow
 msgpack
 pint
@@ -18,6 +19,5 @@ requests
 rich
 swagger-ui-py
 toolz
-verboselogs
 waitress
 xmltodict

@@ -2,7 +2,6 @@ from argparse import ArgumentParser as Argument_Parser
 
 from about import description, title, version
 from reader.config import Config_Reader
-from utils.log import Log
 from utils.time import get_seconds
 
 
@@ -34,7 +33,7 @@ class Arg_Reader:
         add('--apm-enabled', '-n', help='Enable Elastic APM integration', action='store_true')
         add('--apm-server', '-m', type=str, help='Elastic APM hostname/IP:port', default=cls.cr.elastic_apm_server)
 
-        add('--log-level', '-l', choices=Log.get_levels(), help='Log level', default=cls.cr.log_level)
+        add('--log-config', '-l', help='Path of the log configuration file (e.g. log.yaml)', default=cls.cr.log_config)
 
         add('--write-config', '-w', help='Write options to config.ini', action='store_true')
         add('--version', '-v', help='Show version', action='store_const', const=version)

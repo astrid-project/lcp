@@ -63,7 +63,7 @@ elastic-apm         | server        | http://localhost:8200 | Elastic APM server
 polycube            | host          | localhost             | IP address to contact the polycube installation.
 polycube            | port          | 9000                  | Port address to contact the polycube installation.
 polycube            | timeout       | 20s                   | Timeout for the connection to polycube.
-log                 | level         | DEBUG                 | Log level.
+log                 | config        | log.yaml              | Path of the log configuration file.
 
 ## Usage
 

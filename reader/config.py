@@ -3,8 +3,6 @@ from configparser import ConfigParser as Config_Parser
 from os import path
 from pathlib import Path
 
-from utils.log import Log
-
 
 class Config_Reader:
     path = Path(__file__).parent / '../config.ini'
@@ -30,9 +28,7 @@ class Config_Reader:
         self.polycube_port = self.cr.get('polycube', 'port', fallback=9000)
         self.polycube_timeout = self.cr.get('polycube', 'timeout', fallback='20s')
 
-        self.log_level = self.cr.get('log', 'level', fallback='INFO')
-
-        Log.init(default=self.log_level, levels=self.cr.items('log') if self.cr.has_section('log') else [])
+        self.log_config = self.cr.get('log', 'config', fallback='log.yaml')
 
     def write(self, db):
         # FIXME is it necessary?
