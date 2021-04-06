@@ -19,5 +19,5 @@ requests==2.24.0
 rich==9.2.0
 swagger-ui-py==0.2.0
 toolz==0.10.0
-waitress==1.4.2
+waitress==1.4.3
 xmltodict==0.12.0
