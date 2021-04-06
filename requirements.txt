@@ -1,9 +1,9 @@
-apispec
+apispec==4.0.0
 bunch
 dicttoxml
 emoji
-falcon
-falcon-apispec
+falcon==2.0.0
+falcon-apispec==0.3.0
 falcon-auth
 falcon-elastic-apm
 falcon-require-https
