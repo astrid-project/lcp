@@ -688,6 +688,19 @@
     "Config_Parameter_Request": {
       "type": "object",
       "properties": {
+        "source": {
+          "type": "string",
+          "example": "firewall.xml",
+          "description": "Source filename."
+        },
+        "path": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "example": "period",
+            "description": "Key path."
+          }
+        },
         "value": {
           "example": "10s",
           "description": "Parameter new value."
@@ -707,19 +720,6 @@
           "type": "string",
           "example": "period",
           "description": "Id of the parameter."
-        },
-        "path": {
-          "type": "array",
-          "items": {
-            "type": "string",
-            "example": "period",
-            "description": "Key path."
-          }
-        },
-        "source": {
-          "type": "string",
-          "example": "firewall.xml",
-          "description": "Source filename."
         }
       },
       "required": [
@@ -732,14 +732,14 @@
     "Config_Resource_Request": {
       "type": "object",
       "properties": {
+        "content": {
+          "type": "string",
+          "description": "Resource content."
+        },
         "id": {
           "type": "string",
           "example": "filebeat-config",
           "description": "Id of the resource."
-        },
-        "content": {
-          "type": "string",
-          "description": "Resource content."
         },
         "path": {
           "type": "string",
@@ -756,6 +756,15 @@
     "Config_Action_Request": {
       "type": "object",
       "properties": {
+        "cmd": {
+          "type": "string",
+          "description": "Command."
+        },
+        "id": {
+          "type": "string",
+          "example": "start",
+          "description": "Id of the action."
+        },
         "output_format": {
           "type": "string",
           "enum": [
@@ -766,24 +775,15 @@
           "example": "lines",
           "description": "Format of the output of the command."
         },
-        "id": {
+        "args": {
           "type": "string",
-          "example": "start",
-          "description": "Id of the action."
-        },
-        "cmd": {
-          "type": "string",
-          "description": "Command."
+          "example": "-al",
+          "description": "Single command argument."
         },
         "daemon": {
           "type": "boolean",
           "example": true,
           "description": "Execute the command as daemon."
-        },
-        "args": {
-          "type": "string",
-          "example": "-al",
-          "description": "Single command argument."
         }
       },
       "required": [
@@ -820,6 +820,11 @@
     "Status_Response": {
       "type": "object",
       "properties": {
+        "id": {
+          "type": "string",
+          "example": "apache",
+          "description": "ID of the execution environment."
+        },
         "last_heartbeat": {
           "type": "string",
           "format": "date-time",
@@ -831,11 +836,6 @@
           "format": "date-time",
           "example": "2019/02/14 15:23:30",
           "description": "Timestamp when the LCP is started"
-        },
-        "id": {
-          "type": "string",
-          "example": "apache",
-          "description": "ID of the execution environment."
         }
       },
       "required": [
