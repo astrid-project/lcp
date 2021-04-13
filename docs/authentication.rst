@@ -13,7 +13,7 @@ In particular, the required fields for the |JSON| payload for the token creation
 - ``exp`` - expirated at, in epoch time.
 - ``nbf`` - valid not before, in epoch time.
 
-More info about the header prefix and the secret key is available in the :ref:`configuration`.
+More info about the header prefix and the secret key are available in the :ref:`configuration` section.
 
 To convert the human readable datetime you can use https://www.epochconverter.com.
 
