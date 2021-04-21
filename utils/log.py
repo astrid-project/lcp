@@ -76,7 +76,13 @@ class Log:
 
     @classmethod
     def get(cls, name=about_name):
-        return logger.bind(context=name).opt(colors=True)
+        out = logger.bind(context=name).opt(colors=True)
+
+        def __exception(msg, exception):
+            out.error(msg)
+            out.debug(exception)
+        out.exception = __exception
+        return out
 
     @staticmethod
     def get_levels():
