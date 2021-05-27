@@ -13,20 +13,12 @@ class Status_Resource(object):
 
     def __init__(self):
         """Set the data and logger."""
-        self.data = {'id': None, 'started': datetime_to_str(), 'last_heartbeat': None}
+        self.data = {'id': False, 'started': datetime_to_str(), 'last_heartbeat': False}
         self.log = Log.get('status')
 
     @docstring(source='status/get.yaml')
     def on_get(self, req, resp):
-        resp_data, valid = Status_Response_Schema(method=HTTP_Method.GET).validate(data=self.data)
-        if valid:
-            resp_data, valid = Status_Response_Schema(method=HTTP_Method.GET).validate(data=self.data)
-            if valid:
-                Content_Response(self.data).apply(resp)
-            else:
-                resp_data.apply(resp)
-        else:
-            resp_data.apply(resp)
+        Content_Response(self.data).apply(resp)
 
     @docstring(source='status/post.yaml')
     def on_post(self, req, resp):
