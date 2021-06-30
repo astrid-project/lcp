@@ -75,7 +75,7 @@ class Config_Parameter_Value_Response_Schema(Base_Schema):
     """Parameter value part in a single item of the config response."""
 
     new = Raw(required=True, example='5s', description='New value.')
-    old = Raw(required=True, example='10s', description='Old value')
+    old = Raw(required=True, example='10s', description='Old value', allow_none=True)
 
 
 class Config_Parameter_Response_Schema(Config_Response_Schema):

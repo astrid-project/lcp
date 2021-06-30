@@ -25,3 +25,4 @@
 - Added option to force the use of HTTPS instead of HTTP.
 - Add JWT Authentication.
 - Enhanced Log configuration.
+- Added support for insert of new parameters.

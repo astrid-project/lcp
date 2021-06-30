@@ -1,12 +1,13 @@
 apispec==4.0.0
 bunch==1.0.1
 dicttoxml==1.7.4
+dpath==2.0.1
 emoji==0.6.0
-falcon==2.0.0
 falcon-apispec==0.3.0
 falcon-auth==1.1.0
 falcon-elastic-apm==0.1.1
 falcon-require-https==0.1.0
+falcon==2.0.0
 jproperties==2.1.0
 loguru==0.5.3
 marshmallow==3.4.0

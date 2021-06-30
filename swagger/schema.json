@@ -667,17 +667,17 @@
     "Code_Request": {
       "type": "object",
       "properties": {
-        "id": {
-          "type": "string",
-          "example": "firewall",
-          "description": "Code id."
-        },
         "code": {
           "type": "array",
           "description": "Code source",
           "items": {
             "type": "string"
           }
+        },
+        "id": {
+          "type": "string",
+          "example": "firewall",
+          "description": "Code id."
         }
       },
       "required": [
@@ -688,11 +688,6 @@
     "Config_Resource_Request": {
       "type": "object",
       "properties": {
-        "id": {
-          "type": "string",
-          "example": "filebeat-config",
-          "description": "Id of the resource."
-        },
         "path": {
           "type": "string",
           "example": "firewall.xml",
@@ -701,6 +696,11 @@
         "content": {
           "type": "string",
           "description": "Resource content."
+        },
+        "id": {
+          "type": "string",
+          "example": "filebeat-config",
+          "description": "Id of the resource."
         }
       },
       "required": [
@@ -712,10 +712,15 @@
     "Config_Action_Request": {
       "type": "object",
       "properties": {
-        "args": {
+        "daemon": {
+          "type": "boolean",
+          "example": true,
+          "description": "Execute the command as daemon."
+        },
+        "id": {
           "type": "string",
-          "example": "-al",
-          "description": "Single command argument."
+          "example": "start",
+          "description": "Id of the action."
         },
         "output_format": {
           "type": "string",
@@ -731,15 +736,10 @@
           "type": "string",
           "description": "Command."
         },
-        "daemon": {
-          "type": "boolean",
-          "example": true,
-          "description": "Execute the command as daemon."
-        },
-        "id": {
+        "args": {
           "type": "string",
-          "example": "start",
-          "description": "Id of the action."
+          "example": "-al",
+          "description": "Single command argument."
         }
       },
       "required": [
@@ -750,10 +750,13 @@
     "Config_Parameter_Request": {
       "type": "object",
       "properties": {
-        "source": {
-          "type": "string",
-          "example": "firewall.xml",
-          "description": "Source filename."
+        "path": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "example": "period",
+            "description": "Key path."
+          }
         },
         "schema": {
           "type": "string",
@@ -766,22 +769,19 @@
           "example": "yaml",
           "description": "Scheme."
         },
+        "value": {
+          "example": "10s",
+          "description": "Parameter new value."
+        },
+        "source": {
+          "type": "string",
+          "example": "firewall.xml",
+          "description": "Source filename."
+        },
         "id": {
           "type": "string",
           "example": "period",
           "description": "Id of the parameter."
-        },
-        "path": {
-          "type": "array",
-          "items": {
-            "type": "string",
-            "example": "period",
-            "description": "Key path."
-          }
-        },
-        "value": {
-          "example": "10s",
-          "description": "Parameter new value."
         }
       },
       "required": [
@@ -820,6 +820,12 @@
     "Status_Response": {
       "type": "object",
       "properties": {
+        "started": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2019/02/14 15:23:30",
+          "description": "Timestamp when the LCP is started"
+        },
         "last_heartbeat": {
           "type": "string",
           "format": "date-time",
@@ -830,12 +836,6 @@
           "type": "string",
           "example": "apache",
           "description": "ID of the execution environment."
-        },
-        "started": {
-          "type": "string",
-          "format": "date-time",
-          "example": "2019/02/14 15:23:30",
-          "description": "Timestamp when the LCP is started"
         }
       },
       "required": [
