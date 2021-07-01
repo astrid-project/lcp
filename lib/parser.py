@@ -13,15 +13,7 @@ from utils.sequence import iterate
 NO_CHANGE_NEEDED = 'No change needed'
 
 
-def __convert(path):
-    try:
-        return int(path)
-    except ValueError:
-        return path
-
-
 def json_parser(schema, source, path, value):
-    path = list(map(__convert, path))
     if os.stat(source).st_size == 0:
         content = {}
     else:
@@ -41,7 +33,6 @@ def json_parser(schema, source, path, value):
 
 
 def xml_parser(schema, source, path, value):
-    path = list(map(__convert, path))
     if os.stat(source).st_size == 0:
         content = {}
     else:
@@ -61,7 +52,6 @@ def xml_parser(schema, source, path, value):
 
 
 def yaml_parser(schema, source, path, value):
-    path = list(map(__convert, path))
     if os.stat(source).st_size == 0:
         content = {}
     else:
@@ -81,7 +71,6 @@ def yaml_parser(schema, source, path, value):
 
 
 def property_parser(schema, source, path, value):
-    path = list(map(__convert, path))
     with open(source, 'rb') as file:
         content = Properties()
         content.load(file, 'utf-8')
