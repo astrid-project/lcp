@@ -8,7 +8,6 @@ from jproperties import Properties
 from yaml import FullLoader as Full_Loader
 
 from utils.log import Log
-from utils.sequence import iterate
 
 NO_CHANGE_NEEDED = 'No change needed'
 
