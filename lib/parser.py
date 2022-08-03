@@ -66,7 +66,7 @@ def yaml_parser(schema, source, path, value):
             yaml.dump(content, file, sort_keys=True, indent=3)
             return {'value': {'new': value, 'old': old_value}}
     else:
-        return{'note': NO_CHANGE_NEEDED}
+        return {'note': NO_CHANGE_NEEDED}
 
 
 def property_parser(schema, source, path, value):
