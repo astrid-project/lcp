@@ -8,7 +8,7 @@ falcon-auth==1.1.0
 falcon-elastic-apm==0.1.1
 falcon-require-https==0.1.0
 falcon==2.0.0
-jproperties==2.1.0
+jproperties==2.1.1
 loguru==0.5.3
 marshmallow==3.4.0
 msgpack==1.0.0
