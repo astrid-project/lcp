@@ -9,7 +9,7 @@ falcon-elastic-apm==0.1.1
 falcon-require-https==0.1.0
 falcon==3.1.1
 jproperties==2.1.1
-loguru==0.5.3
+loguru==0.7.0
 marshmallow==3.4.0
 msgpack==1.0.0
 pint==0.11
