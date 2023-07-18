@@ -15,7 +15,7 @@ msgpack==1.0.5
 pint==0.22
 psutil==5.9.5
 pyjwt[crypto]==2.7.0
-pyyaml==6.0
+pyyaml==6.0.1
 requests==2.31.0
 rich==13.4.2
 swagger-ui-py==22.7.13
