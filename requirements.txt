@@ -2,7 +2,7 @@ apispec==6.3.0
 bunch==1.0.1
 dicttoxml==1.7.16
 dpath==2.1.6
-emoji==2.7.0
+emoji==2.8.0
 falcon-apispec==0.4.0
 falcon-auth==1.1.0
 falcon-elastic-apm==0.1.1
