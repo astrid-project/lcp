@@ -17,7 +17,7 @@ psutil==5.9.5
 pyjwt[crypto]==2.8.0
 pyyaml==6.0.1
 requests==2.31.0
-rich==13.5.2
+rich==13.5.3
 swagger-ui-py==23.8.23
 toolz==0.12.0
 waitress>=2.1.2
