@@ -13,7 +13,7 @@ loguru==0.7.2
 marshmallow==3.20.1
 msgpack==1.0.7
 pint==0.22
-psutil==5.9.5
+psutil==5.9.6
 pyjwt[crypto]==2.8.0
 pyyaml==6.0.1
 requests==2.31.0
