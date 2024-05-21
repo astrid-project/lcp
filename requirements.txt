@@ -16,7 +16,7 @@ pint==0.23
 psutil==5.9.8
 pyjwt[crypto]==2.8.0
 pyyaml==6.0.1
-requests==2.32.0
+requests==2.32.1
 rich==13.7.1
 swagger-ui-py==23.9.23
 toolz==0.12.1
