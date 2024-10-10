@@ -21,4 +21,4 @@ rich==13.9.2
 swagger-ui-py==23.9.23
 toolz==1.0.0
 waitress>=2.1.2
-xmltodict==0.14.0
+xmltodict==0.14.1
