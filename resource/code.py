@@ -83,7 +83,7 @@ class Code_Resource(Base_Resource):
         else:
             resp_data.apply(resp)
 
-    @ docstring(source='code/post.yaml')
+    @docstring(source='code/post.yaml')
     def on_delete(self, req, resp, id=None):
         req_data = req.media or {}
         resp_data, valid = Code_Request_Schema(many=is_list(req_data), partial=True,
