@@ -12,7 +12,7 @@ jproperties==2.1.2
 loguru==0.7.2
 marshmallow==3.23.1
 msgpack==1.1.0
-pint==0.24.3
+pint==0.24.4
 psutil==6.1.0
 pyjwt[crypto]==2.9.0
 pyyaml==6.0.1
