@@ -7,7 +7,7 @@ falcon-apispec==0.4.0
 falcon-auth==1.1.0
 falcon-elastic-apm==0.1.1
 falcon-require-https==0.1.0
-falcon==4.0.2
+falcon==4.1.0
 jproperties==2.1.2
 loguru==0.7.3
 marshmallow==4.0.0
