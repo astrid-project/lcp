@@ -10,7 +10,7 @@ falcon-require-https==0.1.0
 falcon==4.1.0
 jproperties==2.1.2
 loguru==0.7.3
-marshmallow==4.0.0
+marshmallow==4.0.1
 msgpack==1.1.1
 pint==0.24.4
 psutil==7.0.0
